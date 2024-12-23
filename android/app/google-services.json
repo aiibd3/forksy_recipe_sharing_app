@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "299767144888",
+    "project_id": "forksy-5e95d",
+    "storage_bucket": "forksy-5e95d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:299767144888:android:bb2195f69916531ea46f4d",
+        "android_client_info": {
+          "package_name": "com.aiibd3.forksy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDirNlBCYaHMQYP82z32lGPW-9KB3_opfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
