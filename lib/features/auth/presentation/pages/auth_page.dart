@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:forksy/core/utils/logs_manager.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -74,6 +75,7 @@ class _AuthPageBody extends StatelessWidget {
                         hintText: "Enter your email",
                         controller: cubit.emailController,
                         validator: (text) {
+                          LogsManager.info("Validator called value: $text");
                           if (text!.isEmpty) {
                             return "this field is required";
                           }
@@ -129,7 +131,16 @@ class _AuthPageBody extends StatelessWidget {
                     child: CustomLoadingButton(
                       title: "login",
                       onPressed: () async {
-                        // await context.getCubit<LoginCubit>().login();
+                        if (cubit.formKey.currentState!.validate()) {
+                          // ?? Proceed with login logic
+                          await cubit.login(
+                            cubit.emailController.text,
+                            cubit.passwordController.text,
+                          );
+                        } else {
+                          // ??
+                          // Validation failed, do nothing
+                        }
                       },
                     ),
                   ),
