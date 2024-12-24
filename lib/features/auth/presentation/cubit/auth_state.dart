@@ -7,10 +7,16 @@ final class AuthInitial extends AuthState {}
 
 final class AuthLoading extends AuthState {}
 
-final class AuthLoadedSuccess extends AuthState {}
+final class Authenticated extends AuthState {
+  final AppUser user;
 
-final class AuthLoadedFailure extends AuthState {
+  Authenticated(this.user);
+}
+
+final class UnAuthenticated extends AuthState {}
+
+final class AuthError extends AuthState {
   final String error;
 
-  AuthLoadedFailure(this.error);
+  AuthError(this.error);
 }

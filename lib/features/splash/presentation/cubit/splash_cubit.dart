@@ -23,7 +23,7 @@ class SplashCubit extends Cubit<SplashState> {
       }
     } catch (e) {
       emit(
-        GoToRouteState(RoutesName.onboarding),
+        GoToRouteState(RoutesName.auth),
       );
     }
   }

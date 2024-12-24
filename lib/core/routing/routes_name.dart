@@ -1,7 +1,7 @@
 class RoutesName {
   RoutesName._();
 
-  static const String login = '/login';
+  static const String auth = '/auth';
   static const String splash = '/';
   static const String layout = '/layout';
   static const String onboarding = '/onboarding';
