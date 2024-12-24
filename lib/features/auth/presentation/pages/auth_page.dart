@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:forksy/core/extensions/context_extension.dart';
 import 'package:forksy/core/utils/logs_manager.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../../core/routing/routes_name.dart';
 import '../../../../core/theme/app_assets.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/regex_manager.dart';
@@ -50,15 +51,15 @@ class _AuthPageBody extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        leading: IconButton(
-          onPressed: () {
-            context.pop();
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Colors.white,
-          ),
-        ),
+        // leading: IconButton(
+        //   onPressed: () {
+        //     context.pop();
+        //   },
+        //   icon: const Icon(
+        //     Icons.arrow_back_ios_new_rounded,
+        //     color: Colors.white,
+        //   ),
+        // ),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -160,7 +161,7 @@ class _AuthPageBody extends StatelessWidget {
                     const SizedBox(width: 5),
                     GestureDetector(
                       onTap: () {
-                        // context.goToReplace(Routes.register);
+                        context.goToReplace(RoutesName.register);
                       },
                       child: Text(
                         "register",

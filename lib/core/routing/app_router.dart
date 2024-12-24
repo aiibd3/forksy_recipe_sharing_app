@@ -3,6 +3,7 @@ import 'package:forksy/core/routing/routes_name.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/pages/auth_page.dart';
+import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/layout/presentation/pages/layout_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
@@ -32,6 +33,11 @@ class AppRouter {
         path: RoutesName.auth,
         name: 'auth',
         builder: (context, state) => const AuthPage(),
+      ),
+      GoRoute(
+        path: RoutesName.register,
+        name: 'register',
+        builder: (context, state) => const RegisterPage(),
       ),
       GoRoute(
         path: RoutesName.layout,
