@@ -13,6 +13,16 @@ class AppFontStyles {
     required FontWeight fontWeight,
     required Color color,
   }) {
+
+
+    // return AppFonts.rubik(
+    //   fontSize: fontSize,
+    //   fontWeight: fontWeight,
+    //   color: color,
+    // );
+
+
+    // ?
     return GoogleFonts.poppins(
       fontSize: fontSize,
       fontWeight: fontWeight,

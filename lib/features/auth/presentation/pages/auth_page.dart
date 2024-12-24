@@ -8,6 +8,7 @@ import '../../../../core/theme/app_assets.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/regex_manager.dart';
 import '../../../../core/widgets/custom_loading_button.dart';
+import '../../../../core/widgets/email_text_field.dart';
 import '../../../../core/widgets/phone_text_field.dart';
 import '../../data/repos/auth_repo.dart';
 import '../cubit/auth_cubit.dart';
@@ -29,7 +30,7 @@ class AuthPage extends StatelessWidget {
 }
 
 class _AuthPageBody extends StatelessWidget {
-  const _AuthPageBody({super.key});
+  const _AuthPageBody();
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +43,6 @@ class _AuthPageBody extends StatelessWidget {
         centerTitle: true,
         title: Text(
           "Login".toUpperCase(),
-          // style: TextStyle(
-          //   fontSize: 20.sp,
-          //   fontWeight: FontWeight.w500,
-          //   fontFamily: context.fontFamily,
-          //   color: Colors.white,
-          // ),
           style: GoogleFonts.aBeeZee().copyWith(
             fontSize: 20.sp,
             fontWeight: FontWeight.w500,
@@ -71,41 +66,41 @@ class _AuthPageBody extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                Image.asset(AppAssets.onBoarding3, width: 50.w, height: 25.h),
+                Image.asset(AppAssets.logoForksy, width: 50.w, height: 25.h),
                 SingleChildScrollView(
                   child: Column(
                     children: [
-                      PhoneTextField(
-                        hintText: "context.translate!.phone.capitalize()",
-                        suffixIcon: const Icon(
-                          Icons.phone,
-                          color: AppColors.primaryColor,
-                        ),
+                      EmailTextField(
+                        hintText: "Enter your email",
+                        controller: cubit.emailController,
                         validator: (text) {
                           if (text!.isEmpty) {
-                            return "context.translate!.thisFieldIsRequired";
+                            return "this field is required";
                           }
-                          if (!RegexManager.isPhoneNumber(text)) {
-                            return "context.translate!.pleaseEnterFieldPhoneNumber";
+                          if (!RegexManager.isEmail(text)) {
+                            return "please Enter Field Correctly";
                           }
                           return null;
                         },
-                        controller: null,
-                        // controller:
-                        //     "context.getCubit<LoginCubit>().phoneController",
+                        suffixIcon: const Icon(
+                          Icons.email,
+                          color: AppColors.primaryColor,
+                        ),
                       ),
                       SizedBox(height: 2.5.h),
                       PasswordTextField(
-                        hintText: "context.translate!.passwordTextField",
-                        // controller:
-                        //     "context.getCubit<LoginCubit>().passwordController",
+                        hintText: "Enter your password",
+                        controller: cubit.passwordController,
                         validator: (text) {
                           if (text!.isEmpty) {
-                            return "context.translate!.thisFieldIsRequired";
+                            return "this field is required";
+                          }
+                          if (text.length < 6) {
+                            return "password must be at least 6 characters";
                           }
                           return null;
                         },
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -119,12 +114,11 @@ class _AuthPageBody extends StatelessWidget {
                       // context.goTo(Routes.forgotPassword);
                     },
                     child: Text(
-                      "context.translate!.forgetPassword",
+                      "forget password?",
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
                         fontSize: 15.sp,
-                        // fontFamily: context.fontFamily,
                       ),
                     ),
                   ),
@@ -133,7 +127,7 @@ class _AuthPageBody extends StatelessWidget {
                 SizedBox(
                   child: SizedBox(
                     child: CustomLoadingButton(
-                      title: "context.translate!.loginButton",
+                      title: "login",
                       onPressed: () async {
                         // await context.getCubit<LoginCubit>().login();
                       },
@@ -145,12 +139,11 @@ class _AuthPageBody extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "context.translate!.donTHaveAccount",
+                      "don't have an account?",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 17.sp,
-                        // fontFamily: context.fontFamily,
                       ),
                     ),
                     const SizedBox(width: 5),
@@ -159,12 +152,11 @@ class _AuthPageBody extends StatelessWidget {
                         // context.goToReplace(Routes.register);
                       },
                       child: Text(
-                        "context.translate!.registerNewUser",
+                        "register",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 17.sp,
-                          // fontFamily: context.fontFamily,
                           color: AppColors.primaryColor,
                         ),
                       ),

@@ -13,6 +13,8 @@ class AuthCubit extends Cubit<AuthState> {
   final AuthRepo authRepo;
   AppUser? _currentUser;
   final formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   static AuthCubit get(BuildContext context) =>
       BlocProvider.of<AuthCubit>(context);

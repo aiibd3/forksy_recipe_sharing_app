@@ -27,7 +27,7 @@ class _SplashPageState extends State<SplashPage> {
       const Duration(seconds: 2),
       () {
         if (mounted) {
-          context.goToReplace(RoutesName.onboarding);
+          context.goToReplace(RoutesName.auth);
         }
       },
     );
