@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forksy/core/routing/routes_name.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/auth/presentation/pages/auth_page.dart';
+import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/layout/presentation/pages/layout_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
@@ -32,7 +32,7 @@ class AppRouter {
       GoRoute(
         path: RoutesName.auth,
         name: 'auth',
-        builder: (context, state) => const AuthPage(),
+        builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
         path: RoutesName.register,

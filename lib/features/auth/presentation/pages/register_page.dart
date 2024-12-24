@@ -23,7 +23,18 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuthCubit(authRepo: FirebaseAuthRepo()),
-      child: BlocBuilder<AuthCubit, AuthState>(
+      child: BlocConsumer<AuthCubit, AuthState>(
+        listener: (context, state) {
+          if (state is Authenticated) {
+            // Navigate to home screen on successful registration
+            Navigator.pushReplacementNamed(context, RoutesName.layout);
+          } else if (state is AuthError) {
+            // Show error message using SnackBar
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error)),
+            );
+          }
+        },
         builder: (context, state) {
           return const _RegisterPageBody();
         },
@@ -64,102 +75,103 @@ class _RegisterPageBody extends StatelessWidget {
       body: SingleChildScrollView(
         child: Form(
           key: cubit.formKey,
-          child: Column(
-            children: [
-              Image.asset(AppAssets.logoForksy, width: 50.w, height: 25.h),
-              Container(
-                padding: const EdgeInsets.all(16),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      MyCustomTextField(
-                        suffixIcon: const Icon(
-                          Icons.person,
-                          color: AppColors.primaryColor,
-                        ),
-                        hintText: "Enter your name",
-                        validator: (text) {
-                          if (text!.isEmpty) {
-                            return "pleaseEnterName";
-                          }
-                          return null;
-                        },
-                        controller: cubit.nameController,
-                      ),
-                      SizedBox(height: 2.5.h),
-                      EmailTextField(
-                        hintText: "Enter your email",
-                        controller: cubit.emailController,
-                        validator: (text) {
-                          LogsManager.info("Validator called value: $text");
-                          if (text!.isEmpty) {
-                            return "this field is required";
-                          }
-                          if (!RegexManager.isEmail(text)) {
-                            return "please Enter Field Correctly";
-                          }
-                          return null;
-                        },
-                        suffixIcon: const Icon(
-                          Icons.email,
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                      SizedBox(height: 2.5.h),
-                      PasswordTextField(
-                        hintText: "Enter You Password",
-                        validator: (text) {
-                          if (text!.isEmpty) {
-                            return "this Field Is Required";
-                          }
-                          return null;
-                        },
-                        controller: cubit.passwordController,
-                      ),
-                    ],
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Image.asset(AppAssets.logoForksy, width: 50.w, height: 25.h),
+                SizedBox(height: 2.h),
+                MyCustomTextField(
+                  suffixIcon: const Icon(
+                    Icons.person,
+                    color: AppColors.primaryColor,
+                  ),
+                  hintText: "Enter your name",
+                  validator: (text) {
+                    if (text!.isEmpty) {
+                      return "This field is required";
+                    }
+                    return null;
+                  },
+                  controller: cubit.nameController,
+                ),
+                SizedBox(height: 2.5.h),
+                EmailTextField(
+                  hintText: "Enter your email",
+                  controller: cubit.emailController,
+                  validator: (text) {
+                    LogsManager.info("Validator called value: $text");
+                    if (text!.isEmpty) {
+                      return "This field is required";
+                    }
+                    if (!RegexManager.isEmail(text)) {
+                      return "Please enter a valid email address";
+                    }
+                    return null;
+                  },
+                  suffixIcon: const Icon(
+                    Icons.email,
+                    color: AppColors.primaryColor,
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                child: CustomLoadingButton(
+                SizedBox(height: 2.5.h),
+                PasswordTextField(
+                  hintText: "Enter your password",
+                  validator: (text) {
+                    if (text!.isEmpty) {
+                      return "This field is required";
+                    }
+                    if (text.length < 6) {
+                      return "Password must be at least 6 characters";
+                    }
+                    return null;
+                  },
+                  controller: cubit.passwordController,
+                ),
+                const SizedBox(height: 20),
+                CustomLoadingButton(
                   title: "Register Now",
                   onPressed: () async {
-                    // await context.getCubit<RegisterCubit>().register();
-                    // await Future.delayed(const Duration(seconds: 1));
+                    if (cubit.formKey.currentState!.validate()) {
+                      await cubit.register(
+                        cubit.nameController.text,
+                        cubit.emailController.text,
+                        cubit.passwordController.text,
+                      );
+                    }
                   },
                 ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "already Have Account !",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  GestureDetector(
-                    onTap: () {
-                      context.goToReplace(RoutesName.auth);
-                    },
-                    child: Text(
-                      "login",
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Already have an account?",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
-                        fontSize: 17.sp,
-                        color: AppColors.primaryColor,
+                        fontSize: 16.sp,
                       ),
                     ),
-                  ),
-                ],
-              )
-            ],
+                    const SizedBox(width: 5),
+                    GestureDetector(
+                      onTap: () {
+                        context.goToReplace(RoutesName.auth);
+                      },
+                      child: Text(
+                        "Login",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 17.sp,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

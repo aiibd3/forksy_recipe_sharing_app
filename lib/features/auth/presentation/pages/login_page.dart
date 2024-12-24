@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:forksy/core/extensions/context_extension.dart';
 import 'package:forksy/core/utils/logs_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -15,24 +14,35 @@ import '../../../../core/widgets/phone_text_field.dart';
 import '../../data/repos/auth_repo.dart';
 import '../cubit/auth_cubit.dart';
 
-class AuthPage extends StatelessWidget {
-  const AuthPage({super.key});
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuthCubit(authRepo: FirebaseAuthRepo()),
-      child: BlocBuilder<AuthCubit, AuthState>(
+      child: BlocConsumer<AuthCubit, AuthState>(
+        listener: (context, state) {
+          if (state is Authenticated) {
+            // Navigate to home screen on successful login
+            Navigator.pushReplacementNamed(context, RoutesName.layout);
+          } else if (state is AuthError) {
+            // Show error message as snackbar
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error)),
+            );
+          }
+        },
         builder: (context, state) {
-          return const _AuthPageBody();
+          return const _LoginPageBody();
         },
       ),
     );
   }
 }
 
-class _AuthPageBody extends StatelessWidget {
-  const _AuthPageBody();
+class _LoginPageBody extends StatelessWidget {
+  const _LoginPageBody();
 
   @override
   Widget build(BuildContext context) {
@@ -51,15 +61,6 @@ class _AuthPageBody extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        // leading: IconButton(
-        //   onPressed: () {
-        //     context.pop();
-        //   },
-        //   icon: const Icon(
-        //     Icons.arrow_back_ios_new_rounded,
-        //     color: Colors.white,
-        //   ),
-        // ),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -69,43 +70,38 @@ class _AuthPageBody extends StatelessWidget {
             child: Column(
               children: [
                 Image.asset(AppAssets.logoForksy, width: 50.w, height: 25.h),
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      EmailTextField(
-                        hintText: "Enter your email",
-                        controller: cubit.emailController,
-                        validator: (text) {
-                          LogsManager.info("Validator called value: $text");
-                          if (text!.isEmpty) {
-                            return "this field is required";
-                          }
-                          if (!RegexManager.isEmail(text)) {
-                            return "please Enter Field Correctly";
-                          }
-                          return null;
-                        },
-                        suffixIcon: const Icon(
-                          Icons.email,
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                      SizedBox(height: 2.5.h),
-                      PasswordTextField(
-                        hintText: "Enter your password",
-                        controller: cubit.passwordController,
-                        validator: (text) {
-                          if (text!.isEmpty) {
-                            return "this field is required";
-                          }
-                          if (text.length < 6) {
-                            return "password must be at least 6 characters";
-                          }
-                          return null;
-                        },
-                      ),
-                    ],
+                SizedBox(height: 2.h),
+                EmailTextField(
+                  hintText: "Enter your email",
+                  controller: cubit.emailController,
+                  validator: (text) {
+                    LogsManager.info("Validator called value: $text");
+                    if (text!.isEmpty) {
+                      return "This field is required";
+                    }
+                    if (!RegexManager.isEmail(text)) {
+                      return "Please enter a valid email address";
+                    }
+                    return null;
+                  },
+                  suffixIcon: const Icon(
+                    Icons.email,
+                    color: AppColors.primaryColor,
                   ),
+                ),
+                SizedBox(height: 2.5.h),
+                PasswordTextField(
+                  hintText: "Enter your password",
+                  controller: cubit.passwordController,
+                  validator: (text) {
+                    if (text!.isEmpty) {
+                      return "This field is required";
+                    }
+                    if (text.length < 6) {
+                      return "Password must be at least 6 characters";
+                    }
+                    return null;
+                  },
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -114,10 +110,10 @@ class _AuthPageBody extends StatelessWidget {
                       padding: EdgeInsets.zero,
                     ),
                     onPressed: () {
-                      // context.goTo(Routes.forgotPassword);
+                      // Navigator.pushNamed(context, RoutesName.forgotPassword);
                     },
                     child: Text(
-                      "forget password?",
+                      "Forgot password?",
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
@@ -127,31 +123,23 @@ class _AuthPageBody extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                SizedBox(
-                  child: SizedBox(
-                    child: CustomLoadingButton(
-                      title: "login",
-                      onPressed: () async {
-                        if (cubit.formKey.currentState!.validate()) {
-                          // ?? Proceed with login logic
-                          await cubit.login(
-                            cubit.emailController.text,
-                            cubit.passwordController.text,
-                          );
-                        } else {
-                          // ??
-                          // Validation failed, do nothing
-                        }
-                      },
-                    ),
-                  ),
+                CustomLoadingButton(
+                  title: "Login",
+                  onPressed: () async {
+                    if (cubit.formKey.currentState!.validate()) {
+                      await cubit.login(
+                        cubit.emailController.text,
+                        cubit.passwordController.text,
+                      );
+                    }
+                  },
                 ),
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "don't have an account?",
+                      "Don't have an account?",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
@@ -161,10 +149,11 @@ class _AuthPageBody extends StatelessWidget {
                     const SizedBox(width: 5),
                     GestureDetector(
                       onTap: () {
-                        context.goToReplace(RoutesName.register);
+                        Navigator.pushReplacementNamed(
+                            context, RoutesName.register);
                       },
                       child: Text(
-                        "register",
+                        "Register",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
