@@ -123,7 +123,7 @@ class _RegisterPageBody extends StatelessWidget {
               const SizedBox(height: 20),
               SizedBox(
                 child: CustomLoadingButton(
-                  title: "register New User",
+                  title: "Register Now",
                   onPressed: () async {
                     // await context.getCubit<RegisterCubit>().register();
                     // await Future.delayed(const Duration(seconds: 1));
