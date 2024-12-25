@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:forksy/core/extensions/context_extension.dart';
 import 'package:forksy/core/utils/logs_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -24,10 +25,13 @@ class LoginPage extends StatelessWidget {
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
-            // Navigate to home screen on successful login
-            Navigator.pushReplacementNamed(context, RoutesName.layout);
+            context.goToNamed(RoutesName.layout);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Login successfully"),
+              ),
+            );
           } else if (state is AuthError) {
-            // Show error message as snackbar
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.error)),
             );
@@ -149,8 +153,7 @@ class _LoginPageBody extends StatelessWidget {
                     const SizedBox(width: 5),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacementNamed(
-                            context, RoutesName.register);
+                        context.goToReplace(RoutesName.register);
                       },
                       child: Text(
                         "Register",

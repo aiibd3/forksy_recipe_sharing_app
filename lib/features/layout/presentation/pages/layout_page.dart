@@ -36,7 +36,7 @@ class _LayoutPageBody extends StatelessWidget {
         var cubit = LayoutCubit.get(context);
 
         return Scaffold(
-          backgroundColor: AppColors.whiteColor,
+          backgroundColor: AppColors.bgColor,
           extendBody: true,
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,

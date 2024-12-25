@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/core/extensions/context_extension.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -27,9 +26,14 @@ class RegisterPage extends StatelessWidget {
         listener: (context, state) {
           if (state is Authenticated) {
             // Navigate to home screen on successful registration
-            Navigator.pushReplacementNamed(context, RoutesName.layout);
+            LogsManager.info("Registration successful!");
+            context.goToReplace(RoutesName.auth);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Registration successful!")),
+            );
           } else if (state is AuthError) {
             // Show error message using SnackBar
+            LogsManager.error(state.error);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.error)),
             );
@@ -56,19 +60,10 @@ class _RegisterPageBody extends StatelessWidget {
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
         title: Text(
-          "Register",
+          "Login".toUpperCase(),
           style: GoogleFonts.aBeeZee().copyWith(
             color: Colors.white,
             fontSize: 20.sp,
-          ),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            context.pop();
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Colors.white,
           ),
         ),
       ),

@@ -28,20 +28,32 @@ class _ProfileTabState extends State<ProfileTab> {
           child: Container(
             color: AppColors.whiteColor,
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 2.h),
-            child: Text(
-              "Account",
-              style: AppFontStyles.poppins600_20,
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Account",
+                style: AppFontStyles.poppins600_20,
+              ),
             ),
           ),
         ),
         SliverToBoxAdapter(
+            child: SizedBox(
+          height: 2.h,
+        )),
+        SliverToBoxAdapter(
           child: ProfileCard(
             name: 'AbdulRahman Hamoud',
             role: 'Flutter Developer',
-            imageUrl: 'assets/images/logo_forksy.png',
+            imageUrl: 'assets/images/hamoud.jpg',
             onTap: () {
               context.goToNamed(RoutesName.profileFullPath);
             },
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: SizedBox(
+            height: 2.h,
           ),
         ),
         const SliverToBoxAdapter(

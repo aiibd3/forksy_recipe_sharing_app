@@ -23,9 +23,9 @@ class ProfileCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 10.h,
+        height: 12.h,
         width: 100.w,
-        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
         padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
           color: AppColors.whiteColor,
@@ -44,8 +44,8 @@ class ProfileCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(50),
               child: Image.asset(
                 imageUrl,
-                width: 60,
-                height: 60,
+                width: 75,
+                height: 75,
                 fit: BoxFit.cover,
               ),
             ),
