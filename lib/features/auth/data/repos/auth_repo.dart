@@ -11,12 +11,16 @@ class FirebaseAuthRepo implements AuthRepo {
   @override
   Future<AppUser?> loginWithEmailPassword(String email, String password) async {
     try {
-      // attempt sign in
+      //* Attempt sign-in
       UserCredential userCredential = await firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
 
-      AppUser user =
-          AppUser(email: email, name: "name", uid: userCredential.user!.uid);
+      //* Create AppUser instance
+      AppUser user = AppUser(
+        email: email,
+        name: userCredential.user?.displayName ?? 'Unknown',
+        uid: userCredential.user!.uid,
+      );
 
       return user;
     } on FirebaseException catch (e) {
@@ -30,14 +34,20 @@ class FirebaseAuthRepo implements AuthRepo {
   Future<AppUser?> registerWithEmailPassword(
       String name, String email, String password) async {
     try {
-      // attempt register
+      //*  register
       UserCredential userCredential = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      AppUser user =
-          AppUser(email: email, name: name, uid: userCredential.user!.uid);
+      //* Update display name
+      await userCredential.user?.updateDisplayName(name);
 
-      // return user
+      //* Create AppUser instance
+      AppUser user = AppUser(
+        email: email,
+        name: name,
+        uid: userCredential.user!.uid,
+      );
+
       return user;
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
@@ -58,8 +68,8 @@ class FirebaseAuthRepo implements AuthRepo {
     if (firebaseUser != null) {
       return AppUser(
         uid: firebaseUser.uid,
-        email: firebaseUser.email!,
-        name: firebaseUser.displayName!,
+        email: firebaseUser.email ?? 'Unknown',
+        name: firebaseUser.displayName ?? 'Unknown',
       );
     }
     return null;

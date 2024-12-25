@@ -23,6 +23,12 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit({required this.authRepo}) : super(AuthInitial());
 
+  // * logout
+  Future<void> logout() async {
+    await authRepo.logout();
+    emit(UnAuthenticated());
+  }
+
   // * check if user is logged in
   Future<void> checkUserIsLogged() async {
     final user = await authRepo.getCurrentUser();
@@ -81,11 +87,5 @@ class AuthCubit extends Cubit<AuthState> {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);
     }
-  }
-
-  // * logout
-  Future<void> logout() async {
-    await authRepo.logout();
-    emit(UnAuthenticated());
   }
 }

@@ -20,29 +20,26 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(authRepo: FirebaseAuthRepo()),
-      child: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state is Authenticated) {
-            // Navigate to home screen on successful registration
-            LogsManager.info("Registration successful!");
-            context.goToReplace(RoutesName.auth);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Registration successful!")),
-            );
-          } else if (state is AuthError) {
-            // Show error message using SnackBar
-            LogsManager.error(state.error);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error)),
-            );
-          }
-        },
-        builder: (context, state) {
-          return const _RegisterPageBody();
-        },
-      ),
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is Authenticated) {
+          // Navigate to home screen on successful registration
+          LogsManager.info("Registration successful!");
+          context.goToReplace(RoutesName.auth);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Registration successful!")),
+          );
+        } else if (state is AuthError) {
+          // Show error message using SnackBar
+          LogsManager.error(state.error);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.error)),
+          );
+        }
+      },
+      builder: (context, state) {
+        return const _RegisterPageBody();
+      },
     );
   }
 }

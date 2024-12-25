@@ -26,9 +26,9 @@ class _SplashPageState extends State<SplashPage> {
     Future.delayed(
       const Duration(seconds: 2),
       () {
-        if (mounted) {
-          context.goToReplace(RoutesName.auth);
-        }
+        // if (mounted) {
+        //   context.goToReplace(RoutesName.auth);
+        // }
       },
     );
   }
@@ -40,7 +40,7 @@ class _SplashPageState extends State<SplashPage> {
       child: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) {
           if (state is GoToRouteState) {
-            context.goToReplace(state.route);
+            context.goToReplace(RoutesName.auth);
           }
         },
         child: const _SplashPageBody(),
