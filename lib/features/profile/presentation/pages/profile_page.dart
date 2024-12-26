@@ -10,6 +10,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../auth/data/repos/auth_repo.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
+import '../../../storage/data/repos/firebase_storage_repo.dart';
 import '../../data/repos/profile_repo.dart';
 import '../cubit/profile_cubit.dart';
 import '../widgets/bio_box.dart';
@@ -32,6 +33,7 @@ class ProfilePage extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => ProfileCubit(
+        storageRepo: FirebaseStorageRepo(),
         profileRepo: FirebaseProfileRepo(),
         authRepo: FirebaseAuthRepo(),
       )..fetchProfileUser(user.uid),
@@ -84,6 +86,7 @@ class _ProfilePageBody extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => BlocProvider(
                           create: (context) => ProfileCubit(
+                              storageRepo: FirebaseStorageRepo(),
                               authRepo: FirebaseAuthRepo(),
                               profileRepo: FirebaseProfileRepo()),
                           child: EditProfilePage(user: profileUser),

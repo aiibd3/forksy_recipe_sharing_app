@@ -20,6 +20,10 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   final bioController = TextEditingController();
 
+  // PlatformFile? profileImage;
+
+
+
   void updateProfile() async {
     final profileCubit = context.read<ProfileCubit>();
 

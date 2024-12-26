@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:forksy/features/storage/domain/repos/storage_repo.dart';
 
 import '../../../../core/errors/firebase_error_handler.dart';
 import '../../../../core/utils/logs_manager.dart';
@@ -13,9 +14,13 @@ part 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepo profileRepo;
   final AuthRepo authRepo;
+  final StorageRepo storageRepo;
 
-  ProfileCubit({required this.authRepo, required this.profileRepo})
-      : super(ProfileInitial());
+  ProfileCubit({
+    required this.storageRepo,
+    required this.authRepo,
+    required this.profileRepo,
+  }) : super(ProfileInitial());
 
   Future<void> fetchProfileUser(String uid) async {
     try {
@@ -34,28 +39,11 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  // Future<void> updateProfileUser(
-  //     {required String uid, ProfileUser? updatedUser}) async {
-  //   try {
-  //     emit(ProfileLoading());
-  //
-  //     final currentUser = await profileRepo.fetchProfileUser(uid);
-  //     if (currentUser == null) {
-  //       emit(ProfileFailure('Failed to update user'));
-  //       return;
-  //     }
-  //
-  //     await profileRepo.updateProfileUser(updatedUser!);
-  //
-  //     emit(ProfileLoaded(user: updatedUser));
-  //   } on FirebaseException catch (e) {
-  //     final errorHandler = FirebaseErrorHandler.handleError(e);
-  //     LogsManager.error(errorHandler.errorMessage);
-  //     emit(ProfileFailure(errorHandler.errorMessage));
-  //   }
-  // }
-
-  Future<void> updateProfileUser({required String uid, String? newBio}) async {
+  Future<void> updateProfileUser({
+    required String uid,
+    String? newBio,
+    String? imageProfilePath,
+  }) async {
     try {
       emit(ProfileLoading());
 
@@ -65,7 +53,17 @@ class ProfileCubit extends Cubit<ProfileState> {
         return;
       }
 
-      final updatedUser = currentUser.copyWith(bio: newBio ?? currentUser.bio);
+      String? imageDownloadUrl;
+
+      if (imageProfilePath!.isNotEmpty) {
+        imageDownloadUrl =
+            await storageRepo.uploadProfileImage(imageProfilePath, uid);
+      }
+
+      final updatedUser = currentUser.copyWith(
+        bio: newBio ?? currentUser.bio,
+        profileImage: imageDownloadUrl ?? currentUser.profileImage,
+      );
 
       await profileRepo.updateProfileUser(updatedUser);
 
