@@ -34,7 +34,11 @@ forksy/
 │   │   └── widgets/
 │   ├── features/
 │   │   ├── auth/
+│   │   ├── layout/
+│   │   ├── onboarding/
+│   │   ├── post/
 │   │   ├── profile/
+│   │   ├── splash/
 │   │   └── storage/
 │   └── main.dart
 ├── android/
@@ -42,6 +46,7 @@ forksy/
 ├── web/
 ├── pubspec.yaml
 └── README.md
+
 ```
 ---
 
