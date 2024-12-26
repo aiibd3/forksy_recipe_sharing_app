@@ -6,6 +6,7 @@ import 'package:logger/logger.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../post/presentation/pages/upload_post_page.dart';
 import '../cubit/layout_cubit.dart';
 
 class LayoutPage extends StatelessWidget {
@@ -47,7 +48,14 @@ class _LayoutPageBody extends StatelessWidget {
             backgroundColor: AppColors.secondaryColor,
             shape: const CircleBorder(),
             onPressed: () {
-              // context.goToNamed(RoutesName.cartFullPath);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UploadPostPage(),
+                ),
+              );
+
+              // context.goToNamed(RoutesName.);
             },
             child: Icon(
               EneftyIcons.add_outline,
