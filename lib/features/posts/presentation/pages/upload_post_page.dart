@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,7 +24,6 @@ class _UploadPostPageState extends State<UploadPostPage> {
   @override
   void initState() {
     super.initState();
-
     getCurrentUser();
   }
 
@@ -50,25 +47,30 @@ class _UploadPostPageState extends State<UploadPostPage> {
   }
 
   void uploadPost() {
-    if (imagePickedFile != null) {
+    if (imagePickedFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Uploading post..."),
-        ),
+        const SnackBar(content: Text("Please select an image!")),
       );
+      return;
+    }
+
+    if (textController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter some text!")),
+      );
+      return;
     }
 
     final newPost = Post(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      userId: currentUser!.uid,
-      userName: currentUser!.name,
+      userId: currentUser?.uid ?? "",
+      userName: currentUser?.name ?? "Anonymous",
       text: textController.text,
-      imageUrl: "",
+      imageUrl: "null", // This will be added after upload
       timestamp: DateTime.now(),
     );
 
     final postCubit = context.read<PostCubit>();
-
     postCubit.createPost(newPost, imagePath: imagePickedFile!.path);
   }
 
@@ -82,18 +84,22 @@ class _UploadPostPageState extends State<UploadPostPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<PostCubit, PostState>(
       listener: (context, state) {
-        if (state is PostLoaded) {
+        if (state is PostLoading) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Uploading post...")),
+          );
+        } else if (state is PostLoaded) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Post uploaded successfully!")),
+          );
           Navigator.pop(context);
+        } else if (state is PostFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Error: ${state.error}")),
+          );
         }
       },
       builder: (context, state) {
-        if (state is PostLoading) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Uploading post..."),
-            ),
-          );
-        }
         return buildUploadPostBody();
       },
     );
@@ -109,9 +115,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
         actions: [
           IconButton(
             onPressed: uploadPost,
-            icon: const Icon(
-              Icons.check,
-            ),
+            icon: const Icon(Icons.check),
           ),
         ],
       ),
@@ -120,15 +124,6 @@ class _UploadPostPageState extends State<UploadPostPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              if (imagePickedFile != null)
-                Image.file(
-                  File(imagePickedFile!.path!),
-                ),
-
-
-
-
-
               GestureDetector(
                 onTap: pickImage,
                 child: Container(
@@ -139,20 +134,29 @@ class _UploadPostPageState extends State<UploadPostPage> {
                   ),
                   child: imagePickedFile == null
                       ? const Center(
-                          child: Icon(
-                            Icons.camera_alt,
-                            size: 40,
-                          ),
-                        )
+                    child: Icon(
+                      Icons.camera_alt,
+                      size: 40,
+                    ),
+                  )
                       : ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.memory(
-                            imagePickedFile!.bytes!,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.memory(
+                      imagePickedFile!.bytes!,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              )
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: textController,
+                maxLines: 3,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Write something...",
+                ),
+              ),
             ],
           ),
         ),

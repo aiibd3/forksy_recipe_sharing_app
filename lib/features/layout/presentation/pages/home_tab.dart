@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../post/presentation/cubit/post_cubit.dart';
+import '../../../posts/presentation/cubit/post_cubit.dart';
 
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});

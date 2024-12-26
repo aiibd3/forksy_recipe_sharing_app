@@ -6,7 +6,10 @@ import 'package:logger/logger.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../post/presentation/pages/upload_post_page.dart';
+import '../../../posts/data/repos/post_repo.dart';
+import '../../../posts/presentation/cubit/post_cubit.dart';
+import '../../../posts/presentation/pages/upload_post_page.dart';
+import '../../../storage/data/repos/firebase_storage_repo.dart';
 import '../cubit/layout_cubit.dart';
 
 class LayoutPage extends StatelessWidget {
@@ -51,11 +54,16 @@ class _LayoutPageBody extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const UploadPostPage(),
+                  builder: (context) => BlocProvider(
+                    create: (context) => PostCubit(
+                      postRepo: FirebasePostRepo(),
+                      storageRepo: FirebaseStorageRepo(),
+                    ),
+                    child: const UploadPostPage(),
+                  ),
                 ),
               );
 
-              // context.goToNamed(RoutesName.);
             },
             child: Icon(
               EneftyIcons.add_outline,

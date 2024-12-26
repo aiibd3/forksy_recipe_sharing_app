@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:forksy/features/post/domain/entities/post.dart';
 
 import '../../../../core/errors/firebase_error_handler.dart';
 import '../../../../core/utils/logs_manager.dart';
+import '../../domain/entities/post.dart';
 import '../../domain/repos/post_repo.dart';
 
 class FirebasePostRepo implements PostRepo {
@@ -18,8 +18,12 @@ class FirebasePostRepo implements PostRepo {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);
       throw Exception("Firebase error: ${errorHandler.errorMessage}");
+    } catch (e) {
+      LogsManager.error("Unknown error: $e");
+      throw Exception("An unexpected error occurred: $e");
     }
   }
+
 
   @override
   Future<void> deletePost(String postId) async {
