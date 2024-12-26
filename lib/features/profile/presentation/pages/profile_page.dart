@@ -2,19 +2,18 @@ import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/core/theme/app_colors.dart';
-import 'package:go_router/go_router.dart';
 // import 'package:forksy/core/utils/logs_manager.dart';
 // import 'package:forksy/features/auth/domain/entities/app_user.dart';
 // import 'package:forksy/features/profile/domain/entities/profile_user.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../../../core/routing/routes_name.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../auth/data/repos/auth_repo.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../data/repos/profile_repo.dart';
 import '../cubit/profile_cubit.dart';
 import '../widgets/bio_box.dart';
+import '../widgets/edit_profile_page.dart';
 import '../widgets/profile_avatar.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -78,9 +77,19 @@ class _ProfilePageBody extends StatelessWidget {
                     color: AppColors.blackColor,
                   ),
                   onPressed: () {
-                    context.go(RoutesName.settingsFullPath);
-
-
+                    final profileUser =
+                        state.user; // Assuming state.user is available
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider(
+                          create: (context) => ProfileCubit(
+                              authRepo: FirebaseAuthRepo(),
+                              profileRepo: FirebaseProfileRepo()),
+                          child: EditProfilePage(user: profileUser),
+                        ),
+                      ),
+                    );
                   },
                 ),
               ],

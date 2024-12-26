@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:forksy/core/routing/routes_name.dart';
-import 'package:forksy/features/profile/presentation/widgets/edit_profile_page.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/pages/login_page.dart';
@@ -49,13 +48,15 @@ class AppRouter {
             path: RoutesName.profile,
             name: 'profile',
             builder: (context, state) => const ProfilePage(),
-            routes: [
-              GoRoute(
-                path: RoutesName.settings,
-                name: 'settings',
-                builder: (context, state) => const EditProfilePage(),
-              ),
-            ],
+            // routes: [
+              // GoRoute(
+              //   path: RoutesName.settings,
+              //   name: 'settings',
+              //   builder: (context, state) => const EditProfilePage(
+              //     user: ,
+              //   ),
+              // ),
+            // ],
           ),
           // *+++++++++++++++++
           // GoRoute(
