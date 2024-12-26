@@ -70,6 +70,8 @@ dependencies:
   firebase_auth:
   cloud_firestore:
   firebase_storage:
+  awesome_notifications:
+
 
   # animations
   animate_do:
