@@ -1,12 +1,47 @@
 # Forksy
 
-A new Flutter project.
-
 ## Getting Started
 
 This report was created by **Abdulrahman Hamoud** as part of the task for developing a **Recipe Sharing Application** using Flutter. This project was developed for the second stage of an interview process. The report outlines the decision-making process behind selecting Firebase Cloud Services as the storage solution for the application. It also provides insights into the planning, implementation, and benefits of using Firebase within the project.
 
 ---
+
+# Forksy
+
+A **Recipe Sharing Application** built using **Flutter**. This app enables users to share, view, and manage recipes with media uploads and real-time updates, leveraging **Firebase** for storage, authentication, and database management.
+
+---
+
+## Features
+
+- User Authentication (Sign Up, Login, Logout)
+- Recipe Feed with Real-Time Updates
+- Media Upload and Retrieval (Images)
+- Secure Data Storage with Firebase
+- Cross-Platform Support (Android, iOS, Web)
+
+---
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+1. **Flutter**: [Install Flutter](https://flutter.dev/docs/get-started/install)
+   - Run `flutter doctor` to verify installation.
+2. **Firebase CLI**: [Install Firebase CLI](https://firebase.google.com/docs/cli)
+3. **Dart**: Comes pre-installed with Flutter.
+4. **Git**: [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
+---
+
+## Getting Started
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/your-username/forksy.git
+cd forksy
+```
 
 ## Firebase Cloud Services: Selection Criteria
 
