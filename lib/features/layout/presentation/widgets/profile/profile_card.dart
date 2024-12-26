@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -42,12 +44,7 @@ class ProfileCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(50),
-              child: Image.asset(
-                imageUrl,
-                width: 75,
-                height: 75,
-                fit: BoxFit.cover,
-              ),
+              child: _getImageWidget(imageUrl),
             ),
             const SizedBox(width: 12),
             Column(
@@ -84,6 +81,37 @@ class ProfileCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _getImageWidget(String imageUrl) {
+    if (imageUrl.isNotEmpty) {
+      if (Uri.tryParse(imageUrl)?.isAbsolute ?? false) {
+        return Image.network(
+          imageUrl,
+          width: 75,
+          height: 75,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => _defaultImage(),
+        );
+      } else if (File(imageUrl).existsSync()) {
+        return Image.file(
+          File(imageUrl),
+          width: 75,
+          height: 75,
+          fit: BoxFit.cover,
+        );
+      }
+    }
+    return _defaultImage();
+  }
+
+  Widget _defaultImage() {
+    return Image.asset(
+      'assets/images/default_avatar.png',
+      width: 75,
+      height: 75,
+      fit: BoxFit.cover,
     );
   }
 }
