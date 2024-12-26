@@ -11,6 +11,11 @@ This report was created by **Abdulrahman Hamoud** as part of the task for develo
 A **Recipe Sharing Application** built using **Flutter**. This app enables users to share, view, and manage recipes with media uploads and real-time updates, leveraging **Firebase** for storage, authentication, and database management.
 
 ---
+##Install Dependencies
+- flutter pub get
+- flutter run
+- flutter config --enable-web
+
 
 ## Features
 
@@ -19,6 +24,23 @@ A **Recipe Sharing Application** built using **Flutter**. This app enables users
 - Media Upload and Retrieval (Images)
 - Secure Data Storage with Firebase
 - Cross-Platform Support (Android, iOS, Web)
+
+forksy/
+├── lib/
+│   ├── core/
+│   │   ├── theme/
+│   │   ├── utils/
+│   │   └── widgets/
+│   ├── features/
+│   │   ├── auth/
+│   │   ├── profile/
+│   │   └── storage/
+│   └── main.dart
+├── android/
+├── ios/
+├── web/
+├── pubspec.yaml
+└── README.md
 
 ---
 
