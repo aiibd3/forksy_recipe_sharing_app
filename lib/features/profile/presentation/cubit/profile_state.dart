@@ -7,14 +7,14 @@ final class ProfileInitial extends ProfileState {}
 
 final class ProfileLoading extends ProfileState {}
 
-final class ProfileLoadedSuccess extends ProfileState {
+final class ProfileLoaded extends ProfileState {
   final ProfileUser user;
 
-  ProfileLoadedSuccess({required this.user});
+  ProfileLoaded({required this.user});
 }
 
-final class ProfileLoadedFailure extends ProfileState {
+final class ProfileFailure extends ProfileState {
   final String error;
 
-  ProfileLoadedFailure(this.error);
+  ProfileFailure(this.error);
 }

@@ -88,4 +88,13 @@ class AuthCubit extends Cubit<AuthState> {
       LogsManager.error(errorHandler.errorMessage);
     }
   }
+
+  // * Dispose of resources
+  @override
+  Future<void> close() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    return super.close();
+  }
 }

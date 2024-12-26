@@ -12,5 +12,5 @@ class RoutesName {
 // ? ===================full routes===================
 
   static const String profileFullPath = '$layout$profile';
-  static const String settingsFullPath = '$layout$settings';
+  static const String settingsFullPath = '$profileFullPath$settings';
 }

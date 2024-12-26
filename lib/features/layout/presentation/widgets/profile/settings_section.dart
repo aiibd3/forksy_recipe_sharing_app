@@ -3,10 +3,11 @@ import 'dart:developer';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:forksy/core/extensions/context_extension.dart';
 import 'package:forksy/core/extensions/widget_extension.dart';
 import 'package:forksy/core/routing/routes_name.dart';
+import 'package:forksy/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:forksy/features/layout/presentation/widgets/profile/setting_list_item.dart';
+import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../../core/theme/app_colors.dart';
@@ -84,50 +85,61 @@ class SettingsSection extends StatelessWidget {
 }
 
 Widget buildLogoutButton(BuildContext context) {
-  return Align(
-    // alignment: context.locale.languageCode == 'ar'
-    //     ? Alignment.centerRight
-    //     : Alignment.centerLeft,
-    alignment: Alignment.centerLeft,
-    child: GestureDetector(
-      onTap: () {
-        log("User logged out");
-        // todo -> Navigate to the login screen or perform logout logic
-        context.removeAllAndPush(RoutesName.layout, arguments: RoutesName.auth);
-        // context.goBackUntil(RoutesName.auth);
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.sp),
-        decoration: BoxDecoration(
-          color: AppColors.primaryColor,
-          borderRadius: BorderRadius.circular(50),
-        ),
-        height: 6.h,
-        // width: context.locale.languageCode == 'ar' ? 37.w : 34.w,
-        width: 34.w,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 15.sp,
-              backgroundColor: AppColors.whiteColor,
-              child: Icon(
-                Icons.power_settings_new,
-                size: 20.sp,
+  return BlocBuilder<AuthCubit, AuthState>(
+    builder: (context, state) {
+      if (state is Authenticated) {
+        return Align(
+          // alignment: context.locale.languageCode == 'ar'
+          //     ? Alignment.centerRight
+          //     : Alignment.centerLeft,
+          alignment: Alignment.centerLeft,
+          child: GestureDetector(
+            onTap: () {
+              log("User logged out");
+
+              context.read<AuthCubit>().logout();
+
+              context.go(RoutesName.auth);
+              // context.read<AuthCubit>().close();
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.sp),
+              decoration: BoxDecoration(
                 color: AppColors.primaryColor,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              height: 6.h,
+              // width: context.locale.languageCode == 'ar' ? 37.w : 34.w,
+              width: 34.w,
+
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 15.sp,
+                    backgroundColor: AppColors.whiteColor,
+                    child: Icon(
+                      Icons.power_settings_new,
+                      size: 20.sp,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    "Logout",
+                    style: AppFontStyles.poppins500_16.copyWith(
+                      color: AppColors.whiteColor,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(width: 8),
-            Text(
-              "Logout",
-              style: AppFontStyles.poppins500_16.copyWith(
-                color: AppColors.whiteColor,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
+          ),
+        );
+      }
+
+      return Container();
+    },
   );
 }

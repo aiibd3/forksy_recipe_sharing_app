@@ -2,11 +2,11 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/core/extensions/context_extension.dart';
-import 'package:logger/logger.dart';
 
-import '../../../../core/routing/routes_name.dart';
 import '../../../../core/theme/app_assets.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/utils/logs_manager.dart';
+import '../../../auth/data/repos/auth_repo.dart';
 import '../cubit/splash_cubit.dart';
 
 class SplashPage extends StatefulWidget {
@@ -17,30 +17,16 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  final Logger logger = Logger();
-
-  @override
-  void initState() {
-    super.initState();
-
-    Future.delayed(
-      const Duration(seconds: 2),
-      () {
-        // if (mounted) {
-        //   context.goToReplace(RoutesName.auth);
-        // }
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SplashCubit()..loadConfig(),
+      create: (context) =>
+          SplashCubit(authRepo: FirebaseAuthRepo())..loadConfig(),
       child: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) {
           if (state is GoToRouteState) {
-            context.goToReplace(RoutesName.auth);
+            LogsManager.info("Route: ${state.route}");
+            context.goToNamed(state.route);
           }
         },
         child: const _SplashPageBody(),

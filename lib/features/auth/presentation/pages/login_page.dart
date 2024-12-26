@@ -12,7 +12,6 @@ import '../../../../core/utils/regex_manager.dart';
 import '../../../../core/widgets/custom_loading_button.dart';
 import '../../../../core/widgets/email_text_field.dart';
 import '../../../../core/widgets/phone_text_field.dart';
-import '../../data/repos/auth_repo.dart';
 import '../cubit/auth_cubit.dart';
 
 class LoginPage extends StatelessWidget {

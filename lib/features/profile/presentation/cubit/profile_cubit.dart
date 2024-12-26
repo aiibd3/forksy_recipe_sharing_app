@@ -17,46 +17,65 @@ class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit({required this.authRepo, required this.profileRepo})
       : super(ProfileInitial());
 
-
-
-
-  // Fetch user profile by UID
   Future<void> fetchProfileUser(String uid) async {
     try {
       emit(ProfileLoading());
       final user = await profileRepo.fetchProfileUser(uid);
+
       if (user != null) {
-        emit(ProfileLoadedSuccess(user: user));
+        emit(ProfileLoaded(user: user));
       } else {
-        emit(ProfileLoadedFailure('User not found'));
+        emit(ProfileFailure('User not found'));
       }
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);
-      emit(ProfileLoadedFailure(errorHandler.errorMessage));
+      emit(ProfileFailure(errorHandler.errorMessage));
     }
   }
 
-  // Update user profile
-  Future<void> updateProfileUser(String uid, ProfileUser updatedUser) async {
+  // Future<void> updateProfileUser(
+  //     {required String uid, ProfileUser? updatedUser}) async {
+  //   try {
+  //     emit(ProfileLoading());
+  //
+  //     final currentUser = await profileRepo.fetchProfileUser(uid);
+  //     if (currentUser == null) {
+  //       emit(ProfileFailure('Failed to update user'));
+  //       return;
+  //     }
+  //
+  //     await profileRepo.updateProfileUser(updatedUser!);
+  //
+  //     emit(ProfileLoaded(user: updatedUser));
+  //   } on FirebaseException catch (e) {
+  //     final errorHandler = FirebaseErrorHandler.handleError(e);
+  //     LogsManager.error(errorHandler.errorMessage);
+  //     emit(ProfileFailure(errorHandler.errorMessage));
+  //   }
+  // }
+
+  Future<void> updateProfileUser({required String uid, String? newBio}) async {
     try {
       emit(ProfileLoading());
 
       final currentUser = await profileRepo.fetchProfileUser(uid);
       if (currentUser == null) {
-        emit(ProfileLoadedFailure('User not found'));
+        emit(ProfileFailure('Failed to update user'));
         return;
       }
 
-      // Update user in the repository
+      final updatedUser = currentUser.copyWith(bio: newBio ?? currentUser.bio);
+
       await profileRepo.updateProfileUser(updatedUser);
 
-      // Emit success with the updated user
-      emit(ProfileLoadedSuccess(user: updatedUser));
+      await fetchProfileUser(uid);
+
+      emit(ProfileLoaded(user: updatedUser));
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);
-      emit(ProfileLoadedFailure(errorHandler.errorMessage));
+      emit(ProfileFailure(errorHandler.errorMessage));
     }
   }
 }

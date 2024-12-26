@@ -29,7 +29,7 @@ Future<void> main() async {
 
   runApp(
     BlocProvider(
-      create: (_) => AuthCubit(authRepo: authRepo),
+      create: (_) => AuthCubit(authRepo: authRepo)..checkUserIsLogged(),
       child: const ForksyApp(),
     ),
   );

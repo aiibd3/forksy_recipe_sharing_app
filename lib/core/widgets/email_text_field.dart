@@ -4,7 +4,7 @@ class EmailTextField extends StatelessWidget {
   final String? hintText;
   final TextEditingController? controller;
   final String? Function(String?) validator;
-  final Icon? suffixIcon; // Added suffixIcon as a parameter
+  final Icon? suffixIcon;
 
   const EmailTextField({
     super.key,
@@ -17,7 +17,7 @@ class EmailTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress, // Input type for email
+      keyboardType: TextInputType.text,
       controller: controller,
       validator: validator,
       style: const TextStyle(

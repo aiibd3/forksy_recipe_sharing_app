@@ -1,16 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../../core/errors/firebase_error_handler.dart';
 import '../../../../core/utils/logs_manager.dart';
-import '../../../auth/domain/entities/app_user.dart';
 import '../../domain/entities/profile_user.dart';
 import '../../domain/repos/profile_repo.dart';
 
 class FirebaseProfileRepo implements ProfileRepo {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
+  // final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   @override
   Future<ProfileUser?> fetchProfileUser(String uid) async {
@@ -22,12 +19,15 @@ class FirebaseProfileRepo implements ProfileRepo {
         final userData = userDoc.data();
 
         if (userData != null) {
-          return ProfileUser(
-            uid: userData['uid'],
-            name: userData['name'],
-            email: userData['email'],
-            profileImage: userData['profileImage'],
-          );
+          return ProfileUser.fromJson(userData);
+
+          // return ProfileUser(
+          //   bio: userData['bio'],
+          //   uid: userData['uid'],
+          //   name: userData['name'],
+          //   email: userData['email'],
+          //   profileImage: userData['profileImage'],
+          // );
         }
       }
 
@@ -42,10 +42,12 @@ class FirebaseProfileRepo implements ProfileRepo {
   @override
   Future<ProfileUser?> updateProfileUser(ProfileUser updatedUser) async {
     try {
-      await firebaseFirestore
-          .collection('users')
-          .doc(updatedUser.uid)
-          .update(updatedUser.toJson());
+      await firebaseFirestore.collection('users').doc(updatedUser.uid).update({
+        'bio': updatedUser.bio,
+        'profileImage': updatedUser.profileImage,
+      });
+
+      return updatedUser;
 
       // ?? return Future.value(updatedUser);
     } on FirebaseException catch (e) {
@@ -54,5 +56,4 @@ class FirebaseProfileRepo implements ProfileRepo {
     }
     return null;
   }
-
 }
