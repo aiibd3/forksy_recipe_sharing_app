@@ -25,6 +25,7 @@ A **Recipe Sharing Application** built using **Flutter**. This app enables users
 - Secure Data Storage with Firebase
 - Cross-Platform Support (Android, iOS, Web)
 
+```
 forksy/
 ├── lib/
 │   ├── core/
@@ -41,7 +42,7 @@ forksy/
 ├── web/
 ├── pubspec.yaml
 └── README.md
-
+```
 ---
 
 ## Prerequisites
