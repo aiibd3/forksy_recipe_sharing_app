@@ -105,11 +105,30 @@ class _ProfilePageBody extends StatelessWidget {
                     Column(
                       children: [
                         ProfileAvatar(
+                          onTap: () {
+                            final profileUser = state.user;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BlocProvider(
+                                  create: (context) => ProfileCubit(
+                                      storageRepo: FirebaseStorageRepo(),
+                                      authRepo: FirebaseAuthRepo(),
+                                      profileRepo: FirebaseProfileRepo()),
+                                  child: EditProfilePage(user: profileUser),
+                                ),
+                              ),
+                            );
+                          },
                           name: profileUser.name,
                           role: 'Edit Profile',
-                          imageUrl: 'assets/images/hamoud.jpg',
+                          imageUrl: profileUser.profileImage != null &&
+                                  profileUser.profileImage!.isNotEmpty
+                              ? profileUser.profileImage!
+                              : 'assets/images/onboarding2.png',
                         ),
                         SizedBox(height: 4.h),
+                        const Text("bio "),
                         BioBox(
                           bio: profileUser.bio ?? 'No bio yet... :(',
                         ),

@@ -7,6 +7,7 @@ import '../../domain/repos/profile_repo.dart';
 
 class FirebaseProfileRepo implements ProfileRepo {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
   // final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   @override
@@ -42,18 +43,19 @@ class FirebaseProfileRepo implements ProfileRepo {
   @override
   Future<ProfileUser?> updateProfileUser(ProfileUser updatedUser) async {
     try {
-      await firebaseFirestore.collection('users').doc(updatedUser.uid).update({
-        'bio': updatedUser.bio,
-        'profileImage': updatedUser.profileImage,
-      });
-
+      LogsManager.info("Updating user in Firestore: ${updatedUser.toJson()}");
+      await firebaseFirestore
+          .collection('users')
+          .doc(updatedUser.uid)
+          .update(updatedUser.toJson());
       return updatedUser;
-
-      // ?? return Future.value(updatedUser);
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);
+      throw Exception("Firebase error: ${errorHandler.errorMessage}");
+    } catch (e) {
+      LogsManager.error("Unexpected error: $e");
+      throw Exception("Unexpected error occurred: $e");
     }
-    return null;
   }
 }

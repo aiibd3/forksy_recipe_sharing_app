@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_styles.dart';
 
@@ -7,9 +10,11 @@ class ProfileAvatar extends StatelessWidget {
   final String name;
   final String role;
   final String imageUrl;
+  final VoidCallback onTap;
 
   const ProfileAvatar({
     super.key,
+    required this.onTap,
     required this.name,
     required this.role,
     required this.imageUrl,
@@ -24,15 +29,26 @@ class ProfileAvatar extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 35.sp,
-              backgroundImage: AssetImage(imageUrl),
+              backgroundImage: _getImageProvider(imageUrl),
+              backgroundColor: AppColors.grayColor.withOpacity(0.2),
+              child: imageUrl.isEmpty
+                  ? const Icon(
+                Icons.person,
+                size: 50,
+                color: AppColors.primaryColor,
+              )
+                  : null,
             ),
             CircleAvatar(
               radius: 15.sp,
               backgroundColor: AppColors.primaryColor,
-              child: Icon(
-                Icons.camera_alt,
-                color: AppColors.whiteColor,
-                size: 18.sp,
+              child: GestureDetector(
+                onTap: onTap,
+                child: Icon(
+                  Icons.camera_alt,
+                  color: AppColors.whiteColor,
+                  size: 18.sp,
+                ),
               ),
             ),
           ],
@@ -44,10 +60,20 @@ class ProfileAvatar extends StatelessWidget {
         ),
         Text(
           role,
-          style:
-              AppFontStyles.poppins400_14.copyWith(color: AppColors.grayColor),
+          style: AppFontStyles.poppins400_14.copyWith(color: AppColors.grayColor),
         ),
       ],
     );
+  }
+
+  ImageProvider _getImageProvider(String imageUrl) {
+    if (imageUrl.isNotEmpty) {
+      if (Uri.tryParse(imageUrl)?.isAbsolute ?? false) {
+        return NetworkImage(imageUrl);
+      } else if (File(imageUrl).existsSync()) {
+        return FileImage(File(imageUrl));
+      }
+    }
+    return const AssetImage('assets/images/default_avatar.png');
   }
 }

@@ -24,7 +24,6 @@ Future<void> main() async {
 
   Bloc.observer = AppBlocObserver();
 
-  // Initialize your AuthRepo
   final authRepo = FirebaseAuthRepo();
 
   runApp(

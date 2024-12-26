@@ -14,19 +14,23 @@ class FirebaseStorageRepo implements StorageRepo {
     return _uploadFile(path, fileName, 'profile_images');
   }
 
-  Future<String> _uploadFile(
-      String path, String fileName, String folder) async {
+  Future<String> _uploadFile(String path, String fileName, String folder) async {
     try {
+      if (path.isEmpty) {
+        throw Exception("File path is invalid");
+      }
       final file = File(path);
       final storageRef = firebaseStorage.ref().child(folder).child(fileName);
       final uploadTask = storageRef.putFile(file);
       final snapshot = await uploadTask.whenComplete(() => null);
-      final downloadUrl = await snapshot.ref.getDownloadURL();
-      return downloadUrl;
+      return await snapshot.ref.getDownloadURL();
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);
       throw Exception(errorHandler.errorMessage);
+    } catch (e) {
+      LogsManager.error("Unexpected error: $e");
+      throw Exception("An unexpected error occurred.");
     }
   }
 }
