@@ -43,6 +43,9 @@ class PostCubit extends Cubit<PostState> {
       emit(PostLoading());
       final posts = await postRepo.fetchAllPosts();
       emit(PostLoaded(posts));
+
+      fetchAllPosts();
+
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);

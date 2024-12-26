@@ -14,7 +14,13 @@ class FirebaseStorageRepo implements StorageRepo {
     return _uploadFile(path, fileName, 'profile_images');
   }
 
-  Future<String> _uploadFile(String path, String fileName, String folder) async {
+  @override
+  Future<String?> uploadPostImage(String path, String fileName) {
+    return _uploadFile(path, fileName, 'post_images');
+  }
+
+  Future<String> _uploadFile(
+      String path, String fileName, String folder) async {
     try {
       if (path.isEmpty) {
         throw Exception("File path is invalid");

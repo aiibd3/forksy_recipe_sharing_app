@@ -33,7 +33,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
 
     if (result != null) {
-      profileImage = result.files.first;
+      setState(() {
+        profileImage = result.files.first;
+      });
     }
   }
 

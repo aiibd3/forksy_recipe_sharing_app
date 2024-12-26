@@ -6,7 +6,7 @@ class Post {
   final String userName;
   final String text;
   final String imageUrl;
-  final String timestamp;
+  final DateTime timestamp;
 
   // final String postImage;
   // final String caption;
@@ -71,7 +71,7 @@ class Post {
       userName: json['userName'],
       text: json['text'],
       imageUrl: json['imageUrl'],
-      timestamp: (json['timestamp'] as Timestamp).toDate().toString(),
+      timestamp: (json['timestamp'] as Timestamp).toDate(),
       // postImage: map['postImage'] as String,
       // caption: map['caption'] as String,
       // timeAgo: map['timeAgo'] as String,
