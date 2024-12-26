@@ -27,25 +27,36 @@ A **Recipe Sharing Application** built using **Flutter**. This app enables users
 
 ```
 forksy/
+forksy/
 ├── lib/
 │   ├── core/
-│   │   ├── theme/
-│   │   ├── utils/
-│   │   └── widgets/
+│   │   ├── api/           # API-related logic and network services
+│   │   ├── constants/     # Application-wide constant values
+│   │   ├── cubit/         # Global Cubit states (BLoC-related)
+│   │   ├── di/            # Dependency injection setup and configurations
+│   │   ├── errors/        # Error handling utilities and classes
+│   │   ├── extensions/    # Dart and Flutter extension methods
+│   │   ├── models/        # Data models shared across the app
+│   │   ├── routing/       # App routing/navigation setup
+│   │   ├── services/      # Shared services (e.g., notifications, analytics)
+│   │   ├── theme/         # App-wide styling (colors, fonts, etc.)
+│   │   ├── utils/         # Utility functions and helpers
+│   │   └── widgets/       # Reusable UI components
 │   ├── features/
-│   │   ├── auth/
-│   │   ├── layout/
-│   │   ├── onboarding/
-│   │   ├── post/
-│   │   ├── profile/
-│   │   ├── splash/
-│   │   └── storage/
-│   └── main.dart
-├── android/
-├── ios/
-├── web/
-├── pubspec.yaml
-└── README.md
+│   │   ├── auth/          # User authentication (login, signup, etc.)
+│   │   ├── layout/        # Reusable UI layout components
+│   │   ├── onboarding/    # Onboarding flow for new users
+│   │   ├── post/          # Managing posts (recipes, interactions)
+│   │   ├── profile/       # User profile management
+│   │   ├── splash/        # Splash screen and initial app loading
+│   │   └── storage/       # Firebase Storage handling for media
+│   └── main.dart          # Main entry point of the application
+├── android/               # Android-specific configurations
+├── ios/                   # iOS-specific configurations
+├── web/                   # Web-specific configurations
+├── pubspec.yaml           # Dependencies and assets
+└── README.md              # Project documentation
+
 
 ```
 ---
