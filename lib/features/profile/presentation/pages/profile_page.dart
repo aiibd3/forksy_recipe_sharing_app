@@ -125,7 +125,7 @@ class _ProfilePageBody extends StatelessWidget {
                           imageUrl: profileUser.profileImage != null &&
                                   profileUser.profileImage!.isNotEmpty
                               ? profileUser.profileImage!
-                              : 'assets/images/onboarding2.png',
+                              : 'assets/images/hamoud.jpg',
                         ),
                         SizedBox(height: 4.h),
                         const Text("bio "),

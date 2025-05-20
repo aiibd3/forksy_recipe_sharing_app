@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:forksy/core/utils/logs_manager.dart';
 
 import '../../../../core/errors/firebase_error_handler.dart';
-import '../../../../core/utils/logs_manager.dart';
 import '../../domain/repos/storage_repo.dart';
 
 class FirebaseStorageRepo implements StorageRepo {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_font_styles.dart';
+import '../theme/app_font_styles.dart';
 
 class ProfileTextField extends StatelessWidget {
   final String label;

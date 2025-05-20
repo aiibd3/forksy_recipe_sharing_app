@@ -1,6 +1,6 @@
+import 'package:forksy/core/utils/logs_manager.dart';
 import 'package:hive_flutter/adapters.dart';
 
-import '../utils/logs_manager.dart';
 
 class HiveStorage {
   HiveStorage._();

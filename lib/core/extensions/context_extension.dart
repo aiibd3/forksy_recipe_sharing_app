@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 extension ContextExtension on BuildContext {
   // theme
   double get width => MediaQuery.of(this).size.width;
-
   double get height => MediaQuery.of(this).size.height;
 
   ThemeData get theme => Theme.of(this);
-
   TextTheme get textTheme => Theme.of(this).textTheme;
 
-  // routes
-  void goBack() => pop();
+  // navigation
+  void goBack() => Navigator.of(this).pop();
 
   void goToNamed(String route, {Object? arguments}) =>
-      go(route, extra: arguments);
+      Navigator.of(this).pushNamed(route, arguments: arguments);
 
-  void goToReplace(String route, {Object? arguments}) => replace(
-    route,
-    extra: arguments,
-  );
+  void goToReplace(String route, {Object? arguments}) =>
+      Navigator.of(this).pushReplacementNamed(route, arguments: arguments);
 
   void goBackUntil(String untilRoute) =>
       Navigator.of(this).popUntil((route) => route.settings.name == untilRoute);
@@ -36,10 +31,7 @@ extension ContextExtension on BuildContext {
         arguments: arguments,
       );
 
-  void removeAllAndPush(
-      String pushRoute, {
-        Object? arguments,
-      }) =>
+  void removeAllAndPush(String pushRoute, {Object? arguments}) =>
       Navigator.of(this).pushNamedAndRemoveUntil(
         pushRoute,
             (route) => false,

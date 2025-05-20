@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:forksy/core/utils/logs_manager.dart';
 import 'package:forksy/features/auth/domain/entities/app_user.dart';
 
 import '../../../../core/errors/firebase_error_handler.dart';
-import '../../../../core/utils/logs_manager.dart';
 import '../../domain/repos/auth_repo.dart';
 
 class FirebaseAuthRepo implements AuthRepo {
@@ -33,17 +33,14 @@ class FirebaseAuthRepo implements AuthRepo {
   }
 
   @override
-  Future<AppUser?> registerWithEmailPassword(
-      String name, String email, String password) async {
+  Future<AppUser?> registerWithEmailPassword(String name, String email,
+      String password) async {
     try {
-      //*  register
       UserCredential userCredential = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      //* Update display name
       await userCredential.user?.updateDisplayName(name);
 
-      //* Create AppUser instance
       AppUser user = AppUser(
         email: email,
         name: name,

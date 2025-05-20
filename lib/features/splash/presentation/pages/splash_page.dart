@@ -2,10 +2,10 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/core/extensions/context_extension.dart';
+import 'package:forksy/core/utils/logs_manager.dart';
 
 import '../../../../core/theme/app_assets.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/utils/logs_manager.dart';
 import '../../../auth/data/repos/auth_repo.dart';
 import '../cubit/splash_cubit.dart';
 

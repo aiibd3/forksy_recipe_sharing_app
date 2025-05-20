@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/core/extensions/context_extension.dart';
-import 'package:forksy/core/utils/logs_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/routing/routes_name.dart';
 import '../../../../core/theme/app_assets.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/utils/logs_manager.dart';
 import '../../../../core/utils/regex_manager.dart';
 import '../../../../core/widgets/custom_loading_button.dart';
 import '../../../../core/widgets/email_text_field.dart';

@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:forksy/core/utils/logs_manager.dart';
 import 'package:forksy/features/storage/domain/repos/storage_repo.dart';
 
 import '../../../../core/errors/firebase_error_handler.dart';
-import '../../../../core/utils/logs_manager.dart';
 import '../../../auth/domain/repos/auth_repo.dart';
 import '../../domain/entities/profile_user.dart';
 import '../../domain/repos/profile_repo.dart';

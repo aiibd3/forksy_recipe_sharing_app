@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:forksy/core/utils/logs_manager.dart';
 
 import '../../../../core/errors/firebase_error_handler.dart';
-import '../../../../core/utils/logs_manager.dart';
 import '../../domain/entities/post.dart';
 import '../../domain/repos/post_repo.dart';
 

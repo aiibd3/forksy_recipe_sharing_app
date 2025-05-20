@@ -69,7 +69,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     name: profileUser.name,
                     role: profileUser.bio ?? 'No bio available',
                     imageUrl: profileUser.profileImage ??
-                        'assets/images/default_avatar.png',
+                        'assets/images/hamoud.jpg',
                     onTap: () {
                       context.goToNamed(RoutesName.profileFullPath);
                     },
