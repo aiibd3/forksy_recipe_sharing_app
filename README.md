@@ -20,6 +20,7 @@ A **Recipe Sharing Application** built using **Flutter**. This app enables users
 
 ## Features
 
+- Push Notifications with NotificationService
 - User Authentication (Sign Up, Login, Logout)
 - Recipe Feed with Real-Time Updates
 - Media Upload and Retrieval (Images)
