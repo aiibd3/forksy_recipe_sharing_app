@@ -26,7 +26,8 @@ class _SplashPageState extends State<SplashPage> {
         listener: (context, state) {
           if (state is GoToRouteState) {
             LogsManager.info("Route: ${state.route}");
-            context.goToNamed(state.route);
+            context.goToReplace(state.route);
+
           }
         },
         child: const _SplashPageBody(),

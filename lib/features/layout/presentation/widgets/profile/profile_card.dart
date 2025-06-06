@@ -47,27 +47,31 @@ class ProfileCard extends StatelessWidget {
               child: _getImageWidget(imageUrl),
             ),
             const SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.blackColor,
+            Expanded( // 👈 Add this
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    name,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.blackColor,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  role,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
+                  const SizedBox(height: 4),
+                  Text(
+                    role,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             const Spacer(),
             Padding(
@@ -80,6 +84,7 @@ class ProfileCard extends StatelessWidget {
             ),
           ],
         ),
+
       ),
     );
   }
@@ -108,7 +113,7 @@ class ProfileCard extends StatelessWidget {
 
   Widget _defaultImage() {
     return Image.asset(
-      'assets/images/default_avatar.png',
+      'assets/images/hamm.jpeg',
       width: 75,
       height: 75,
       fit: BoxFit.cover,

@@ -19,14 +19,15 @@ class PostCubit extends Cubit<PostState> {
     required this.storageRepo,
   }) : super(PostInitial());
 
+  // create a new post
   Future<void> createPost(Post post, {String? imagePath}) async {
     String? imageUrl;
 
     try {
-      emit(PostLoading());
 
       // Upload image if imagePath is provided
       if (imagePath != null) {
+        emit(PostLoading());
         imageUrl = await storageRepo.uploadPostImage(imagePath, post.id);
       }
 
@@ -52,7 +53,6 @@ class PostCubit extends Cubit<PostState> {
       emit(PostLoading());
       final posts = await postRepo.fetchAllPosts();
       emit(PostLoaded(posts));
-
       fetchAllPosts();
 
     } on FirebaseException catch (e) {

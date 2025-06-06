@@ -22,7 +22,7 @@ class LoginPage extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
-          context.goToNamed(RoutesName.layout);
+          context.goToReplace(RoutesName.layout);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text("Login successfully"),

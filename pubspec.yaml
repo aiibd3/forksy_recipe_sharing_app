@@ -59,13 +59,13 @@ dependencies:
 
   #  local storage
   shared_preferences:
-  hive_flutter:
+  hive_flutter: ^1.1.0
   cached_network_image:
 
 
   # firebase
   firebase_messaging:
-  flutter_local_notifications:
+  awesome_notifications:
   firebase_core:
   firebase_auth:
   cloud_firestore:
@@ -148,6 +148,8 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/
+
+
   #    - assets/icons/
   #    - assets/translations/
 

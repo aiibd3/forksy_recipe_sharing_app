@@ -15,8 +15,10 @@ class UploadPostPage extends StatefulWidget {
 }
 
 class _UploadPostPageState extends State<UploadPostPage> {
+  // image picker
   PlatformFile? imagePickedFile;
 
+  // text controller => for post caption
   final textController = TextEditingController();
 
   AppUser? currentUser;
@@ -66,12 +68,13 @@ class _UploadPostPageState extends State<UploadPostPage> {
       userId: currentUser?.uid ?? "",
       userName: currentUser?.name ?? "Anonymous",
       text: textController.text,
-      imageUrl: "null", // This will be added after upload
+      imageUrl: "null",
+      // This will be added after upload
       timestamp: DateTime.now(),
     );
 
     final postCubit = context.read<PostCubit>();
-    postCubit.createPost(newPost, imagePath: imagePickedFile!.path);
+    postCubit.createPost(newPost, imagePath: imagePickedFile?.path);
   }
 
   @override
@@ -83,12 +86,21 @@ class _UploadPostPageState extends State<UploadPostPage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PostCubit, PostState>(
-      listener: (context, state) {
-        if (state is PostLoading) {
+      builder: (context, state) {
+        if (state is PostLoading || state is PostUpLoading) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Uploading post...")),
           );
-        } else if (state is PostLoaded) {
+        }
+        return buildUploadPostBody();
+      },
+      listener: (context, state) {
+        // if (state is PostLoading || state is PostUpLoading) {
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Uploading post...")),
+        //   );
+        // } else
+        if (state is PostLoaded) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Post uploaded successfully!")),
           );
@@ -98,9 +110,6 @@ class _UploadPostPageState extends State<UploadPostPage> {
             SnackBar(content: Text("Error: ${state.error}")),
           );
         }
-      },
-      builder: (context, state) {
-        return buildUploadPostBody();
       },
     );
   }
@@ -134,18 +143,18 @@ class _UploadPostPageState extends State<UploadPostPage> {
                   ),
                   child: imagePickedFile == null
                       ? const Center(
-                    child: Icon(
-                      Icons.camera_alt,
-                      size: 40,
-                    ),
-                  )
+                          child: Icon(
+                            Icons.camera_alt,
+                            size: 40,
+                          ),
+                        )
                       : ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.memory(
-                      imagePickedFile!.bytes!,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.memory(
+                            imagePickedFile!.bytes!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                 ),
               ),
               const SizedBox(height: 16),

@@ -94,12 +94,18 @@ Widget buildLogoutButton(BuildContext context) {
           //     : Alignment.centerLeft,
           alignment: Alignment.centerLeft,
           child: GestureDetector(
-            onTap: () {
+            onTap: () async {
               log("User logged out");
 
-              context.read<AuthCubit>().logout();
+              await context.read<AuthCubit>().logout(); // 👈 Wait for logout to complete
 
-              context.go(RoutesName.auth);
+              if (context.mounted) {
+                context.go(RoutesName.auth); // ✅ Now it's safe
+              }
+              //
+              // context.read<AuthCubit>().logout();
+              //
+              // context.go(RoutesName.auth);
               // context.read<AuthCubit>().close();
             },
             child: Container(
