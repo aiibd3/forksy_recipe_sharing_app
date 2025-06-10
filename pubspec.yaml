@@ -64,12 +64,12 @@ dependencies:
 
 
   # firebase
-  firebase_messaging:
-  awesome_notifications:
   firebase_core:
   firebase_auth:
   cloud_firestore:
   firebase_storage:
+  firebase_messaging:
+#  awesome_notifications: ^0.9.2+1
 
 
 
@@ -87,9 +87,6 @@ dependencies:
   # logs
   logger:
   pretty_dio_logger:
-
-  # localization
-  #  awesome_notifications: ^0.10.0  # Downgrade to 0.10.0
   easy_localization: ^3.0.7+1
 
 

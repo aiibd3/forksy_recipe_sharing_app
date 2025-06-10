@@ -4,9 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../posts/presentation/cubit/post_cubit.dart';
 
-class HomeTab extends StatelessWidget {
+class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
 
+  @override
+  State<HomeTab> createState() => _HomeTabState();
+}
+
+class _HomeTabState extends State<HomeTab> {
+
+  late final postCubit = context.read<PostCubit>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

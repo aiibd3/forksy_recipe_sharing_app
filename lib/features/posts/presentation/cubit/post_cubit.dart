@@ -37,6 +37,11 @@ class PostCubit extends Cubit<PostState> {
       // Save post to Firestore
       await postRepo.createPost(newPost);
 
+      // Fetch all posts
+      // fetchAllPosts();
+
+
+
       emit(PostLoaded([newPost])); // Optionally include the post in the state
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
