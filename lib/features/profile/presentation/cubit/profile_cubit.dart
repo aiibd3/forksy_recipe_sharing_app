@@ -5,7 +5,6 @@ import 'package:forksy/core/utils/logs_manager.dart';
 import 'package:forksy/features/storage/domain/repos/storage_repo.dart';
 
 import '../../../../core/errors/firebase_error_handler.dart';
-import '../../../auth/domain/repos/auth_repo.dart';
 import '../../domain/entities/profile_user.dart';
 import '../../domain/repos/profile_repo.dart';
 
@@ -13,12 +12,13 @@ part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepo profileRepo;
-  final AuthRepo authRepo;
+
+  // final AuthRepo authRepo;
   final StorageRepo storageRepo;
 
   ProfileCubit({
     required this.storageRepo,
-    required this.authRepo,
+    // required this.authRepo,
     required this.profileRepo,
   }) : super(ProfileInitial());
 
@@ -37,6 +37,11 @@ class ProfileCubit extends Cubit<ProfileState> {
       LogsManager.error(errorHandler.errorMessage);
       emit(ProfileFailure(errorHandler.errorMessage));
     }
+  }
+
+  Future<ProfileUser?> getUserProfile(String uid) async {
+    final user = await profileRepo.fetchProfileUser(uid);
+    return user;
   }
 
   Future<void> updateProfileUser({
@@ -73,7 +78,9 @@ class ProfileCubit extends Cubit<ProfileState> {
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);
-      emit(ProfileFailure(errorHandler.errorMessage));
+      emit(
+        ProfileFailure(errorHandler.errorMessage),
+      );
     }
   }
 }

@@ -17,11 +17,16 @@ class FirebaseAuthRepo implements AuthRepo {
       UserCredential userCredential = await firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
 
+      DocumentSnapshot userDoc = await firebaseFirestore
+          .collection("users")
+          .doc(userCredential.user!.uid)
+          .get();
+
       //* Create AppUser instance
       AppUser user = AppUser(
         email: email,
         name: userCredential.user?.displayName ?? 'Unknown',
-        uid: userCredential.user!.uid,
+        uid: userDoc['name'],
       );
 
       return user;
@@ -33,8 +38,8 @@ class FirebaseAuthRepo implements AuthRepo {
   }
 
   @override
-  Future<AppUser?> registerWithEmailPassword(String name, String email,
-      String password) async {
+  Future<AppUser?> registerWithEmailPassword(
+      String name, String email, String password) async {
     try {
       UserCredential userCredential = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -69,13 +74,21 @@ class FirebaseAuthRepo implements AuthRepo {
   Future<AppUser?> getCurrentUser() async {
     final firebaseUser = firebaseAuth.currentUser;
 
-    if (firebaseUser != null) {
-      return AppUser(
-        uid: firebaseUser.uid,
-        email: firebaseUser.email ?? 'Unknown',
-        name: firebaseUser.displayName ?? 'Unknown',
-      );
+    if (firebaseUser == null) {
+      return null;
     }
-    return null;
+
+    DocumentSnapshot userDoc =
+        await firebaseFirestore.collection("users").doc(firebaseUser.uid).get();
+
+    if (!userDoc.exists) {
+      return null;
+    }
+
+    return AppUser(
+      uid: firebaseUser.uid,
+      email: firebaseUser.email ?? 'Unknown',
+      name: userDoc['name'],
+    );
   }
 }

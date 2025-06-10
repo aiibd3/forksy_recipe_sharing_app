@@ -113,7 +113,7 @@ class ProfileCard extends StatelessWidget {
 
   Widget _defaultImage() {
     return Image.asset(
-      'assets/images/hamm.jpeg',
+      'assets/images/user2.png',
       width: 75,
       height: 75,
       fit: BoxFit.cover,

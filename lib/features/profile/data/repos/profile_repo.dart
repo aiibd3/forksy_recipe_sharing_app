@@ -15,13 +15,10 @@ class FirebaseProfileRepo implements ProfileRepo {
     try {
       final userDoc =
           await firebaseFirestore.collection('users').doc(uid).get();
-
       if (userDoc.exists) {
         final userData = userDoc.data();
-
         if (userData != null) {
           return ProfileUser.fromJson(userData);
-
           // return ProfileUser(
           //   bio: userData['bio'],
           //   uid: userData['uid'],

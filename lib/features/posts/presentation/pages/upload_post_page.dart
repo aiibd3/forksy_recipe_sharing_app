@@ -87,19 +87,14 @@ class _UploadPostPageState extends State<UploadPostPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<PostCubit, PostState>(
       builder: (context, state) {
+        return buildUploadPostBody();
+      },
+      listener: (context, state) {
         if (state is PostLoading || state is PostUpLoading) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Uploading post...")),
           );
         }
-        return buildUploadPostBody();
-      },
-      listener: (context, state) {
-        // if (state is PostLoading || state is PostUpLoading) {
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //     const SnackBar(content: Text("Uploading post...")),
-        //   );
-        // } else
         if (state is PostLoaded) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Post uploaded successfully!")),

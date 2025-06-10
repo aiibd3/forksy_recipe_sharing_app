@@ -53,7 +53,7 @@ class _ProfileTabState extends State<ProfileTab> {
           create: (context) => ProfileCubit(
             profileRepo: FirebaseProfileRepo(),
             storageRepo: FirebaseStorageRepo(),
-            authRepo: FirebaseAuthRepo(),
+            // authRepo: FirebaseAuthRepo(),
           )..fetchProfileUser(uid),
         ),
         BlocProvider(
@@ -94,10 +94,10 @@ class _ProfileTabState extends State<ProfileTab> {
                       final profileUser = state.user;
 
                       return ProfileCard(
-                        name: profileUser.name,
+                        name: profileUser.name ?? 'No name available',
                         role: profileUser.bio ?? 'No bio available',
                         imageUrl: profileUser.profileImage ??
-                            'assets/images/hamm.jpeg',
+                            'assets/images/user2.png',
                         onTap: () {
 
                           // context.goToNamed(

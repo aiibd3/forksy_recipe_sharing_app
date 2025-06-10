@@ -35,7 +35,7 @@ class ProfilePage extends StatelessWidget {
       create: (context) => ProfileCubit(
         storageRepo: FirebaseStorageRepo(),
         profileRepo: FirebaseProfileRepo(),
-        authRepo: FirebaseAuthRepo(),
+        // authRepo: FirebaseAuthRepo(),
       )..fetchProfileUser(user.uid),
       child: _ProfilePageBody(),
     );
@@ -87,7 +87,7 @@ class _ProfilePageBody extends StatelessWidget {
                         builder: (context) => BlocProvider(
                           create: (context) => ProfileCubit(
                               storageRepo: FirebaseStorageRepo(),
-                              authRepo: FirebaseAuthRepo(),
+                              // authRepo: FirebaseAuthRepo(),
                               profileRepo: FirebaseProfileRepo()),
                           child: EditProfilePage(user: profileUser),
                         ),
@@ -113,7 +113,7 @@ class _ProfilePageBody extends StatelessWidget {
                                 builder: (context) => BlocProvider(
                                   create: (context) => ProfileCubit(
                                       storageRepo: FirebaseStorageRepo(),
-                                      authRepo: FirebaseAuthRepo(),
+                                      // authRepo: FirebaseAuthRepo(),
                                       profileRepo: FirebaseProfileRepo()),
                                   child: EditProfilePage(user: profileUser),
                                 ),
@@ -125,7 +125,7 @@ class _ProfilePageBody extends StatelessWidget {
                           imageUrl: profileUser.profileImage != null &&
                                   profileUser.profileImage!.isNotEmpty
                               ? profileUser.profileImage!
-                              : 'assets/images/hamoud.jpg',
+                              : 'assets/images/user2.png',
                         ),
                         SizedBox(height: 4.h),
                         const Text("bio "),

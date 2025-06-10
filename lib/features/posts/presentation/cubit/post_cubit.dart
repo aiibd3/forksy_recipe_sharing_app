@@ -37,6 +37,11 @@ class PostCubit extends Cubit<PostState> {
       // Save post to Firestore
       await postRepo.createPost(newPost);
 
+      // Fetch all posts
+      // fetchAllPosts();
+
+
+
       emit(PostLoaded([newPost])); // Optionally include the post in the state
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
@@ -47,21 +52,17 @@ class PostCubit extends Cubit<PostState> {
       emit(PostFailure("An unexpected error occurred"));
     }
   }
-
   Future<void> fetchAllPosts() async {
     try {
       emit(PostLoading());
       final posts = await postRepo.fetchAllPosts();
       emit(PostLoaded(posts));
-      fetchAllPosts();
-
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);
       throw Exception("Firebase error: ${errorHandler.errorMessage}");
     }
   }
-
   Future<void> deletePost(String postId) async {
     try {
       await postRepo.deletePost(postId);
