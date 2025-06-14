@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../../../../core/theme/app_colors.dart';
-import '../../../../../core/theme/app_font_styles.dart';
-import '../../../../auth/domain/entities/app_user.dart';
-import '../../../../auth/presentation/cubit/auth_cubit.dart';
-import '../../../../posts/domain/entities/post.dart';
-import '../../../../posts/presentation/cubit/post_cubit.dart';
-import '../../../../profile/domain/entities/profile_user.dart';
-import '../../../../profile/presentation/cubit/profile_cubit.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font_styles.dart';
+import '../../../auth/domain/entities/app_user.dart';
+import '../../../auth/presentation/cubit/auth_cubit.dart';
+import '../../../profile/domain/entities/profile_user.dart';
+import '../../../profile/presentation/cubit/profile_cubit.dart';
+import '../../domain/entities/post.dart';
+import '../cubit/post_cubit.dart';
 
 class PostTile extends StatefulWidget {
   final Post post;
@@ -48,6 +48,8 @@ class _PostTileState extends State<PostTile> {
   void getCurrentUser() {
     final authCubit = context.read<AuthCubit>();
     currentUser = authCubit.currentUser;
+    // isOwnerPost = (currentUser?.uid == widget.post.userId);
+
     if (isOwnerPost) {
       isOwnerPost = (currentUser!.uid == widget.post.userId);
     } else {
@@ -62,6 +64,35 @@ class _PostTileState extends State<PostTile> {
         postUser = fetchUser;
       });
     }
+  }
+
+  void toggleLikePost() {
+    if (currentUser == null) {
+      debugPrint('⚠️ currentUser is null. Cannot like post.');
+      return;
+    }
+
+    final isLiked = widget.post.likes.contains(currentUser!.uid);
+
+    setState(() {
+      if (isLiked) {
+        widget.post.likes.remove(currentUser!.uid);
+      } else {
+        widget.post.likes.add(currentUser!.uid);
+      }
+    });
+
+    postCubit.toggleLikePost(widget.post.id, currentUser!.uid).catchError((e) {
+      debugPrint('⚠️ Error: $e');
+      // Revert UI if error
+      setState(() {
+        if (isLiked) {
+          widget.post.likes.add(currentUser!.uid);
+        } else {
+          widget.post.likes.remove(currentUser!.uid);
+        }
+      });
+    });
   }
 
   void showOptions() {
@@ -106,21 +137,22 @@ class _PostTileState extends State<PostTile> {
                         width: 60,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => const SizedBox(
-                              height: 60,
-                            ),
+                          height: 60,
+                        ),
                         errorWidget: (context, url, error) =>
                             const Icon(Icons.error),
                         imageBuilder: (context, imageProvider) => Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: imageProvider,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ))
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      )
                     : const CircleAvatar(
                         backgroundImage: AssetImage('assets/images/user2.png'),
                       ),
@@ -133,13 +165,10 @@ class _PostTileState extends State<PostTile> {
                   ),
                 ),
                 const Spacer(),
-                if (isOwnerPost)
-                  GestureDetector(
-                    onTap: showOptions,
-                    child: const Icon(Icons.delete,
-                        color: AppColors.primaryColor),
-
-                  )
+                GestureDetector(
+                  onTap: showOptions,
+                  child: const Icon(Icons.delete, color: AppColors.grayColor),
+                )
               ],
             ),
           ),
@@ -153,18 +182,23 @@ class _PostTileState extends State<PostTile> {
             ),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
-
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Icon(Icons.favorite_border, color: AppColors.grayColor),
-
+                GestureDetector(
+                  onTap: toggleLikePost,
+                  child: Icon(
+                    widget.post.likes.contains(currentUser?.uid)
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    color: AppColors.grayColor,
+                  ),
+                ),
                 Text(
-                  "0",
-                  style: AppFontStyles.poppins400_16,)
-
-                ,
+                  widget.post.likes.length.toString(),
+                  style: AppFontStyles.poppins400_16,
+                ),
                 const Spacer(),
                 Icon(Icons.comment_outlined, color: AppColors.grayColor),
                 Text(
@@ -172,16 +206,12 @@ class _PostTileState extends State<PostTile> {
                   style: AppFontStyles.poppins400_16,
                 ),
                 Spacer(),
-              Text(
-                widget.post.timestamp.toString(),),
+                Text(
+                  widget.post.timestamp.toString(),
+                ),
               ],
             ),
           )
-
-
-
-
-
         ],
       ),
     );

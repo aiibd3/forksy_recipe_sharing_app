@@ -1,14 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:forksy/features/auth/domain/entities/app_user.dart';
-import 'package:forksy/features/profile/domain/entities/profile_user.dart';
-
 import '../../../../core/theme/app_colors.dart';
 import '../../../posts/presentation/cubit/post_cubit.dart';
-import '../../../profile/presentation/cubit/profile_cubit.dart';
-import '../widgets/posts/post_tile.dart';
+import '../../../posts/presentation/widgets/post_tile.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -20,17 +14,17 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   late final postCubit = context.read<PostCubit>();
 
-  Timer? _refreshTimer;
+  // Timer? _refreshTimer;
 
   @override
   void initState() {
     super.initState();
     fetchAllPosts();
 
-    // Set up auto-refresh every 60 seconds
-    _refreshTimer = Timer.periodic(Duration(seconds: 60), (_) {
-      postCubit.fetchAllPosts();
-    });
+    // // Set up auto-refresh every 60 seconds
+    // _refreshTimer = Timer.periodic(Duration(seconds: 60), (_) {
+    //   postCubit.fetchAllPosts();
+    // });
   }
 
   void fetchAllPosts() {
@@ -49,7 +43,7 @@ class _HomeTabState extends State<HomeTab> {
   @override
   void dispose() {
     // Cancel the timer to avoid memory leaks
-    _refreshTimer?.cancel();
+    // _refreshTimer?.cancel();
     super.dispose();
   }
 

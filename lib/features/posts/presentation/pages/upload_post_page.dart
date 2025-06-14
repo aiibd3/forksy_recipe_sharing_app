@@ -69,8 +69,13 @@ class _UploadPostPageState extends State<UploadPostPage> {
       userName: currentUser?.name ?? "Anonymous",
       text: textController.text,
       imageUrl: "null",
-      // This will be added after upload
       timestamp: DateTime.now(),
+      likes: [],
+      comments: [],
+      isLiked: false,
+      isDisliked: false,
+      isCommented: false,
+      isSaved: false,
     );
 
     final postCubit = context.read<PostCubit>();

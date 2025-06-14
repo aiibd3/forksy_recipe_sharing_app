@@ -24,7 +24,6 @@ class PostCubit extends Cubit<PostState> {
     String? imageUrl;
 
     try {
-
       // Upload image if imagePath is provided
       if (imagePath != null) {
         emit(PostLoading());
@@ -37,12 +36,8 @@ class PostCubit extends Cubit<PostState> {
       // Save post to Firestore
       await postRepo.createPost(newPost);
 
-      // Fetch all posts
-      // fetchAllPosts();
-
-
-
-      emit(PostLoaded([newPost])); // Optionally include the post in the state
+      // Optionally include the post in the state
+      emit(PostLoaded([newPost]));
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);
@@ -52,17 +47,18 @@ class PostCubit extends Cubit<PostState> {
       emit(PostFailure("An unexpected error occurred"));
     }
   }
+
   Future<void> fetchAllPosts() async {
     try {
       emit(PostLoading());
       final posts = await postRepo.fetchAllPosts();
       emit(PostLoaded(posts));
-    } on FirebaseException catch (e) {
-      final errorHandler = FirebaseErrorHandler.handleError(e);
-      LogsManager.error(errorHandler.errorMessage);
-      throw Exception("Firebase error: ${errorHandler.errorMessage}");
+    } catch (e) {
+      LogsManager.error(e.toString());
+      emit(PostFailure(e.toString()));
     }
   }
+
   Future<void> deletePost(String postId) async {
     try {
       await postRepo.deletePost(postId);
@@ -70,6 +66,15 @@ class PostCubit extends Cubit<PostState> {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);
       throw Exception("Firebase error: ${errorHandler.errorMessage}");
+    }
+  }
+
+  Future<void> toggleLikePost(String postId, String userId) async {
+    try {
+      await postRepo.toggleLikePost(postId, userId);
+    } catch (e) {
+      emit(PostFailure(e.toString()));
+      LogsManager.error(e.toString());
     }
   }
 }

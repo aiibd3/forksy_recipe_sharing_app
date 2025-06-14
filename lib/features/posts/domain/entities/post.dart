@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
-
-
 class Post {
   final String id;
   final String userId;
@@ -16,7 +13,8 @@ class Post {
   final bool isDisliked;
   final bool isCommented;
   final bool isSaved;
-  const Post({
+
+  Post({
     required this.id,
     required this.userId,
     required this.userName,
@@ -30,8 +28,6 @@ class Post {
     required this.isCommented,
     required this.isSaved,
   });
-
-
 
   Post copyWith({
     String? id,
@@ -80,7 +76,6 @@ class Post {
     };
   }
 
-
   factory Post.fromMap(Map<String, dynamic> json) {
     return Post(
       id: json['id'] ?? '',
@@ -96,9 +91,5 @@ class Post {
       isCommented: json['isCommented'] ?? false,
       isSaved: json['isSaved'] ?? false,
     );
-  }
-  factory Post.fromDocumentSnapshot(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return Post.fromMap(data);
   }
 }

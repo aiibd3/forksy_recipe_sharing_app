@@ -85,28 +85,32 @@ class SettingsSection extends StatelessWidget {
 }
 
 Widget buildLogoutButton(BuildContext context) {
-  return BlocBuilder<AuthCubit, AuthState>(
+  return BlocConsumer<AuthCubit, AuthState>(
+    listener: (context, state) {
+      if (state is UnAuthenticated) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          context.go(RoutesName.auth);
+        });
+      } else if (state is AuthError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(state.error)),
+        );
+      }
+    },
     builder: (context, state) {
-      if (state is Authenticated) {
+      if (state is AuthLoading) {
+        return const Center(
+          child: CircularProgressIndicator(
+            color: AppColors.primaryColor,
+          ),
+        );
+      } else if (state is Authenticated) {
         return Align(
-          // alignment: context.locale.languageCode == 'ar'
-          //     ? Alignment.centerRight
-          //     : Alignment.centerLeft,
           alignment: Alignment.centerLeft,
           child: GestureDetector(
             onTap: () async {
-              log("User logged out");
-
-              await context.read<AuthCubit>().logout(); // 👈 Wait for logout to complete
-
-              if (context.mounted) {
-                context.go(RoutesName.auth); // ✅ Now it's safe
-              }
-              //
-              // context.read<AuthCubit>().logout();
-              //
-              // context.go(RoutesName.auth);
-              // context.read<AuthCubit>().close();
+              log("Initiating logout");
+              await context.read<AuthCubit>().logout();
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.sp),
@@ -115,9 +119,7 @@ Widget buildLogoutButton(BuildContext context) {
                 borderRadius: BorderRadius.circular(50),
               ),
               height: 6.h,
-              // width: context.locale.languageCode == 'ar' ? 37.w : 34.w,
               width: 34.w,
-
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -144,7 +146,6 @@ Widget buildLogoutButton(BuildContext context) {
           ),
         );
       }
-
       return Container();
     },
   );

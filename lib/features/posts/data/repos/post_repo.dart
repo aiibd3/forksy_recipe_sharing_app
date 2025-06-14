@@ -40,6 +40,7 @@ class FirebasePostRepo implements PostRepo {
     try {
       final postSnapshot =
           await postsCollection.orderBy('timestamp', descending: true).get();
+
       final List<Post> allPosts = postSnapshot.docs
           .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
@@ -85,12 +86,13 @@ class FirebasePostRepo implements PostRepo {
         }
 
         await postsCollection.doc(postId).update({'likes': post.likes});
-      }else{
+      } else {
         LogsManager.error("Post not found");
         throw Exception("Post not found");
       }
     } catch (e) {
       LogsManager.error("Unknown error: $e");
+      throw Exception("Post not found");
     }
   }
 }

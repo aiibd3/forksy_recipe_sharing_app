@@ -29,13 +29,13 @@ class FirebaseProfileRepo implements ProfileRepo {
       //   final userData = userDoc.data();
       //   if (userData != null) {
       //     return ProfileUser.fromJson(userData);
-      //     // return ProfileUser(
-      //     //   bio: userData['bio'],
-      //     //   uid: userData['uid'],
-      //     //   name: userData['name'],
-      //     //   email: userData['email'],
-      //     //   profileImage: userData['profileImage'],
-      //     // );
+          // return ProfileUser(
+          //   bio: userData['bio'],
+          //   uid: userData['uid'],
+          //   name: userData['name'],
+          //   email: userData['email'],
+          //   profileImage: userData['profileImage'],
+          // );
       //   }
       // }
 

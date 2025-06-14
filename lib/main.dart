@@ -43,7 +43,7 @@ Future<void> main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => AuthCubit(authRepo: authRepo)..checkUserIsLogged(),
+          create: (_) => AuthCubit(authRepo: authRepo)..checkUserIsLogged() ,
         ),
         BlocProvider(
             create: (_) => ProfileCubit(
