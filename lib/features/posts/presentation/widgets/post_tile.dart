@@ -48,13 +48,7 @@ class _PostTileState extends State<PostTile> {
   void getCurrentUser() {
     final authCubit = context.read<AuthCubit>();
     currentUser = authCubit.currentUser;
-    // isOwnerPost = (currentUser?.uid == widget.post.userId);
-
-    if (isOwnerPost) {
-      isOwnerPost = (currentUser!.uid == widget.post.userId);
-    } else {
-      isOwnerPost = false;
-    }
+    isOwnerPost = (currentUser?.uid == widget.post.userId);
   }
 
   Future<void> fetchPostUser() async {
@@ -165,10 +159,11 @@ class _PostTileState extends State<PostTile> {
                   ),
                 ),
                 const Spacer(),
-                GestureDetector(
-                  onTap: showOptions,
-                  child: const Icon(Icons.delete, color: AppColors.grayColor),
-                )
+                if (isOwnerPost)
+                  GestureDetector(
+                    onTap: showOptions,
+                    child: const Icon(Icons.delete, color: AppColors.grayColor),
+                  )
               ],
             ),
           ),
