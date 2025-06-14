@@ -12,28 +12,42 @@ class FirebaseProfileRepo implements ProfileRepo {
 
   @override
   Future<ProfileUser?> fetchProfileUser(String uid) async {
+    if (uid.trim().isEmpty) {
+      LogsManager.warning('fetchProfileUser called with empty uid');
+      return null;
+    }
+
     try {
       final userDoc =
           await firebaseFirestore.collection('users').doc(uid).get();
-      if (userDoc.exists) {
-        final userData = userDoc.data();
-        if (userData != null) {
-          return ProfileUser.fromJson(userData);
-          // return ProfileUser(
-          //   bio: userData['bio'],
-          //   uid: userData['uid'],
-          //   name: userData['name'],
-          //   email: userData['email'],
-          //   profileImage: userData['profileImage'],
-          // );
-        }
+
+      if (userDoc.exists && userDoc.data() != null) {
+        return ProfileUser.fromJson(userDoc.data()!);
       }
 
+      // if (userDoc.exists) {
+      //   final userData = userDoc.data();
+      //   if (userData != null) {
+      //     return ProfileUser.fromJson(userData);
+      //     // return ProfileUser(
+      //     //   bio: userData['bio'],
+      //     //   uid: userData['uid'],
+      //     //   name: userData['name'],
+      //     //   email: userData['email'],
+      //     //   profileImage: userData['profileImage'],
+      //     // );
+      //   }
+      // }
+
+      LogsManager.warning('No user found for uid: $uid');
       return null;
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
-      LogsManager.error(errorHandler.errorMessage);
+      LogsManager.error('Firestore error in fetchProfileUser: ${errorHandler.errorMessage}');
+    } catch (e, stack) {
+      LogsManager.error('Unexpected error in fetchProfileUser: $e\n$stack');
     }
+
     return null;
   }
 

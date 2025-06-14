@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
+
+
 class Post {
   final String id;
   final String userId;
@@ -7,45 +10,56 @@ class Post {
   final String text;
   final String imageUrl;
   final DateTime timestamp;
-
-  // final String postImage;
-  // final String caption;
-  // final String timeAgo;
-  // final int likes;
-  // final int comments;
-  // final bool isLiked;
-
-
-
-  Post({
+  final List<String> likes;
+  final List<String> comments;
+  final bool isLiked;
+  final bool isDisliked;
+  final bool isCommented;
+  final bool isSaved;
+  const Post({
     required this.id,
     required this.userId,
     required this.userName,
     required this.text,
     required this.imageUrl,
     required this.timestamp,
-    // required this.postImage,
-    // required this.caption,
-    // required this.timeAgo,
-    // required this.likes,
-    // required this.comments,
-    // required this.isLiked,
+    required this.likes,
+    required this.comments,
+    required this.isLiked,
+    required this.isDisliked,
+    required this.isCommented,
+    required this.isSaved,
   });
 
-  Post copyWith({String? imageUrl}) {
+
+
+  Post copyWith({
+    String? id,
+    String? userId,
+    String? userName,
+    String? text,
+    String? imageUrl,
+    DateTime? timestamp,
+    List<String>? likes,
+    List<String>? comments,
+    bool? isLiked,
+    bool? isDisliked,
+    bool? isCommented,
+    bool? isSaved,
+  }) {
     return Post(
-      id: id,
-      userId: userId,
-      userName: userName,
-      text: text,
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      userName: userName ?? this.userName,
+      text: text ?? this.text,
       imageUrl: imageUrl ?? this.imageUrl,
-      timestamp: timestamp,
-      // postImage: postImage ?? this.postImage,
-      // caption: caption ?? this.caption,
-      // timeAgo: timeAgo ?? this.timeAgo,
-      // likes: likes ?? this.likes,
-      // comments: comments ?? this.comments,
-      // isLiked: isLiked ?? this.isLiked,
+      timestamp: timestamp ?? this.timestamp,
+      likes: likes ?? this.likes,
+      comments: comments ?? this.comments,
+      isLiked: isLiked ?? this.isLiked,
+      isDisliked: isDisliked ?? this.isDisliked,
+      isCommented: isCommented ?? this.isCommented,
+      isSaved: isSaved ?? this.isSaved,
     );
   }
 
@@ -57,29 +71,34 @@ class Post {
       'text': text,
       'imageUrl': imageUrl,
       'timestamp': timestamp,
-      // 'postImage': postImage,
-      // 'caption': caption,
-      // 'timeAgo': timeAgo,
-      // 'likes': likes,
-      // 'comments': comments,
-      // 'isLiked': isLiked,
+      'likes': likes,
+      'comments': comments,
+      'isLiked': isLiked,
+      'isDisliked': isDisliked,
+      'isCommented': isCommented,
+      'isSaved': isSaved,
     };
   }
 
+
   factory Post.fromMap(Map<String, dynamic> json) {
     return Post(
-      id: json['id'],
-      userId: json['userId'],
-      userName: json['userName'],
-      text: json['text'],
-      imageUrl: json['imageUrl'],
-      timestamp: (json['timestamp'] as Timestamp).toDate(),
-      // postImage: map['postImage'] as String,
-      // caption: map['caption'] as String,
-      // timeAgo: map['timeAgo'] as String,
-      // likes: map['likes'] as int,
-      // comments: map['comments'] as int,
-      // isLiked: map['isLiked'] as bool,
+      id: json['id'] ?? '',
+      userId: json['userId'] ?? '',
+      userName: json['userName'] ?? '',
+      text: json['text'] ?? '',
+      imageUrl: json['imageUrl'] ?? '',
+      timestamp: (json['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      likes: List<String>.from(json['likes'] ?? []),
+      comments: List<String>.from(json['comments'] ?? []),
+      isLiked: json['isLiked'] ?? false,
+      isDisliked: json['isDisliked'] ?? false,
+      isCommented: json['isCommented'] ?? false,
+      isSaved: json['isSaved'] ?? false,
     );
+  }
+  factory Post.fromDocumentSnapshot(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Post.fromMap(data);
   }
 }

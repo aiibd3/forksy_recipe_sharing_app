@@ -13,13 +13,14 @@ part 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepo profileRepo;
 
-  // final AuthRepo authRepo;
   final StorageRepo storageRepo;
+
+  // final AuthRepo authRepo;
 
   ProfileCubit({
     required this.storageRepo,
-    // required this.authRepo,
     required this.profileRepo,
+    // required this.authRepo,
   }) : super(ProfileInitial());
 
   Future<void> fetchProfileUser(String uid) async {

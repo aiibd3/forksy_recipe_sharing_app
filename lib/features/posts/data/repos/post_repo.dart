@@ -24,7 +24,6 @@ class FirebasePostRepo implements PostRepo {
     }
   }
 
-
   @override
   Future<void> deletePost(String postId) async {
     try {
@@ -67,6 +66,31 @@ class FirebasePostRepo implements PostRepo {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);
       throw Exception("Firebase error: ${errorHandler.errorMessage}");
+    }
+  }
+
+  @override
+  Future<void> toggleLikePost(String postId, String userId) async {
+    try {
+      final postDoc = await postsCollection.doc(postId).get();
+      if (postDoc.exists) {
+        final post = Post.fromMap(postDoc.data() as Map<String, dynamic>);
+
+        final isLiked = post.likes.contains(userId);
+
+        if (isLiked) {
+          post.likes.remove(userId);
+        } else {
+          post.likes.add(userId);
+        }
+
+        await postsCollection.doc(postId).update({'likes': post.likes});
+      }else{
+        LogsManager.error("Post not found");
+        throw Exception("Post not found");
+      }
+    } catch (e) {
+      LogsManager.error("Unknown error: $e");
     }
   }
 }

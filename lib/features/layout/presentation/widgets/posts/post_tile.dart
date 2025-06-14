@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_font_styles.dart';
 import '../../../../auth/domain/entities/app_user.dart';
 import '../../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../../posts/domain/entities/post.dart';
@@ -34,13 +35,24 @@ class _PostTileState extends State<PostTile> {
     super.initState();
 
     getCurrentUser();
-    fetchPostUser();
+
+    if (widget.post.userId.trim().isNotEmpty) {
+      fetchPostUser();
+    } else {
+      postUser = null;
+      debugPrint(
+          '⚠️ Warning: post.userId is empty for post: ${widget.post.id}');
+    }
   }
 
   void getCurrentUser() {
     final authCubit = context.read<AuthCubit>();
     currentUser = authCubit.currentUser;
-    isOwnerPost = (currentUser!.uid == widget.post.userId);
+    if (isOwnerPost) {
+      isOwnerPost = (currentUser!.uid == widget.post.userId);
+    } else {
+      isOwnerPost = false;
+    }
   }
 
   Future<void> fetchPostUser() async {
@@ -82,45 +94,54 @@ class _PostTileState extends State<PostTile> {
       color: AppColors.whiteColor,
       child: Column(
         children: [
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              postUser?.profileImage != null
-                  ? CachedNetworkImage(
-                  imageUrl: postUser!.profileImage ?? "",
-                  height: 60,
-                  width: 60,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => const SizedBox(
-                    height: 60,
-                  ),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                  imageBuilder: (context, imageProvider) => Container(
-                    width:40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: imageProvider,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                postUser?.profileImage != null
+                    ? CachedNetworkImage(
+                        imageUrl: postUser!.profileImage ?? "",
+                        height: 60,
+                        width: 60,
                         fit: BoxFit.cover,
+                        placeholder: (context, url) => const SizedBox(
+                              height: 60,
+                            ),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                        imageBuilder: (context, imageProvider) => Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ))
+                    : const CircleAvatar(
+                        backgroundImage: AssetImage('assets/images/user2.png'),
                       ),
-                    ),
+                SizedBox(width: 2.w),
+                Text(
+                  widget.post.userName,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const Spacer(),
+                if (isOwnerPost)
+                  GestureDetector(
+                    onTap: showOptions,
+                    child: const Icon(Icons.delete,
+                        color: AppColors.primaryColor),
+
                   )
-              )
-                  : const CircleAvatar(
-                backgroundImage: AssetImage('assets/images/user2.png'),
-              ),
-              SizedBox(width: 2.w),
-
-
-              Text(widget.post.userName),
-              const Spacer(),
-              IconButton(
-                onPressed: showOptions,
-                icon: const Icon(Icons.delete),
-              )
-            ],
+              ],
+            ),
           ),
           CachedNetworkImage(
             imageUrl: widget.post.imageUrl,
@@ -132,6 +153,35 @@ class _PostTileState extends State<PostTile> {
             ),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Icon(Icons.favorite_border, color: AppColors.grayColor),
+
+                Text(
+                  "0",
+                  style: AppFontStyles.poppins400_16,)
+
+                ,
+                const Spacer(),
+                Icon(Icons.comment_outlined, color: AppColors.grayColor),
+                Text(
+                  "0 comments",
+                  style: AppFontStyles.poppins400_16,
+                ),
+                Spacer(),
+              Text(
+                widget.post.timestamp.toString(),),
+              ],
+            ),
+          )
+
+
+
+
+
         ],
       ),
     );
