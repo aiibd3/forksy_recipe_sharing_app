@@ -8,7 +8,6 @@ import '../../features/layout/presentation/pages/layout_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
-// import '../../features/settings/presentation/pages/settings_page.dart'; // If needed
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../core/theme/app_colors.dart';
 import '../../../posts/presentation/cubit/post_cubit.dart';
 import '../../../posts/presentation/widgets/post_tile.dart';
@@ -21,7 +22,7 @@ class _HomeTabState extends State<HomeTab> {
     super.initState();
     fetchAllPosts();
 
-    // // Set up auto-refresh every 60 seconds
+    // Set up auto-refresh every 60 seconds
     // _refreshTimer = Timer.periodic(Duration(seconds: 60), (_) {
     //   postCubit.fetchAllPosts();
     // });

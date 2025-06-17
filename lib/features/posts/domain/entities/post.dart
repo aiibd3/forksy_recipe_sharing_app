@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'comment.dart';
+
 class Post {
   final String id;
   final String userId;
@@ -8,7 +10,7 @@ class Post {
   final String imageUrl;
   final DateTime timestamp;
   final List<String> likes;
-  final List<String> comments;
+  final List<Comment> comments;
   final bool isLiked;
   final bool isDisliked;
   final bool isCommented;
@@ -37,7 +39,7 @@ class Post {
     String? imageUrl,
     DateTime? timestamp,
     List<String>? likes,
-    List<String>? comments,
+    List<Comment>? comments,
     bool? isLiked,
     bool? isDisliked,
     bool? isCommented,
@@ -59,16 +61,16 @@ class Post {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'userId': userId,
       'userName': userName,
       'text': text,
       'imageUrl': imageUrl,
-      'timestamp': timestamp,
+      'timestamp': Timestamp.fromDate(timestamp),
       'likes': likes,
-      'comments': comments,
+      'comments': comments.map((comment) => comment.toJson()).toList(),
       'isLiked': isLiked,
       'isDisliked': isDisliked,
       'isCommented': isCommented,
@@ -76,7 +78,12 @@ class Post {
     };
   }
 
-  factory Post.fromMap(Map<String, dynamic> json) {
+  factory Post.fromJson(Map<String, dynamic> json) {
+    final List<Comment> comments = (json['comments'] as List<dynamic>?)
+            ?.map((commentJson) => Comment.fromJson(commentJson))
+            .toList() ??
+        [];
+
     return Post(
       id: json['id'] ?? '',
       userId: json['userId'] ?? '',
@@ -85,7 +92,7 @@ class Post {
       imageUrl: json['imageUrl'] ?? '',
       timestamp: (json['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now(),
       likes: List<String>.from(json['likes'] ?? []),
-      comments: List<String>.from(json['comments'] ?? []),
+      comments: comments,
       isLiked: json['isLiked'] ?? false,
       isDisliked: json['isDisliked'] ?? false,
       isCommented: json['isCommented'] ?? false,

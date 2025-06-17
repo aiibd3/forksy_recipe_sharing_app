@@ -5,6 +5,7 @@ import 'package:forksy/features/storage/domain/repos/storage_repo.dart';
 
 import '../../../../core/errors/firebase_error_handler.dart';
 import '../../../../core/utils/logs_manager.dart';
+import '../../domain/entities/comment.dart';
 import '../../domain/entities/post.dart';
 import '../../domain/repos/post_repo.dart';
 
@@ -72,6 +73,27 @@ class PostCubit extends Cubit<PostState> {
   Future<void> toggleLikePost(String postId, String userId) async {
     try {
       await postRepo.toggleLikePost(postId, userId);
+    } catch (e) {
+      emit(PostFailure(e.toString()));
+      LogsManager.error(e.toString());
+    }
+  }
+
+  Future<void> addComment(String postId, Comment comment) async {
+    try {
+      await postRepo.addComment(postId, comment);
+
+      await fetchAllPosts();
+    } catch (e) {
+      emit(PostFailure(e.toString()));
+      LogsManager.error(e.toString());
+    }
+  }
+
+  Future<void> deleteComment(String postId, String commentId) async {
+    try {
+      await postRepo.deleteComment(postId, commentId);
+      await fetchAllPosts();
     } catch (e) {
       emit(PostFailure(e.toString()));
       LogsManager.error(e.toString());

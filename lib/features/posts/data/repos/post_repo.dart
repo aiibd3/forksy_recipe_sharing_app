@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:forksy/core/utils/logs_manager.dart';
+import 'package:forksy/features/posts/domain/entities/comment.dart';
 
 import '../../../../core/errors/firebase_error_handler.dart';
 import '../../domain/entities/post.dart';
@@ -13,7 +14,7 @@ class FirebasePostRepo implements PostRepo {
   @override
   Future<void> createPost(Post post) async {
     try {
-      await postsCollection.doc(post.id).set(post.toMap());
+      await postsCollection.doc(post.id).set(post.toJson());
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);
@@ -42,7 +43,7 @@ class FirebasePostRepo implements PostRepo {
           await postsCollection.orderBy('timestamp', descending: true).get();
 
       final List<Post> allPosts = postSnapshot.docs
-          .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>))
+          .map((doc) => Post.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
 
       return allPosts;
@@ -59,7 +60,7 @@ class FirebasePostRepo implements PostRepo {
       final postSnapshot =
           await postsCollection.where('userId', isEqualTo: userId).get();
       final userPosts = postSnapshot.docs
-          .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>))
+          .map((doc) => Post.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
 
       return userPosts;
@@ -75,7 +76,7 @@ class FirebasePostRepo implements PostRepo {
     try {
       final postDoc = await postsCollection.doc(postId).get();
       if (postDoc.exists) {
-        final post = Post.fromMap(postDoc.data() as Map<String, dynamic>);
+        final post = Post.fromJson(postDoc.data() as Map<String, dynamic>);
 
         final isLiked = post.likes.contains(userId);
 
@@ -86,6 +87,59 @@ class FirebasePostRepo implements PostRepo {
         }
 
         await postsCollection.doc(postId).update({'likes': post.likes});
+      } else {
+        LogsManager.error("Post not found");
+        throw Exception("Post not found");
+      }
+    } catch (e) {
+      LogsManager.error("Unknown error: $e");
+      throw Exception("Post not found");
+    }
+  }
+
+  @override
+  Future<void> addComment(String postId, Comment comment) async {
+    try {
+      final postDoc = await postsCollection.doc(postId).get();
+
+      if (postDoc.exists) {
+        // convert json to Post object
+        final post = Post.fromJson(postDoc.data() as Map<String, dynamic>);
+
+        // add the new comment
+        post.comments.add(comment);
+
+        // update post document in firestore
+        await postsCollection.doc(postId).update({
+          'comments': post.comments.map((comment) => comment.toJson()).toList()
+        });
+      } else {
+        LogsManager.error("Post not found");
+        throw Exception("Post not found");
+      }
+    } catch (e) {
+      LogsManager.error("Unknown error: $e");
+      throw Exception("Post not found");
+    }
+  }
+
+  @override
+  Future<void> deleteComment(String postId, String commentId) async {
+    try {
+      // get post document
+      final postDoc = await postsCollection.doc(postId).get();
+
+      if (postDoc.exists) {
+        // convert post document to Post object
+        final post = Post.fromJson(postDoc.data() as Map<String, dynamic>);
+
+        // add the new comment
+        post.comments.removeWhere((comment) => comment.id == commentId);
+
+        // update post document in firestore
+        await postsCollection.doc(postId).update({
+          'comments': post.comments.map((comment) => comment.toJson()).toList()
+        });
       } else {
         LogsManager.error("Post not found");
         throw Exception("Post not found");
