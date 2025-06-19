@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import 'core/cubit/app_bloc_observer.dart';
+import 'core/services/fcm.dart';
 import 'core/services/hive_storage.dart';
 import 'features/auth/data/repos/auth_repo.dart';
 import 'features/auth/presentation/cubit/auth_cubit.dart';
@@ -24,13 +25,14 @@ Future<void> main() async {
 
   await Hive.initFlutter();
 
-  // await Fcm.fcmInit();
+  await Fcm.fcmInit();
 
   try {
     await HiveStorage.init();
   } catch (e) {
     debugPrint("Error initializing Hive: $e");
   }
+
 
   Bloc.observer = AppBlocObserver();
 
