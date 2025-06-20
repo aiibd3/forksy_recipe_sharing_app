@@ -192,7 +192,7 @@ class _PostTileState extends State<PostTile> {
               context,
               MaterialPageRoute(
                 builder: (context) => ProfilePage(
-                    // uid: widget.post.userId,
+                    uid: widget.post.userId,
                     ),
               ),
             ),

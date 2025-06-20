@@ -8,8 +8,6 @@ import '../../domain/repos/profile_repo.dart';
 class FirebaseProfileRepo implements ProfileRepo {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
-  // final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
   @override
   Future<ProfileUser?> fetchProfileUser(String uid) async {
     if (uid.trim().isEmpty) {
@@ -25,25 +23,12 @@ class FirebaseProfileRepo implements ProfileRepo {
         return ProfileUser.fromJson(userDoc.data()!);
       }
 
-      // if (userDoc.exists) {
-      //   final userData = userDoc.data();
-      //   if (userData != null) {
-      //     return ProfileUser.fromJson(userData);
-          // return ProfileUser(
-          //   bio: userData['bio'],
-          //   uid: userData['uid'],
-          //   name: userData['name'],
-          //   email: userData['email'],
-          //   profileImage: userData['profileImage'],
-          // );
-      //   }
-      // }
-
       LogsManager.warning('No user found for uid: $uid');
       return null;
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
-      LogsManager.error('Firestore error in fetchProfileUser: ${errorHandler.errorMessage}');
+      LogsManager.error(
+          'Firestore error in fetchProfileUser: ${errorHandler.errorMessage}');
     } catch (e, stack) {
       LogsManager.error('Unexpected error in fetchProfileUser: $e\n$stack');
     }

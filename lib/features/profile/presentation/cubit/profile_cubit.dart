@@ -12,15 +12,11 @@ part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepo profileRepo;
-
   final StorageRepo storageRepo;
-
-  // final AuthRepo authRepo;
 
   ProfileCubit({
     required this.storageRepo,
     required this.profileRepo,
-    // required this.authRepo,
   }) : super(ProfileInitial());
 
   Future<void> fetchProfileUser(String uid) async {
@@ -61,21 +57,21 @@ class ProfileCubit extends Cubit<ProfileState> {
 
       String? imageDownloadUrl;
 
-      if (imageProfilePath!.isNotEmpty) {
+      if (imageProfilePath != null && imageProfilePath.isNotEmpty) {
         imageDownloadUrl =
             await storageRepo.uploadProfileImage(imageProfilePath, uid);
       }
 
-      final updatedUser = currentUser.copyWith(
-        bio: newBio ?? currentUser.bio,
-        profileImage: imageDownloadUrl ?? currentUser.profileImage,
+      final updatedProfile = currentUser.copyWith(
+        newBio: newBio ?? currentUser.bio,
+        newProfileImageURL: imageDownloadUrl ?? currentUser.profileImage,
       );
 
-      await profileRepo.updateProfileUser(updatedUser);
+      await profileRepo.updateProfileUser(updatedProfile);
 
       await fetchProfileUser(uid);
 
-      emit(ProfileLoaded(user: updatedUser));
+      emit(ProfileLoaded(user: updatedProfile));
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);

@@ -6,7 +6,6 @@ import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/layout/presentation/pages/layout_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
-import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -27,12 +26,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case RoutesName.layout:
       return MaterialPageRoute(builder: (_) => const LayoutPage());
-
-    case RoutesName.profile:
-      return MaterialPageRoute(builder: (_) => const ProfilePage());
-
-    case RoutesName.profileFullPath:
-      return MaterialPageRoute(builder: (_) => const ProfilePage());
 
     case RoutesName.settings:
       return MaterialPageRoute(builder: (_) => const SettingsSection());

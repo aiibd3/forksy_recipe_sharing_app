@@ -5,11 +5,11 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_styles.dart';
 
 class BioBox extends StatelessWidget {
-  final String bio;
+  final String text;
 
   const BioBox({
     super.key,
-    required this.bio,
+    required this.text,
   });
 
   @override
@@ -22,7 +22,7 @@ class BioBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
-        bio.isNotEmpty ? bio : 'No bio yet... :(',
+        text.isNotEmpty ? text : 'No bio yet... :(',
         style:
             AppFontStyles.poppins400_14.copyWith(color: AppColors.whiteColor),
         maxLines: 2,

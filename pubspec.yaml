@@ -107,6 +107,7 @@ dependencies:
   easy_loading_button:
   file_picker:
   intl:
+  liquid_pull_to_refresh:
 
 
 
@@ -114,33 +115,14 @@ dependencies:
 
 
 
-  flutter_svg:
-  fluttertoast:
 
-  skeletonizer:
 
-  toastification:
 
-  flutter_advanced_drawer:
-  blur:
-  animated_switcher_plus:
-  flutter_bounceable:
-  model_viewer_plus:
-  flutter_secure_storage: ^8.1.0
-  regexpattern:
-  flutter_otp_text_field:
-  toggle_switch:
-  appinio_swiper:
-  permission_handler:
   sentry_flutter:
-  geolocator:
-  geocoding:
+
   audioplayers:
   flutter_chat_ui:
   google_generative_ai:
-  flutter_chat_types:
-  loading_animation_widget:
-  awesome_dialog:
 
 
 

@@ -117,7 +117,7 @@ class Fcm {
   static Future<String?> getToken() async {
     try {
       token = await messaging.getToken();
-      LogsManager.info('FCM token: $token');
+      LogsManager.warning('FCM token: $token');
       print("FCM token: $token");
       return token;
     } catch (error) {

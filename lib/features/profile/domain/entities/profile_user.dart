@@ -5,26 +5,23 @@ class ProfileUser extends AppUser {
   final String? profileImage;
 
   ProfileUser({
-    required this.bio,
     required super.uid,
-    required super.name,
     required super.email,
+    required super.name,
+    required this.bio,
     required this.profileImage,
   });
 
   ProfileUser copyWith({
-    String? bio,
-    String? uid,
-    String? name,
-    String? email,
-    String? profileImage,
+    String? newBio,
+    String? newProfileImageURL,
   }) {
     return ProfileUser(
-      bio: bio ?? this.bio,
-      uid: uid ?? this.uid,
-      name: name ?? this.name,
-      email: email ?? this.email,
-      profileImage: profileImage ?? this.profileImage,
+      uid: uid,
+      email: email,
+      name: name,
+      bio: newBio ?? bio,
+      profileImage: newProfileImageURL ?? profileImage,
     );
   }
 

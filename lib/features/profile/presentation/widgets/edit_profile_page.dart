@@ -23,7 +23,7 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   final bioController = TextEditingController();
 
-  PlatformFile? profileImage;
+  PlatformFile? imagePickedFile;
 
   Future<void> pickImage() async {
     final result = await FilePicker.platform.pickFiles(
@@ -34,7 +34,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     if (result != null) {
       setState(() {
-        profileImage = result.files.first;
+        imagePickedFile = result.files.first;
       });
     }
   }
@@ -42,37 +42,44 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void updateProfile() async {
     final profileCubit = context.read<ProfileCubit>();
 
+    // if (bioController.text.isNotEmpty) {
+    //   await profileCubit.updateProfileUser(
+    //     uid: widget.user.uid,
+    //     newBio: bioController.text,
+    //   );
+    // }
+
+
+    // if (imageMobilePath == null && newBio == null) {
+    //   LogsManager.error("No data to update.");
+    //   throw Exception("No data provided for update.");
+    // }
+
+
+
+
     final String uid = widget.user.uid;
-    final imageMobilePath = profileImage?.path;
+    final imageMobilePath = imagePickedFile?.path;
     final String? newBio =
         bioController.text.isNotEmpty ? bioController.text : null;
 
-    if (imageMobilePath == null && newBio == null) {
-      LogsManager.error("No data to update.");
-      throw Exception("No data provided for update.");
-    }
-    try {
-      if (newBio != null || imageMobilePath != null) {
-        await profileCubit.updateProfileUser(
+
+
+      if (newBio != null || imagePickedFile != null) {
+         profileCubit.updateProfileUser(
           uid: uid,
           newBio: newBio,
           imageProfilePath: imageMobilePath,
         );
-      } else {
+
+      }
+
+      else {
         LogsManager.info("No changes detected.");
         context.goBack();
       }
-    } catch (e) {
-      LogsManager.error("Error updating profile: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            "Failed to update profile: ${e.toString()}",
-          ),
-        ),
-      );
     }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -90,13 +97,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   SizedBox(
                     height: 10,
                   ),
-                  Text("Loading..."),
+                  Text("Updating profile, please wait..."),
                 ],
               ),
             ),
           );
-        } else {
-          return buildBioBox();
+        }
+        else {
+          return buildEditPage();
         }
       },
       listener: (context, state) {
@@ -107,7 +115,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget buildBioBox() {
+  Widget buildEditPage({double? uploadProgress = 0.0}) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -138,76 +146,75 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 2.h),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CachedNetworkImage(
-                imageUrl: widget.user.profileImage ?? '',
-                placeholder: (context, url) => const CircularProgressIndicator(
-                  color: AppColors.primaryColor,
-                ),
-                errorWidget: (context, url, error) => const Icon(
-                  Icons.person,
-                  color: AppColors.primaryColor,
-                  size: 50,
-                ),
-                imageBuilder: (context, imageProvider) => Image(
-                  image: imageProvider,
-                  width: 100.w,
-                  height: 30.h,
-                  fit: BoxFit.cover,
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CachedNetworkImage(
+              imageUrl: widget.user.profileImage ?? '',
+              placeholder: (context, url) => const CircularProgressIndicator(
+                color: AppColors.primaryColor,
               ),
-              SizedBox(height: 2.h),
+              errorWidget: (context, url, error) => const Icon(
+                Icons.person,
+                color: AppColors.primaryColor,
+                size: 50,
+              ),
+              imageBuilder: (context, imageProvider) => Image(
+                image: imageProvider,
+                width: 100.w,
+                height: 30.h,
+                fit: BoxFit.cover,
+              ),
+            ),
+            SizedBox(height: 2.h),
 
-              ProfileAvatar(
-                onTap: () async {
-                  await pickImage();
-                  setState(
-                    () {},
-                  );
-                },
-                imageUrl: profileImage != null
-                    ? profileImage!.path!
-                    : widget.user.profileImage ?? "",
-                name: widget.user.name,
-                role: bioController.text.isNotEmpty
-                    ? bioController.text
-                    : "Enter your role",
-              ),
-              SizedBox(height: 2.h),
+            ProfileAvatar(
+              onTap: () async {
+                await pickImage();
+                setState(
+                  () {},
+                );
+              },
+              imageUrl: imagePickedFile != null
+                  ? imagePickedFile!.path!
+                  : widget.user.profileImage ?? "",
+              name: widget.user.name,
+              role: bioController.text.isNotEmpty
+                  ? bioController.text
+                  : "Enter your role",
+            ),
+            SizedBox(height: 2.h),
 
-              // Bio Section
-              const Text(
-                "Bio",
-                style: TextStyle(
-                  color: AppColors.grayColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
+            // Bio Section
+            const Text(
+              "Bio",
+              style: TextStyle(
+                color: AppColors.grayColor,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
               ),
-              SizedBox(height: 2.h),
-              TextField(
-                controller: bioController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Enter your bio',
-                ),
-                maxLines: 3, // Allow multi-line bio
+            ),
+            SizedBox(height: 2.h),
+            TextField(
+              controller: bioController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Enter your bio',
               ),
-              SizedBox(height: 2.h),
+              maxLines: 3, // Allow multi-line bio
+            ),
+            SizedBox(height: 2.h),
 
-              // Additional Spacer or Actions
-              ElevatedButton(
-                onPressed: () {
-                  // Implement bio update logic
-                  updateProfile();
-                },
-                child: const Text("Save Changes"),
-              ),
-            ],
-          ),
+
+            // Additional Spacer or Actions
+            ElevatedButton(
+              onPressed: () {
+                // Implement bio update logic
+                updateProfile();
+              },
+              child: const Text("Save Changes"),
+            ),
+          ],
         ),
       ),
     );

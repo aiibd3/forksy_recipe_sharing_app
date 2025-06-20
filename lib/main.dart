@@ -33,31 +33,30 @@ Future<void> main() async {
     debugPrint("Error initializing Hive: $e");
   }
 
-
   Bloc.observer = AppBlocObserver();
 
   final authRepo = FirebaseAuthRepo();
   final profileRepo = FirebaseProfileRepo();
   final storageRepo = FirebaseStorageRepo();
-  // final postRepo = FirebasePostRepo();
 
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => AuthCubit(authRepo: authRepo)..checkUserIsLogged() ,
+          create: (_) => AuthCubit(authRepo: authRepo)..checkUserIsLogged(),
         ),
         BlocProvider(
-            create: (_) => ProfileCubit(
-                  profileRepo: profileRepo,
-                  storageRepo: storageRepo,
-                  // authRepo: authRepo,
-                )),
+          create: (_) => ProfileCubit(
+            profileRepo: profileRepo,
+            storageRepo: storageRepo,
+          ),
+        ),
         BlocProvider(
-            create: (_) => PostCubit(
-                  postRepo: FirebasePostRepo(),
-                  storageRepo: FirebaseStorageRepo(),
-                )),
+          create: (_) => PostCubit(
+            postRepo: FirebasePostRepo(),
+            storageRepo: FirebaseStorageRepo(),
+          ),
+        ),
       ],
       child: const ForksyApp(),
     ),

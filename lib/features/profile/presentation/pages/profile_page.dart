@@ -1,28 +1,43 @@
-import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/core/theme/app_colors.dart';
-// import 'package:forksy/core/utils/logs_manager.dart';
-// import 'package:forksy/features/auth/domain/entities/app_user.dart';
-// import 'package:forksy/features/profile/domain/entities/profile_user.dart';
+import 'package:forksy/features/auth/domain/entities/app_user.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../../../core/widgets/custom_text_field.dart';
-import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../storage/data/repos/firebase_storage_repo.dart';
+import '../../../auth/presentation/cubit/auth_cubit.dart';
+import '../../../../core/widgets/custom_text_field.dart';
 import '../../data/repos/profile_repo.dart';
-import '../cubit/profile_cubit.dart';
-import '../widgets/bio_box.dart';
 import '../widgets/edit_profile_page.dart';
 import '../widgets/profile_avatar.dart';
+import '../cubit/profile_cubit.dart';
+import '../widgets/bio_box.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfilePage extends StatefulWidget {
+  final String uid;
+
+  const ProfilePage({super.key, required this.uid});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  late final authCubit = context.read<AuthCubit>();
+  late final profileCubit = context.read<ProfileCubit>();
+
+  late AppUser? currentUser = authCubit.currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    profileCubit.fetchProfileUser(widget.uid);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<AuthCubit>().currentUser;
-    if (user == null) {
+    if (authCubit.currentUser == null) {
       return const Scaffold(
         body: Center(
           child: Text("No user logged in."),
@@ -30,37 +45,16 @@ class ProfilePage extends StatelessWidget {
       );
     }
 
-    return BlocProvider(
-      create: (context) => ProfileCubit(
-        storageRepo: FirebaseStorageRepo(),
-        profileRepo: FirebaseProfileRepo(),
-        // authRepo: FirebaseAuthRepo(),
-      )..fetchProfileUser(user.uid),
-      child: _ProfilePageBody(),
-    );
-  }
-}
-
-class _ProfilePageBody extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
-        if (state is ProfileLoading) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(
-                color: AppColors.primaryColor,
-              ),
-            ),
-          );
-        } else if (state is ProfileLoaded) {
+        if (state is ProfileLoaded) {
           final profileUser = state.user;
+
           return Scaffold(
             backgroundColor: AppColors.whiteColor,
             appBar: AppBar(
-              title: const Text(
-                'Profile',
+              title: Text(
+                profileUser.name,
                 style: TextStyle(color: AppColors.blackColor),
               ),
               centerTitle: true,
@@ -78,16 +72,14 @@ class _ProfilePageBody extends StatelessWidget {
                     color: AppColors.blackColor,
                   ),
                   onPressed: () {
-                    final profileUser =
-                        state.user; // Assuming state.user is available
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => BlocProvider(
                           create: (context) => ProfileCubit(
-                              storageRepo: FirebaseStorageRepo(),
-                              // authRepo: FirebaseAuthRepo(),
-                              profileRepo: FirebaseProfileRepo()),
+                            storageRepo: FirebaseStorageRepo(),
+                            profileRepo: FirebaseProfileRepo(),
+                          ),
                           child: EditProfilePage(user: profileUser),
                         ),
                       ),
@@ -96,63 +88,62 @@ class _ProfilePageBody extends StatelessWidget {
                 ),
               ],
             ),
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.w),
-                child: Stack(
-                  children: [
-                    Column(
-                      children: [
-                        ProfileAvatar(
-                          onTap: () {
-                            final profileUser = state.user;
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BlocProvider(
-                                  create: (context) => ProfileCubit(
-                                      storageRepo: FirebaseStorageRepo(),
-                                      // authRepo: FirebaseAuthRepo(),
-                                      profileRepo: FirebaseProfileRepo()),
-                                  child: EditProfilePage(user: profileUser),
+            body: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.w),
+              child: Stack(
+                children: [
+                  Column(
+                    children: [
+                      ProfileAvatar(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BlocProvider(
+                                create: (context) => ProfileCubit(
+                                  storageRepo: FirebaseStorageRepo(),
+                                  profileRepo: FirebaseProfileRepo(),
                                 ),
+                                child: EditProfilePage(user: profileUser),
                               ),
-                            );
-                          },
-                          name: profileUser.name,
-                          role: 'Edit Profile',
-                          imageUrl: profileUser.profileImage != null &&
-                                  profileUser.profileImage!.isNotEmpty
-                              ? profileUser.profileImage!
-                              : 'assets/images/user2.png',
-                        ),
-                        SizedBox(height: 4.h),
-                        const Text("bio "),
-                        BioBox(
-                          bio: profileUser.bio ?? 'No bio yet... :(',
-                        ),
-                        SizedBox(height: 2.h),
-                        ProfileTextField(
-                          label: 'Full name',
-                          initialValue: profileUser.name,
-                          isEditable: true,
-                        ),
-                        SizedBox(height: 2.h),
-                        ProfileTextField(
-                          label: 'E-mail',
-                          initialValue: profileUser.email,
-                          isEditable: false,
-                        ),
-                        SizedBox(height: 2.h),
-                        const ProfileTextField(
-                          label: 'Phone Number',
-                          initialValue: '01557399158',
-                          isEditable: false,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                            ),
+                          );
+                        },
+                        name: profileUser.name,
+                        role: 'Edit Profile',
+                        imageUrl: profileUser.profileImage != null &&
+                                profileUser.profileImage!.isNotEmpty
+                            ? profileUser.profileImage!
+                            : 'assets/images/user2.png',
+                      ),
+                      SizedBox(height: 4.h),
+                      const Text("bio "),
+                      BioBox(
+                        text: profileUser.bio ?? 'No bio yet... :(',
+                      ),
+                      SizedBox(height: 2.h),
+                      ProfileTextField(
+                        label: 'Full name',
+                        initialValue: profileUser.name,
+                        isEditable: true,
+                      ),
+                      SizedBox(height: 2.h),
+                      ProfileTextField(
+                        label: 'E-mail',
+                        initialValue: profileUser.email,
+                        isEditable: false,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else if (state is ProfileLoading) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(
+                color: AppColors.primaryColor,
               ),
             ),
           );
