@@ -28,12 +28,6 @@ class _CommentTileState extends State<CommentTile> {
     getCurrentUser();
   }
 
-  // void getCurrentUser() {
-  //   final authCubit = context.read<AuthCubit>();
-  //   currentUser = authCubit.currentUser;
-  //   isOwnerComment = (currentUser!.uid == widget.comment.userId);
-  // }
-
   void getCurrentUser() {
     currentUser = context.read<AuthCubit>().currentUser;
     isOwnerComment = currentUser?.uid == widget.comment.userId;

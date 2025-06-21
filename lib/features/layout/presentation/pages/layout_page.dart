@@ -87,7 +87,7 @@ class _LayoutPageBody extends StatelessWidget {
             },
             icons: const [
               EneftyIcons.home_outline,
-              EneftyIcons.user_outline,
+              EneftyIcons.message_2_bold,
             ],
           ),
           body: Center(

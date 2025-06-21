@@ -4,6 +4,7 @@ import 'package:forksy/features/layout/presentation/widgets/my_drawer.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../posts/presentation/cubit/post_cubit.dart';
 import '../../../posts/presentation/widgets/post_tile.dart';
 
@@ -16,10 +17,18 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   late final postCubit = context.read<PostCubit>();
+  late final authCubit = context.read<AuthCubit>();
 
   @override
   void initState() {
     super.initState();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    if (authCubit.currentUser == null) {
+      await authCubit.getCurrentUser();
+    }
     fetchAllPosts();
   }
 
@@ -57,13 +66,7 @@ class _HomeTabState extends State<HomeTab> {
                 onRefresh: refreshPosts,
                 color: AppColors.primaryColor,
                 showChildOpacityTransition: false,
-                child: ListView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  children: [
-                    SizedBox(height: 300),
-                    Center(child: Text("No posts available")),
-                  ],
-                ),
+                child: const Center(child: Text("No posts available")),
               );
             }
 
@@ -87,13 +90,7 @@ class _HomeTabState extends State<HomeTab> {
               onRefresh: refreshPosts,
               color: AppColors.primaryColor,
               showChildOpacityTransition: false,
-              child: ListView(
-                physics: AlwaysScrollableScrollPhysics(),
-                children: [
-                  SizedBox(height: 300),
-                  Center(child: Text("Press pull to load posts")),
-                ],
-              ),
+              child: const Center(child: Text("Press pull to load posts")),
             );
           }
         },

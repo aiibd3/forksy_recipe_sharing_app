@@ -32,7 +32,8 @@ class ProfileUser extends AppUser {
       'uid': uid,
       'name': name,
       'email': email,
-      'profileImage': profileImage,
+      'profileImage': profileImage ?? '',
+
     };
   }
 
@@ -42,7 +43,10 @@ class ProfileUser extends AppUser {
       uid: json['uid'],
       name: json['name'],
       email: json['email'],
-      profileImage: json['profileImage'].toString(),
+      profileImage: (json['profileImage'] != null &&
+              json['profileImage'].toString() != 'null')
+          ? json['profileImage'].toString()
+          : null,
     );
   }
 }

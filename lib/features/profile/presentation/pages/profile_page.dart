@@ -125,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ProfileTextField(
                         label: 'Full name',
                         initialValue: profileUser.name,
-                        isEditable: true,
+                        isEditable: false,
                       ),
                       SizedBox(height: 2.h),
                       ProfileTextField(

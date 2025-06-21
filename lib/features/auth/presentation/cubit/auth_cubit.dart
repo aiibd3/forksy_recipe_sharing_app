@@ -89,6 +89,18 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+
+  Future<void> getCurrentUser() async {
+    final user = await authRepo.getCurrentUser();
+    if (user != null) {
+      _currentUser = user;
+      emit(Authenticated(user));
+    } else {
+      emit(UnAuthenticated());
+    }
+  }
+
+
   // * Dispose of resources
   @override
   Future<void> close() {

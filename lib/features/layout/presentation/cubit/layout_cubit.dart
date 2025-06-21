@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../bot/presentation/pages/bot_page.dart';
 import '../pages/home_tab.dart';
-import '../pages/profile_tab.dart';
 
 part 'layout_state.dart';
 
@@ -16,7 +16,7 @@ class LayoutCubit extends Cubit<LayoutState> {
   PageController pageController = PageController(initialPage: 0);
   List<Widget> pages = [
     const HomeTab(),
-    const ProfileTab(),
+    const BotPage(),
   ];
 
   void changeTab(int index) {

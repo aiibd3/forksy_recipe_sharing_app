@@ -10,11 +10,11 @@ class ProfileAvatar extends StatelessWidget {
   final String name;
   final String role;
   final String imageUrl;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const ProfileAvatar({
     super.key,
-    required this.onTap,
+    this.onTap,
     required this.name,
     required this.role,
     required this.imageUrl,
@@ -28,15 +28,15 @@ class ProfileAvatar extends StatelessWidget {
           alignment: Alignment.bottomRight,
           children: [
             CircleAvatar(
-              radius: 35.sp,
+              radius: 33.sp,
               backgroundImage: _getImageProvider(imageUrl),
               backgroundColor: AppColors.grayColor.withOpacity(0.2),
               child: imageUrl.isEmpty
-                  ? const Icon(
-                Icons.person,
-                size: 50,
-                color: AppColors.primaryColor,
-              )
+                  ? Icon(
+                      Icons.person,
+                      size: 55.sp,
+                      color: AppColors.primaryColor,
+                    )
                   : null,
             ),
             CircleAvatar(
@@ -60,7 +60,8 @@ class ProfileAvatar extends StatelessWidget {
         ),
         Text(
           role,
-          style: AppFontStyles.poppins400_14.copyWith(color: AppColors.grayColor),
+          style:
+              AppFontStyles.poppins400_14.copyWith(color: AppColors.grayColor),
         ),
       ],
     );

@@ -144,11 +144,6 @@ class _PostTileState extends State<PostTile> {
       commentController.clear();
       debugPrint('⚠️ currentUser is null. Cannot add comment.');
     }
-
-    // if (commentController.text.isNotEmpty) {
-    //   postCubit.addComment(widget.post.id, newComment);
-    //   debugPrint('⚠️ currentUser is null. Cannot add comment.');
-    // }
   }
 
   void showOptions() {
@@ -192,8 +187,8 @@ class _PostTileState extends State<PostTile> {
               context,
               MaterialPageRoute(
                 builder: (context) => ProfilePage(
-                    uid: widget.post.userId,
-                    ),
+                  uid: widget.post.userId,
+                ),
               ),
             ),
             child: Padding(
@@ -298,9 +293,6 @@ class _PostTileState extends State<PostTile> {
                 Text(
                   DateFormat('yyyy-MM-dd').format(widget.post.timestamp),
                 ),
-                // Text(
-                //   widget.post.timestamp.toString(),
-                // ),
               ],
             ),
           ),

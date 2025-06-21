@@ -18,7 +18,7 @@ class BioBox extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
       width: 100.w,
       decoration: BoxDecoration(
-        color: AppColors.primaryColor,
+        color: AppColors.secondaryColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
