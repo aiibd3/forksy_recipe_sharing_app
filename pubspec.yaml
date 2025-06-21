@@ -81,7 +81,6 @@ dependencies:
   page_transition:
 
   # ✅ UI Components & Navigation
-  go_router:
   dropdown_button2:
   carousel_slider:
   sliver_tools:

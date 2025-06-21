@@ -4,10 +4,8 @@ import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/core/extensions/widget_extension.dart';
-import 'package:forksy/core/routing/routes_name.dart';
 import 'package:forksy/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:forksy/features/layout/presentation/widgets/profile/setting_list_item.dart';
-import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../../core/theme/app_colors.dart';
@@ -100,7 +98,7 @@ Widget buildLogoutButton(BuildContext context) {
               await context.read<AuthCubit>().logout(); // 👈 Wait for logout to complete
 
               if (context.mounted) {
-                context.go(RoutesName.auth); // ✅ Now it's safe
+                // context.go(RoutesName.auth); // ✅ Now it's safe
               }
               //
               // context.read<AuthCubit>().logout();

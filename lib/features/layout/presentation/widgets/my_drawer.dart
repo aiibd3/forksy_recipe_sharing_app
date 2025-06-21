@@ -70,7 +70,9 @@ class MyDrawer extends StatelessWidget {
               MyDrawerTile(
                 title: "L O G O U T",
                 icon: Icons.logout,
-                onTap: () {},
+                onTap: () async {
+                  await context.read<AuthCubit>().logout();
+                },
               ),
             ],
           ),
