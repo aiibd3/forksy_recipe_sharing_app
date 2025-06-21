@@ -39,7 +39,7 @@ class _BotPageBody extends StatelessWidget {
             bottom: false,
             child: Column(
               children: [
-                const DefaultHeader(title: "Flora Bot"),
+                const DefaultHeader(title: "foksy Bot"),
                 Expanded(
                   child: Chat(
                     disableImageGallery: false,
@@ -51,11 +51,10 @@ class _BotPageBody extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Hero(
-                          tag: "bot",
+                          tag: "bot Froksy",
                           child: Lottie.asset(
                             'assets/lottie/bot2.json',
                             height: 20.h,
-                            // animate: !cubit.isPlaying,
                             repeat: !cubit.isPlaying,
                           ),
                         ),
@@ -66,7 +65,7 @@ class _BotPageBody extends StatelessWidget {
                             totalRepeatCount: 1,
                             animatedTexts: [
                               TyperAnimatedText(
-                                "Hi, I'm Flora Bot\nHow can I help you?",
+                                "Hi, I'm Froksy Bot\nHow can I help you?",
                                 textStyle: AppFontStyles.poppins800_16,
                                 textAlign: TextAlign.center,
                                 speed: const Duration(milliseconds: 70),
@@ -80,7 +79,6 @@ class _BotPageBody extends StatelessWidget {
                       backgroundColor: Colors.transparent,
                       inputBackgroundColor: AppColors.secondaryColor,
                       inputTextColor: Colors.white,
-                      // secondaryColor: AppColors.li,
                       messageBorderRadius: 25,
                       attachmentButtonIcon: const Icon(
                         Icons.attach_file,
@@ -93,7 +91,6 @@ class _BotPageBody extends StatelessWidget {
                       highlightMessageColor:
                           AppColors.secondaryColor.withOpacity(0.9),
                     ),
-
                     messages: BotCubit.messages.reversed.toList(),
                     isAttachmentUploading: true,
                     onSendPressed: (text) {
@@ -101,7 +98,6 @@ class _BotPageBody extends StatelessWidget {
                       cubit.sendMessage(text.text);
                     },
                     user: cubit.user,
-                    // onAttachmentPressed: _handleImageSelection,
                   ),
                 ),
               ],
@@ -112,5 +108,3 @@ class _BotPageBody extends StatelessWidget {
     );
   }
 }
-
-// AIzaSyCa4KIqdrbpw0tLMeIJLFsEc3m6Etp4LEM

@@ -14,13 +14,11 @@ class BotCubit extends Cubit<BotState> {
   final player = AudioPlayer();
   final botUser = const types.User(
     id: 'bot',
-    firstName: 'Flora Bot',
-    // imageUrl: 'https://avatars.githubusercontent.com/u/10099900?v=4',
+    firstName: 'Froksy Bot',
   );
   final user = const types.User(
     id: 'user',
     firstName: 'User',
-    // imageUrl: 'https://avatars.githubusercontent.com/u/10099900?v=4',
   );
 
   bool isPlaying = false;
@@ -28,11 +26,11 @@ class BotCubit extends Cubit<BotState> {
 
   void load() async {
     await Future.wait([
-      player.setSourceAsset("audio/Flora Bot.wav"),
+      player.setSourceAsset("audio/froksy Bot.wav"),
       Future.delayed(const Duration(seconds: 1))
     ]);
 
-    if (messages.isEmpty) player.play(AssetSource("audio/Flora Bot.wav"));
+    if (messages.isEmpty) player.play(AssetSource("audio/froksy Bot.wav"));
 
     isPlaying = true;
 
@@ -51,16 +49,46 @@ class BotCubit extends Cubit<BotState> {
 
     final model = GenerativeModel(
       model: 'gemini-1.5-flash-latest',
-      apiKey: "AIzaSyCa4KIqdrbpw0tLMeIJLFsEc3m6Etp4LEM",
+      apiKey: "AIzaSyCwBFnrRnBhpw--wz1hYv7zhkP-bpWfTaE",
     );
+
     String prompt = "";
     if (messages.length == 1) {
-      log("first message");
       prompt =
-          "Hi gemini i want to check this message { $message }\n and act like your name is flora bot and your model is train to answer question about plants only and please use chat history i provide you";
+          '''Hi Gemini, you are a cooking assistant bot called "Forksy Bot".
+      You ONLY respond to questions about food, recipes, ingredients, or cooking tips.
+      Please analyze the following user message: "$message"And respond in the following structured format in English only:
+      Title: [Recipe Name or Answer Title]
+      Ingredients: 
+      - [Ingredient 1] 
+      - [Ingredient 2]
+      Steps:
+      1. [Step 1]
+      2. [Step 2]
+      
+      If the message is NOT related to food or cooking, respond with:
+      "I'm a cooking assistant and I can only help with recipes or food-related questions."
+      ''';
     } else {
-      prompt =
-          "check this message { $message }\n and answer if question about plants only and please use chat history i provide you";
+      prompt = '''
+      A new cooking-related question was asked: "$message"
+      Use the chat history provided to make your answer smarter.
+      
+      Respond only if it's food-related, and use this format:
+      
+      Title: [Recipe Name or Answer Title]
+      
+      Ingredients: 
+      - [Ingredient 1]
+      - [Ingredient 2]
+      
+      Steps:
+      1. [Step 1]
+      2. [Step 2]
+      
+      If the question is not about cooking or food, say:
+      "I'm a cooking assistant and I can only help with recipes or food-related questions."
+      ''';
     }
 
     var chat = model.startChat(
