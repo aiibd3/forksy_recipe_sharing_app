@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/core/extensions/context_extension.dart';
@@ -24,9 +25,10 @@ class LoginPage extends StatelessWidget {
         if (state is Authenticated) {
           context.goToReplace(RoutesName.layout);
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Login successfully"),
-            ),
+            SnackBar(
+                content: Text(
+              "auth.loginSuccess".tr(),
+            )),
           );
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -54,7 +56,7 @@ class _LoginPageBody extends StatelessWidget {
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
         title: Text(
-          "Login".toUpperCase(),
+          "auth.login".tr().toUpperCase(),
           style: GoogleFonts.aBeeZee().copyWith(
             fontSize: 20.sp,
             fontWeight: FontWeight.w500,
@@ -72,15 +74,15 @@ class _LoginPageBody extends StatelessWidget {
                 Image.asset(AppAssets.logoForksy, width: 50.w, height: 25.h),
                 SizedBox(height: 2.h),
                 EmailTextField(
-                  hintText: "Enter your email",
+                  hintText: "auth.enterEmail".tr(),
                   controller: cubit.emailController,
                   validator: (text) {
                     LogsManager.info("Validator called value: $text");
                     if (text!.isEmpty) {
-                      return "This field is required";
+                      return "auth.requiredField".tr();
                     }
                     if (!RegexManager.isEmail(text)) {
-                      return "Please enter a valid email address";
+                      return "auth.invalidEmail".tr();
                     }
                     return null;
                   },
@@ -91,40 +93,21 @@ class _LoginPageBody extends StatelessWidget {
                 ),
                 SizedBox(height: 2.5.h),
                 PasswordTextField(
-                  hintText: "Enter your password",
+                  hintText: "auth.enterPassword".tr(),
                   controller: cubit.passwordController,
                   validator: (text) {
                     if (text!.isEmpty) {
-                      return "This field is required";
+                      return "auth.requiredField".tr();
                     }
                     if (text.length < 6) {
-                      return "Password must be at least 6 characters";
+                      return "auth.shortPassword".tr();
                     }
                     return null;
                   },
                 ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                    ),
-                    onPressed: () {
-                      // Navigator.pushNamed(context, RoutesName.forgotPassword);
-                    },
-                    child: Text(
-                      "Forgot password?",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15.sp,
-                      ),
-                    ),
-                  ),
-                ),
                 const SizedBox(height: 20),
                 CustomLoadingButton(
-                  title: "Login",
+                  title: "auth.login".tr(),
                   onPressed: () async {
                     if (cubit.formKey.currentState!.validate()) {
                       await cubit.login(
@@ -139,7 +122,7 @@ class _LoginPageBody extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Don't have an account?",
+                      "auth.dontHaveAccount".tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
@@ -152,7 +135,7 @@ class _LoginPageBody extends StatelessWidget {
                         context.goToReplace(RoutesName.register);
                       },
                       child: Text(
-                        "Register",
+                        "auth.registerNow".tr(),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,

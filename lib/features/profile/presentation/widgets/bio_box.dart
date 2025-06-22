@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -22,7 +23,7 @@ class BioBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
-        text.isNotEmpty ? text : 'No bio yet... :(',
+        text.isNotEmpty ? text : 'profile.noBio'.tr(),
         style:
             AppFontStyles.poppins400_14.copyWith(color: AppColors.whiteColor),
         maxLines: 2,

@@ -1,1 +1,75 @@
-{}
+{
+  "homeTab": {
+    "title": "Home Tab",
+    "noPosts": "No posts available",
+    "pullToLoad": "Press pull to load posts"
+  },
+  "drawer": {
+    "home": "H O M E",
+    "profile": "P R O F I L E",
+    "settings": "S E T T I N G S",
+    "search": "S E A R C H",
+    "logout": "L O G O U T",
+    "language": "L A N G U A G E",
+    "english": "E N G L I S H",
+    "arabic": "A R A B I C"
+  },
+  "bot": {
+    "title": "Forksy Bot",
+    "welcome": "Hi, I'm Forksy Bot\nHow can I help you?",
+    "notRelated": "I'm a cooking assistant and I can only help with recipes or food-related questions.",
+    "firstPrompt": "Hi Gemini, you are a cooking assistant bot called 'Forksy Bot'. You ONLY respond to questions about food, recipes, ingredients, or cooking tips. Please analyze the following user message: \"{message}\" And respond in the following structured format in English only:\n\nTitle: [Recipe Name or Answer Title]\nIngredients:\n- [Ingredient 1]\n- [Ingredient 2]\nSteps:\n1. [Step 1]\n2. [Step 2]\n\nIf the message is NOT related to food or cooking, respond with:\n\"{notRelated}\"",
+    "followUpPrompt": "A new cooking-related question was asked: \"{message}\"\nUse the chat history provided to make your answer smarter.\n\nRespond only if it's food-related, and use this format:\n\nTitle: [Recipe Name or Answer Title]\nIngredients:\n- [Ingredient 1]\n- [Ingredient 2]\nSteps:\n1. [Step 1]\n2. [Step 2]\n\nIf the question is not about cooking or food, say:\n\"{notRelated}\""
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "enterEmail": "Enter your email",
+    "enterPassword": "Enter your password",
+    "enterName": "Enter your name",
+    "forgotPassword": "Forgot password?",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "registerNow": "Register Now",
+    "loginSuccess": "Login successfully",
+    "registerSuccess": "Registration successful!",
+    "requiredField": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "shortPassword": "Password must be at least 6 characters"
+  },
+  "profile": {
+    "edit": "Edit Profile",
+    "bioLabel": "Bio",
+    "noBio": "No bio yet... :(",
+    "fullName": "Full name",
+    "email": "E-mail",
+    "noUser": "No user logged in.",
+    "noData": "No user data available."
+  },
+  "editProfile": {
+    "title": "Edit Profile",
+    "bio": "Bio",
+    "enterBio": "Enter your bio",
+    "saving": "Updating profile, please wait...",
+    "saveChanges": "Save Changes"
+  },
+  "posts": {
+    "title": "Posts",
+    "refresh": "Refresh",
+    "upload": "Upload Post",
+    "pickImage": "Pick an image",
+    "enterCaption": "Write something...",
+    "uploading": "Uploading post...",
+    "uploadSuccess": "Post uploaded successfully!",
+    "uploadError": "Error: ",
+    "deletePost": "Delete post?",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "noComments": "No comments yet",
+    "refreshPrompt": "Press refresh to load posts"
+  },
+  "comments": {
+    "deleteComment": "Delete Comment?",
+    "save": "Save"
+  }
+}

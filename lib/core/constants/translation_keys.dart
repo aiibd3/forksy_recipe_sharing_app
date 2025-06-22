@@ -1,6 +1,6 @@
 
-class TranslationKeys {
-  TranslationKeys._();
+class TrKeys {
+  TrKeys._();
 
   
 }

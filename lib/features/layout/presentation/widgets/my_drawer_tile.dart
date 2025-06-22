@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart' hide TextDirection;
+
+import '../../../../core/theme/app_colors.dart';
 
 class MyDrawerTile extends StatelessWidget {
   final String title;
@@ -6,7 +9,10 @@ class MyDrawerTile extends StatelessWidget {
   final void Function()? onTap;
 
   const MyDrawerTile(
-      {super.key, required this.title, required this.icon, required this.onTap});
+      {super.key,
+      required this.title,
+      required this.icon,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +26,16 @@ class MyDrawerTile extends StatelessWidget {
         color: Colors.black,
       ),
       onTap: onTap,
+      trailing: Directionality(
+        textDirection: TextDirection.ltr,
+        child: Icon(
+          context.locale.languageCode == "en"
+              ? Icons.arrow_forward_ios
+              : Icons.arrow_back_ios,
+          color: AppColors.secondaryColor,
+          size: 20,
+        ),
+      ),
     );
   }
 }

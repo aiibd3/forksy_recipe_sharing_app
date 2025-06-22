@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,7 +52,11 @@ class _UploadPostPageState extends State<UploadPostPage> {
   void uploadPost() {
     if (imagePickedFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please select an image!")),
+        const SnackBar(
+          content: Text(
+            "Please select an image!",
+          ),
+        ),
       );
       return;
     }
@@ -97,17 +102,18 @@ class _UploadPostPageState extends State<UploadPostPage> {
       listener: (context, state) {
         if (state is PostLoading || state is PostUpLoading) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Uploading post...")),
+            SnackBar(content: Text("posts.uploading".tr())),
           );
         }
         if (state is PostLoaded) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Post uploaded successfully!")),
+            SnackBar(content: Text("posts.updatedSuccess".tr())),
           );
           Navigator.pop(context);
         } else if (state is PostFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Error: ${state.error}")),
+            SnackBar(
+                content: Text("${"posts.uploadError".tr()}${state.error}")),
           );
         }
       },
@@ -117,7 +123,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
   Widget buildUploadPostBody() {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Upload Post"),
+        title: Text("posts.upload".tr()),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -161,9 +167,9 @@ class _UploadPostPageState extends State<UploadPostPage> {
               TextField(
                 controller: textController,
                 maxLines: 3,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: "Write something...",
+                  hintText: "posts.upload".tr(),
                 ),
               ),
             ],

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/core/extensions/context_extension.dart';
@@ -5,6 +6,7 @@ import 'package:forksy/features/layout/presentation/widgets/my_drawer_tile.dart'
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
+import 'language_toggle.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -31,13 +33,13 @@ class MyDrawer extends StatelessWidget {
               ),
               // home tile
               MyDrawerTile(
-                title: "H O M E",
+                title: 'drawer.home'.tr(),
                 icon: Icons.home_outlined,
                 onTap: context.goBack,
               ),
               // profile tile
               MyDrawerTile(
-                title: "P R O F I L E",
+                title: 'drawer.profile'.tr(),
                 icon: Icons.person,
                 onTap: () {
                   context.goBack();
@@ -55,20 +57,23 @@ class MyDrawer extends StatelessWidget {
               ),
               // search tile
               MyDrawerTile(
-                title: "S E A R C H",
+                title: 'drawer.search'.tr(),
                 icon: Icons.search,
                 onTap: () {},
               ),
               // settings tile
               MyDrawerTile(
-                title: "S E T T I N G S",
+                title: 'drawer.settings'.tr(),
                 icon: Icons.settings,
                 onTap: () {},
               ),
+
+              const LanguageToggle(),
+
               const Spacer(),
               // logout tile
               MyDrawerTile(
-                title: "L O G O U T",
+                title: 'drawer.logout'.tr(),
                 icon: Icons.logout,
                 onTap: () async {
                   await context.read<AuthCubit>().logout();

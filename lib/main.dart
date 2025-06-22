@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +25,8 @@ Future<void> main() async {
   );
 
   await Hive.initFlutter();
+
+  await EasyLocalization.ensureInitialized();
 
   await Fcm.fcmInit();
 
@@ -58,7 +61,16 @@ Future<void> main() async {
           ),
         ),
       ],
-      child: const ForksyApp(),
+      child: EasyLocalization(
+          supportedLocales: [
+            Locale('ar'),
+            Locale('en'),
+          ],
+          path: 'assets/translations',
+          fallbackLocale: Locale('ar'),
+          saveLocale: true,
+          startLocale: Locale('ar'),
+          child: const ForksyApp()),
     ),
   );
 }

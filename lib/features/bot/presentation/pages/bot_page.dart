@@ -39,7 +39,7 @@ class _BotPageBody extends StatelessWidget {
             bottom: false,
             child: Column(
               children: [
-                const DefaultHeader(title: "foksy Bot"),
+                DefaultHeader(title: "bot.title".tr()),
                 Expanded(
                   child: Chat(
                     disableImageGallery: false,
@@ -65,7 +65,7 @@ class _BotPageBody extends StatelessWidget {
                             totalRepeatCount: 1,
                             animatedTexts: [
                               TyperAnimatedText(
-                                "Hi, I'm Froksy Bot\nHow can I help you?",
+                                "bot.welcome".tr(),
                                 textStyle: AppFontStyles.poppins800_16,
                                 textAlign: TextAlign.center,
                                 speed: const Duration(milliseconds: 70),

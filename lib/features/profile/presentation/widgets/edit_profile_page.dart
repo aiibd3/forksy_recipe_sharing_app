@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,7 +65,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return BlocConsumer<ProfileCubit, ProfileState>(
       builder: (context, state) {
         if (state is ProfileLoading) {
-          return const Scaffold(
+          return Scaffold(
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -75,7 +76,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   SizedBox(
                     height: 10,
                   ),
-                  Text("Updating profile, please wait..."),
+                  Text("editProfile.saving".tr()),
                 ],
               ),
             ),
@@ -95,8 +96,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget buildEditPage({double? uploadProgress = 0.0}) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Edit Profile",
+        title: Text(
+          "editProfile.title".tr(),
           style: TextStyle(color: AppColors.grayColor),
         ),
         centerTitle: true,
@@ -158,8 +159,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
             SizedBox(height: 2.h),
 
             // Bio Section
-            const Text(
-              "Bio",
+            Text(
+              "editProfile.bio".tr(),
               style: TextStyle(
                 color: AppColors.grayColor,
                 fontSize: 20,
@@ -169,9 +170,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
             SizedBox(height: 2.h),
             TextField(
               controller: bioController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Enter your bio',
+                labelText: "editProfile.enterBio".tr(),
               ),
             ),
             SizedBox(height: 2.h),
@@ -180,7 +181,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               onPressed: () {
                 updateProfile();
               },
-              child: const Text("Save Changes"),
+              child: Text("editProfile.saveChanges".tr()),
             ),
           ],
         ),

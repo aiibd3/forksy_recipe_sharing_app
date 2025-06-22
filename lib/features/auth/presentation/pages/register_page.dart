@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/core/extensions/context_extension.dart';
@@ -25,11 +26,11 @@ class RegisterPage extends StatelessWidget {
           // Navigate to home screen on successful registration
           LogsManager.info("Registration successful!");
           context.goToReplace(RoutesName.auth);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Registration successful!")),
-          );
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("auth.registerSuccess".tr()),
+          ));
         } else if (state is AuthError) {
-          // Show error message using SnackBar
+          // Show error message using SnackBara
           LogsManager.error(state.error);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),
@@ -56,7 +57,7 @@ class _RegisterPageBody extends StatelessWidget {
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
         title: Text(
-          "Login".toUpperCase(),
+          "auth.register".tr().toUpperCase(),
           style: GoogleFonts.aBeeZee().copyWith(
             color: Colors.white,
             fontSize: 20.sp,
@@ -77,10 +78,10 @@ class _RegisterPageBody extends StatelessWidget {
                     Icons.person,
                     color: AppColors.primaryColor,
                   ),
-                  hintText: "Enter your name",
+                  hintText: "auth.enterName".tr(),
                   validator: (text) {
                     if (text!.isEmpty) {
-                      return "This field is required";
+                      return "auth.requiredField".tr();
                     }
                     return null;
                   },
@@ -88,15 +89,15 @@ class _RegisterPageBody extends StatelessWidget {
                 ),
                 SizedBox(height: 2.5.h),
                 EmailTextField(
-                  hintText: "Enter your email",
+                  hintText: "auth.enterEmail".tr(),
                   controller: cubit.emailController,
                   validator: (text) {
                     LogsManager.info("Validator called value: $text");
                     if (text!.isEmpty) {
-                      return "This field is required";
+                      return "auth.requiredField".tr();
                     }
                     if (!RegexManager.isEmail(text)) {
-                      return "Please enter a valid email address";
+                      return "auth.invalidEmail".tr();
                     }
                     return null;
                   },
@@ -107,13 +108,13 @@ class _RegisterPageBody extends StatelessWidget {
                 ),
                 SizedBox(height: 2.5.h),
                 PasswordTextField(
-                  hintText: "Enter your password",
+                  hintText: "auth.enterPassword".tr(),
                   validator: (text) {
                     if (text!.isEmpty) {
-                      return "This field is required";
+                      return "auth.requiredField".tr();
                     }
                     if (text.length < 6) {
-                      return "Password must be at least 6 characters";
+                      return "auth.shortPassword".tr();
                     }
                     return null;
                   },
@@ -121,7 +122,7 @@ class _RegisterPageBody extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 CustomLoadingButton(
-                  title: "Register Now",
+                  title: "auth.register".tr(),
                   onPressed: () async {
                     if (cubit.formKey.currentState!.validate()) {
                       await cubit.register(
@@ -137,7 +138,7 @@ class _RegisterPageBody extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Already have an account?",
+                      "auth.alreadyHaveAccount".tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
@@ -150,7 +151,7 @@ class _RegisterPageBody extends StatelessWidget {
                         context.goToReplace(RoutesName.auth);
                       },
                       child: Text(
-                        "Login",
+                        "auth.login".tr(),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,

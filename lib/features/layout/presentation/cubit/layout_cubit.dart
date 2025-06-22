@@ -30,32 +30,3 @@ class LayoutCubit extends Cubit<LayoutState> {
     emit(ChangeTabState());
   }
 }
-
-// @injectable
-// class CategoryCubit extends Cubit<CategoryState> {
-//   final GetCategoriesUseCase getCategories;
-//
-//   CategoryCubit(this.getCategories) : super(CategoryInitial());
-//
-//   Future<void> fetchCategories() async {
-//     emit(CategoryLoading());
-//     try {
-//       final result = await getCategories();
-//       switch (result) {
-//         case SuccessRequest<List<CategoryEntity>>():
-//           emit(CategoryLoaded(result.data));
-//         case FailedRequest<List<CategoryEntity>>():
-//           emit(CategoryError(result.exception.errorMessage));
-//       }
-//     } catch (e) {
-//       emit(CategoryError("Failed to fetch categories"));
-//     }
-//   }
-//
-//   void setActiveCategory(int index) {
-//     if (state is CategoryLoaded) {
-//       final currentState = state as CategoryLoaded;
-//       emit(currentState.copyWith(activeIndex: index));
-//     }
-//   }
-// }

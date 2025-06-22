@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/core/extensions/context_extension.dart';
@@ -50,6 +51,7 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    context.locale;
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is UnAuthenticated) {
@@ -58,7 +60,7 @@ class _HomeTabState extends State<HomeTab> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Home Tab"),
+          title: Text("homeTab.title".tr()),
           backgroundColor: AppColors.primaryColor,
         ),
         drawer: const MyDrawer(),
@@ -74,7 +76,7 @@ class _HomeTabState extends State<HomeTab> {
                   onRefresh: refreshPosts,
                   color: AppColors.primaryColor,
                   showChildOpacityTransition: false,
-                  child: const Center(child: Text("No posts available")),
+                  child: Center(child: Text("homeTab.noPosts".tr())),
                 );
               }
 
@@ -98,7 +100,7 @@ class _HomeTabState extends State<HomeTab> {
                 onRefresh: refreshPosts,
                 color: AppColors.primaryColor,
                 showChildOpacityTransition: false,
-                child: const Center(child: Text("Press pull to load posts")),
+                child: Center(child: Text("homeTab.pullToLoad".tr())),
               );
             }
           },

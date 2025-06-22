@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,9 +39,9 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     if (authCubit.currentUser == null) {
-      return const Scaffold(
+      return Scaffold(
         body: Center(
-          child: Text("No user logged in."),
+          child: Text("profile.noUser".tr()),
         ),
       );
     }
@@ -110,26 +111,26 @@ class _ProfilePageState extends State<ProfilePage> {
                           );
                         },
                         name: profileUser.name,
-                        role: 'Edit Profile',
+                        role: "profile.edit".tr(),
                         imageUrl: profileUser.profileImage != null &&
                                 profileUser.profileImage!.isNotEmpty
                             ? profileUser.profileImage!
                             : 'assets/images/user2.png',
                       ),
                       SizedBox(height: 4.h),
-                      const Text("bio "),
+                      Text("profile.bioLabel".tr()),
                       BioBox(
-                        text: profileUser.bio ?? 'No bio yet... :(',
+                        text: profileUser.bio ?? "profile.noBio".tr(),
                       ),
                       SizedBox(height: 2.h),
                       ProfileTextField(
-                        label: 'Full name',
+                        label: "profile.fullName".tr(),
                         initialValue: profileUser.name,
                         isEditable: false,
                       ),
                       SizedBox(height: 2.h),
                       ProfileTextField(
-                        label: 'E-mail',
+                        label: "profile.email".tr(),
                         initialValue: profileUser.email,
                         isEditable: false,
                       ),
@@ -151,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
           return Scaffold(
             body: Center(
               child: Text(
-                'No user data available.',
+                "profile.noData".tr(),
                 style: TextStyle(fontSize: 16.sp, color: AppColors.blackColor),
               ),
             ),

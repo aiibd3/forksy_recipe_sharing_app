@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/features/auth/domain/entities/app_user.dart';
@@ -37,13 +38,13 @@ class _CommentTileState extends State<CommentTile> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Delete Comment?"),
+        title: Text("comments.deleteComment".tr()),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text("Cancel"),
+            child: Text("posts.cancel".tr()),
           ),
           TextButton(
             onPressed: () {
@@ -52,7 +53,7 @@ class _CommentTileState extends State<CommentTile> {
                   .deleteComment(widget.comment.postId, widget.comment.id);
               Navigator.pop(context);
             },
-            child: const Text("Delete"),
+            child: Text("comments.delete".tr()),
           ),
         ],
       ),

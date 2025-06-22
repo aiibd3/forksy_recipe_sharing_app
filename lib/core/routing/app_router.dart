@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:forksy/core/routing/routes_name.dart';
-import 'package:forksy/features/layout/presentation/widgets/profile/settings_section.dart';
-
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/layout/presentation/pages/layout_page.dart';
@@ -26,10 +24,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case RoutesName.layout:
       return MaterialPageRoute(builder: (_) => const LayoutPage());
-
-    case RoutesName.settings:
-      return MaterialPageRoute(builder: (_) => const SettingsSection());
-
     default:
       return MaterialPageRoute(
         builder: (_) => const Scaffold(

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -116,14 +117,16 @@ class _PostTileState extends State<PostTile> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text("Cancel"),
+              child: Text(
+                "posts.delete".tr(),
+              ),
             ),
             TextButton(
               onPressed: () {
                 addComment();
                 Navigator.pop(context);
               },
-              child: const Text("Save"),
+              child: Text("comments.save".tr()),
             ),
           ]),
     );
@@ -150,21 +153,22 @@ class _PostTileState extends State<PostTile> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Delete post?"),
+        title: Text("posts.deletePost".tr()),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text("Cancel"),
+            child: Text("posts.cancel".tr()),
           ),
           TextButton(
-            onPressed: () {
-              widget.onDeletePressed!();
-              Navigator.pop(context);
-            },
-            child: const Text("Delete"),
-          ),
+              onPressed: () {
+                widget.onDeletePressed!();
+                Navigator.pop(context);
+              },
+              child: Text(
+                "posts.delete".tr(),
+              )),
         ],
       ),
     );
@@ -319,7 +323,11 @@ class _PostTileState extends State<PostTile> {
                     state.posts.firstWhere((post) => post.id == widget.post.id);
 
                 if (post.comments.isEmpty) {
-                  return const Center(child: Text("No comments yet"));
+                  return Center(
+                    child: Text(
+                      "posts.noComments".tr(),
+                    ),
+                  );
                 }
 
                 if (post.comments.isNotEmpty) {
@@ -341,9 +349,17 @@ class _PostTileState extends State<PostTile> {
               } else if (state is PostFailure) {
                 return Center(child: Text(state.error));
               } else {
-                return const Center(child: Text("Press refresh to load posts"));
+                return Center(
+                  child: Text(
+                    "posts.refreshPrompt".tr(),
+                  ),
+                );
               }
-              return const Center(child: Text("Press refresh to load posts"));
+              return Center(
+                child: Text(
+                  "posts.refreshPrompt".tr(),
+                ),
+              );
             },
           ),
         ],

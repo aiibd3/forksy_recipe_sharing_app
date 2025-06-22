@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,7 +24,7 @@ class _PostsPageBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Posts"),
+        title: Text("posts.title".tr()),
         centerTitle: true,
         actions: [
           IconButton(
@@ -31,6 +32,7 @@ class _PostsPageBody extends StatelessWidget {
               context.read<PostCubit>().fetchAllPosts();
             },
             icon: const Icon(Icons.refresh),
+            tooltip: "posts.refresh".tr(),
           ),
         ],
       ),

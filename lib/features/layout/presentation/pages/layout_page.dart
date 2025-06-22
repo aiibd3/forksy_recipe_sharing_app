@@ -44,33 +44,34 @@ class _LayoutPageBody extends StatelessWidget {
           extendBody: true,
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: FloatingActionButton(
-            focusColor: Colors.transparent,
-            hoverColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            backgroundColor: AppColors.secondaryColor,
-            shape: const CircleBorder(),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BlocProvider(
-                    create: (context) => PostCubit(
-                      postRepo: FirebasePostRepo(),
-                      storageRepo: FirebaseStorageRepo(),
-                    ),
-                    child: const UploadPostPage(),
+          floatingActionButton: cubit.activeTabIndex == 0
+              ? FloatingActionButton(
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  backgroundColor: AppColors.secondaryColor,
+                  shape: const CircleBorder(),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider(
+                          create: (context) => PostCubit(
+                            postRepo: FirebasePostRepo(),
+                            storageRepo: FirebaseStorageRepo(),
+                          ),
+                          child: const UploadPostPage(),
+                        ),
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    EneftyIcons.add_outline,
+                    color: AppColors.whiteColor,
+                    size: 25.sp,
                   ),
-                ),
-              );
-
-            },
-            child: Icon(
-              EneftyIcons.add_outline,
-              color: AppColors.whiteColor,
-              size: 25.sp,
-            ),
-          ),
+                )
+              : null,
           bottomNavigationBar: AnimatedBottomNavigationBar(
             elevation: 0.0,
             activeIndex: cubit.activeTabIndex,
