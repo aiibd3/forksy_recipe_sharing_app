@@ -20,6 +20,7 @@ class FirebaseProfileRepo implements ProfileRepo {
           await firebaseFirestore.collection('users').doc(uid).get();
 
       if (userDoc.exists && userDoc.data() != null) {
+        LogsManager.info('Fetched user from Firestore: ${userDoc.data()}');
         return ProfileUser.fromJson(userDoc.data()!);
       }
 
@@ -49,6 +50,61 @@ class FirebaseProfileRepo implements ProfileRepo {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);
       throw Exception("Firebase error: ${errorHandler.errorMessage}");
+    } catch (e) {
+      LogsManager.error("Unexpected error: $e");
+      throw Exception("Unexpected error occurred: $e");
+    }
+  }
+
+  @override
+  Future<void> toggleFollow(String currentUserId, String targetUserId) async {
+    try {
+      final currentUserDoc =
+          await firebaseFirestore.collection('users').doc(currentUserId).get();
+
+      final targetUserDoc =
+          await firebaseFirestore.collection('users').doc(targetUserId).get();
+
+      if (currentUserDoc.exists && targetUserDoc.exists) {
+        final currentUserData = currentUserDoc.data()!;
+        final targetUserData = targetUserDoc.data()!;
+
+
+        if (currentUserData != null && targetUserData != null) {
+          final List<String> currentUserFollowing =
+              List<String>.from(currentUserData['following'] ?? []);
+
+          if (currentUserFollowing.contains(targetUserId)) {
+            await firebaseFirestore
+                .collection('users')
+                .doc(currentUserId)
+                .update({
+              'following': FieldValue.arrayRemove([targetUserId])
+            });
+
+            await firebaseFirestore
+                .collection('users')
+                .doc(currentUserId)
+                .update({
+              'following': FieldValue.arrayRemove([currentUserId])
+            });
+          } else {
+            await firebaseFirestore
+                .collection('users')
+                .doc(currentUserId)
+                .update({
+              'following': FieldValue.arrayUnion([currentUserId])
+            });
+
+            await firebaseFirestore
+                .collection('users')
+                .doc(currentUserId)
+                .update({
+              'following': FieldValue.arrayUnion([targetUserId])
+            });
+          }
+        }
+      }
     } catch (e) {
       LogsManager.error("Unexpected error: $e");
       throw Exception("Unexpected error occurred: $e");

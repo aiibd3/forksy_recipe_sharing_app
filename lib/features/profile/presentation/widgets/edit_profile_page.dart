@@ -12,6 +12,7 @@ import 'package:forksy/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../auth/presentation/cubit/auth_cubit.dart';
 
 class EditProfilePage extends StatefulWidget {
   final ProfileUser user;
@@ -24,10 +25,30 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final bioController = TextEditingController();
-
   PlatformFile? imagePickedFile;
 
+  bool isOwner = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      final currentUser = context.read<AuthCubit>().currentUser;
+      setState(() {
+        isOwner = currentUser?.uid == widget.user.uid;
+        bioController.text = widget.user.bio ?? '';
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    bioController.dispose();
+    super.dispose();
+  }
+
   Future<void> pickImage() async {
+    if (!isOwner) return;
     final result = await FilePicker.platform.pickFiles(
       type: FileType.image,
       allowMultiple: false,
@@ -42,6 +63,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   void updateProfile() async {
+    if (!isOwner) return;
     final profileCubit = context.read<ProfileCubit>();
     final String uid = widget.user.uid;
     final imageMobilePath = imagePickedFile?.path;
@@ -73,9 +95,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   CircularProgressIndicator(
                     color: AppColors.primaryColor,
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   Text("editProfile.saving".tr()),
                 ],
               ),
@@ -93,12 +113,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget buildEditPage({double? uploadProgress = 0.0}) {
+  Widget buildEditPage() {
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "editProfile.title".tr(),
-          style: TextStyle(color: AppColors.grayColor),
+          style: const TextStyle(color: AppColors.grayColor),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -112,14 +132,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
           },
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.done_rounded,
-              color: AppColors.primaryColor,
-              size: 20.sp,
+          if (isOwner)
+            IconButton(
+              icon: Icon(
+                Icons.done_rounded,
+                color: AppColors.primaryColor,
+                size: 20.sp,
+              ),
+              onPressed: updateProfile,
             ),
-            onPressed: updateProfile,
-          )
         ],
       ),
       body: Padding(
@@ -128,34 +149,44 @@ class _EditProfilePageState extends State<EditProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             GestureDetector(
-              onTap: () async {
-                await pickImage();
-                setState(() {});
-              },
-              child: ClipOval(
-                child: SizedBox(
-                  width: 120,
-                  height: 120,
-                  child: imagePickedFile != null
-                      ? Image.file(
-                          File(imagePickedFile!.path!),
-                          fit: BoxFit.cover,
-                        )
-                      : CachedNetworkImage(
-                          imageUrl: widget.user.profileImage ?? '',
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                          errorWidget: (context, url, error) => Image.asset(
-                            'assets/images/default_avatar.png',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                ),
+              onTap: pickImage,
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  ClipOval(
+                    child: SizedBox(
+                      width: 120,
+                      height: 120,
+                      child: imagePickedFile != null
+                          ? Image.file(
+                              File(imagePickedFile!.path!),
+                              fit: BoxFit.cover,
+                            )
+                          : CachedNetworkImage(
+                              imageUrl: widget.user.profileImage ?? '',
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              errorWidget: (context, url, error) => Image.asset(
+                                'assets/images/sad_face.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                    ),
+                  ),
+                  CircleAvatar(
+                    radius: 15.sp,
+                    backgroundColor: AppColors.primaryColor,
+                    child: Icon(
+                      Icons.camera_alt,
+                      color: AppColors.whiteColor,
+                      size: 18.sp,
+                    ),
+                  ),
+                ],
               ),
             ),
-
             SizedBox(height: 2.h),
 
             // Bio Section
@@ -170,19 +201,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
             SizedBox(height: 2.h),
             TextField(
               controller: bioController,
+              enabled: isOwner,
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 labelText: "editProfile.enterBio".tr(),
               ),
             ),
             SizedBox(height: 2.h),
-
-            ElevatedButton(
-              onPressed: () {
-                updateProfile();
-              },
-              child: Text("editProfile.saveChanges".tr()),
-            ),
+            if (isOwner)
+              ElevatedButton(
+                onPressed: updateProfile,
+                child: Text("editProfile.saveChanges".tr()),
+              ),
           ],
         ),
       ),

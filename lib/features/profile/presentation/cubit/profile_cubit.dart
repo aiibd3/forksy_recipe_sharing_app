@@ -80,4 +80,24 @@ class ProfileCubit extends Cubit<ProfileState> {
       );
     }
   }
+
+  Future<void> toggleFollowUser(String currentUid, String targetUid) async {
+    try {
+      emit(ProfileLoading());
+      final currentUser = await profileRepo.fetchProfileUser(currentUid);
+      if (currentUser == null) {
+        emit(ProfileFailure('Failed to update user'));
+        return;
+      }
+      await profileRepo.toggleFollow(currentUid, targetUid);
+      await fetchProfileUser(currentUid);
+      emit(ProfileLoaded(user: currentUser));
+    } on FirebaseException catch (e) {
+      final errorHandler = FirebaseErrorHandler.handleError(e);
+      LogsManager.error(errorHandler.errorMessage);
+      emit(
+        ProfileFailure(errorHandler.errorMessage),
+      );
+    }
+  }
 }

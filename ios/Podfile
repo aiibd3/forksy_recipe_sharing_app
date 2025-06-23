@@ -1,7 +1,5 @@
-# Uncomment this line to define a global platform for your project
 platform :ios, '13.0'
 
-# CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
 project 'Runner', {
@@ -28,15 +26,14 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 flutter_ios_podfile_setup
 
 target 'Runner' do
-  use_frameworks!
-  use_modular_headers!
+  use_frameworks! # Ensure only use_frameworks! is used
 
-  # Firebase pods
-  pod 'Firebase/Core'
-  pod 'Firebase/Firestore'
-  pod 'Firebase/Auth'
-  pod 'Firebase/Messaging'
-  pod 'Firebase/Storage'
+  # Firebase pods with explicit versions
+  pod 'Firebase/Core', '~> 11.4.0'
+  pod 'Firebase/Firestore', '~> 11.4.0'
+  pod 'Firebase/Auth', '~> 11.4.0'
+  pod 'Firebase/Messaging', '~> 11.4.0'
+  pod 'Firebase/Storage', '~> 11.4.0'
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
   target 'RunnerTests' do
@@ -49,6 +46,9 @@ post_install do |installer|
     flutter_additional_ios_build_settings(target)
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
+      config.build_settings['SWIFT_VERSION'] = '5.0' # Ensure Swift 5.0
+      config.build_settings.delete('SWIFT_OBJC_BRIDGING_HEADER') # Remove bridging header
     end
   end
 end

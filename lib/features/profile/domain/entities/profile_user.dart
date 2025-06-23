@@ -3,6 +3,8 @@ import 'package:forksy/features/auth/domain/entities/app_user.dart';
 class ProfileUser extends AppUser {
   final String? bio;
   final String? profileImage;
+  final List<String>? followers;
+  final List<String>? following;
 
   ProfileUser({
     required super.uid,
@@ -10,11 +12,15 @@ class ProfileUser extends AppUser {
     required super.name,
     required this.bio,
     required this.profileImage,
+    required this.followers,
+    required this.following,
   });
 
   ProfileUser copyWith({
     String? newBio,
     String? newProfileImageURL,
+    List<String>? newFollowers,
+    List<String>? newFollowing,
   }) {
     return ProfileUser(
       uid: uid,
@@ -22,6 +28,8 @@ class ProfileUser extends AppUser {
       name: name,
       bio: newBio ?? bio,
       profileImage: newProfileImageURL ?? profileImage,
+      followers: newFollowers ?? followers,
+      following: newFollowing ?? following,
     );
   }
 
@@ -33,6 +41,8 @@ class ProfileUser extends AppUser {
       'name': name,
       'email': email,
       'profileImage': profileImage ?? '',
+      'followers': followers ?? [],
+      'following': following ?? [],
 
     };
   }
@@ -47,6 +57,9 @@ class ProfileUser extends AppUser {
               json['profileImage'].toString() != 'null')
           ? json['profileImage'].toString()
           : null,
+
+      followers: List<String>.from(json['followers'] ?? []),
+      following: List<String>.from(json['following'] ?? []),
     );
   }
 }

@@ -1,17 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_font_styles.dart';
-import '../../../auth/domain/entities/app_user.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../profile/domain/entities/profile_user.dart';
 import '../../../profile/presentation/cubit/profile_cubit.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
+import '../../../../core/theme/app_font_styles.dart';
+import '../../../auth/domain/entities/app_user.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/comment.dart';
 import '../../domain/entities/post.dart';
 import '../cubit/post_cubit.dart';
@@ -206,9 +205,6 @@ class _PostTileState extends State<PostTile> {
                           height: 60,
                           width: 60,
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => const SizedBox(
-                            height: 60,
-                          ),
                           errorWidget: (context, url, error) =>
                               const Icon(Icons.error),
                           imageBuilder: (context, imageProvider) => Container(

@@ -8,7 +8,7 @@ import '../../../../core/theme/app_font_styles.dart';
 
 class ProfileAvatar extends StatelessWidget {
   final String name;
-  final String role;
+  final String? role;
   final String imageUrl;
   final VoidCallback? onTap;
 
@@ -16,7 +16,7 @@ class ProfileAvatar extends StatelessWidget {
     super.key,
     this.onTap,
     required this.name,
-    required this.role,
+     this.role,
     required this.imageUrl,
   });
 
@@ -39,18 +39,18 @@ class ProfileAvatar extends StatelessWidget {
                     )
                   : null,
             ),
-            CircleAvatar(
-              radius: 15.sp,
-              backgroundColor: AppColors.primaryColor,
-              child: GestureDetector(
-                onTap: onTap,
-                child: Icon(
-                  Icons.camera_alt,
-                  color: AppColors.whiteColor,
-                  size: 18.sp,
-                ),
-              ),
-            ),
+            // CircleAvatar(
+            //   radius: 15.sp,
+            //   backgroundColor: AppColors.primaryColor,
+            //   child: GestureDetector(
+            //     onTap: onTap,
+            //     child: Icon(
+            //       Icons.camera_alt,
+            //       color: AppColors.whiteColor,
+            //       size: 18.sp,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
         SizedBox(height: 2.h),
@@ -59,7 +59,7 @@ class ProfileAvatar extends StatelessWidget {
           style: AppFontStyles.poppins600_18,
         ),
         Text(
-          role,
+          role ?? '',
           style:
               AppFontStyles.poppins400_14.copyWith(color: AppColors.grayColor),
         ),
@@ -75,6 +75,6 @@ class ProfileAvatar extends StatelessWidget {
         return FileImage(File(imageUrl));
       }
     }
-    return const AssetImage('assets/images/default_avatar.png');
+    return const AssetImage('assets/images/sad_face.png');
   }
 }
