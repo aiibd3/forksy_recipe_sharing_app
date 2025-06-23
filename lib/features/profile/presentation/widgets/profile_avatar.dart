@@ -7,7 +7,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_styles.dart';
 
 class ProfileAvatar extends StatelessWidget {
-  final String name;
+  // final String? name;
   final String? role;
   final String imageUrl;
   final VoidCallback? onTap;
@@ -15,8 +15,8 @@ class ProfileAvatar extends StatelessWidget {
   const ProfileAvatar({
     super.key,
     this.onTap,
-    required this.name,
-     this.role,
+    // this.name,
+    this.role,
     required this.imageUrl,
   });
 
@@ -39,25 +39,13 @@ class ProfileAvatar extends StatelessWidget {
                     )
                   : null,
             ),
-            // CircleAvatar(
-            //   radius: 15.sp,
-            //   backgroundColor: AppColors.primaryColor,
-            //   child: GestureDetector(
-            //     onTap: onTap,
-            //     child: Icon(
-            //       Icons.camera_alt,
-            //       color: AppColors.whiteColor,
-            //       size: 18.sp,
-            //     ),
-            //   ),
-            // ),
           ],
         ),
         SizedBox(height: 2.h),
-        Text(
-          name,
-          style: AppFontStyles.poppins600_18,
-        ),
+        // Text(
+        //   name ?? '',
+        //   style: AppFontStyles.poppins600_18,
+        // ),
         Text(
           role ?? '',
           style:

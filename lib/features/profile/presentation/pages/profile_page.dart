@@ -47,12 +47,26 @@ class _ProfilePageState extends State<ProfilePage> {
     if (state is! ProfileLoaded || currentUser == null) return;
 
     final profileUser = state.user;
+    final isFollowing = profileUser.followers!.contains(currentUser!.uid);
 
-    final isFollowing = profileUser.following!.contains(currentUser!.uid);
+    setState(() {
+      if (isFollowing) {
+        profileUser.followers!.remove(currentUser!.uid);
+      } else {
+        profileUser.followers!.add(currentUser!.uid);
+      }
+    });
 
-    profileCubit.toggleFollow(currentUser!.uid, widget.uid);
+    profileCubit.toggleFollow(currentUser!.uid, widget.uid).catchError((e) {
+      setState(() {
+        if (isFollowing) {
+          profileUser.followers!.add(currentUser!.uid);
+        } else {
+          profileUser.followers!.remove(currentUser!.uid);
+        }
+      });
+    });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +82,6 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: (context, state) {
         if (state is ProfileLoaded) {
           final profileUser = state.user;
-
           final bool canEdit = currentUser!.uid == profileUser.uid;
 
           return Scaffold(
@@ -125,20 +138,38 @@ class _ProfilePageState extends State<ProfilePage> {
                           );
                         }
                       },
-                      name: profileUser.name,
-                      // role: "profile.edit".tr(),
+                      // name: profileUser.name,
                       imageUrl: profileUser.profileImage?.isNotEmpty == true
                           ? profileUser.profileImage!
                           : 'assets/images/user2.png',
                     ),
-                    SizedBox(height: 4.h),
+                    BlocBuilder<PostCubit, PostState>(
+                      builder: (context, postState) {
+                        if (postState is PostLoaded) {
+                          postsCount = postState.posts
+                              .where((post) => post.userId == widget.uid)
+                              .length;
+                        }
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _buildStatColumn(postsCount, "profile.posts".tr()),
+                            _buildStatColumn(profileUser.followers?.length ?? 0,
+                                "profile.followers".tr()),
+                            _buildStatColumn(profileUser.following?.length ?? 0,
+                                "profile.following".tr()),
+                          ],
+                        );
+                      },
+                    ),
+                    // SizedBox(height: 2.h),
                     if (!canEdit)
                       FollowButton(
                         onPressed: followButtonPressed,
-                        isFollowing: profileUser.followers!.contains(currentUser!.uid),
+                        isFollowing:
+                            profileUser.followers!.contains(currentUser!.uid),
                       ),
-
-                    Text("profile.bioLabel".tr()),
+                    SizedBox(height: 2.h),
                     BioBox(
                       text: profileUser.bio ?? "profile.noBio".tr(),
                     ),
@@ -168,9 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                       return ListView.builder(
                         shrinkWrap: true,
-                        // ✅ مهم جداً
                         physics: const NeverScrollableScrollPhysics(),
-                        // ✅ يمنع التمرير المزدوج
                         itemCount: postsCount,
                         itemBuilder: (context, index) {
                           final post = userPosts[index];
@@ -221,6 +250,28 @@ class _ProfilePageState extends State<ProfilePage> {
           );
         }
       },
+    );
+  }
+
+  Widget _buildStatColumn(int count, String label) {
+    return Column(
+      children: [
+        Text(
+          '$count',
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+            color: AppColors.blackColor,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: AppColors.grayColor,
+          ),
+        ),
+      ],
     );
   }
 }

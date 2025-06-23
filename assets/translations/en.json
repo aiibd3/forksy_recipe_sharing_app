@@ -45,10 +45,12 @@
     "email": "E-mail",
     "noUser": "No user logged in.",
     "noData": "No user data available.",
-    "follow" : "Follow",
-    "unfollow" : "Unfollow",
-    "followers" : "Followers",
-    "following" : "Following"
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "followers": "Followers",
+    "following": "Following",
+    "posts": "Posts",
+    "noPosts": "No posts"
   },
   "editProfile": {
     "title": "Edit Profile",

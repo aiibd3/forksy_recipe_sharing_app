@@ -47,7 +47,9 @@
     "followers": "المتابعين",
     "following": "المتابعة",
     "follow": "متابعة",
-    "unfollow": "الغاء المتابعة"
+    "unfollow": "الغاء المتابعة",
+    "posts": "منشورات",
+    "noPosts": "لا توجد منشورات"
   },
   "editProfile": {
     "title": "تعديل الملف الشخصي",

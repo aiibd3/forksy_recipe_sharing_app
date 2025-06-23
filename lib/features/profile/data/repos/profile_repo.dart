@@ -59,14 +59,12 @@ class FirebaseProfileRepo implements ProfileRepo {
   @override
   Future<void> toggleFollow(String currentUserId, String targetUserId) async {
     try {
-      // استخدام معاملة لضمان اتساق البيانات
       await firebaseFirestore.runTransaction((transaction) async {
         final currentUserRef =
             firebaseFirestore.collection('users').doc(currentUserId);
         final targetUserRef =
             firebaseFirestore.collection('users').doc(targetUserId);
 
-        // جلب بيانات المستخدمين
         final currentUserDoc = await transaction.get(currentUserRef);
         final targetUserDoc = await transaction.get(targetUserRef);
 
@@ -78,9 +76,7 @@ class FirebaseProfileRepo implements ProfileRepo {
         final List<String> currentUserFollowing =
             List<String>.from(currentUserData['following'] ?? []);
 
-        // التحقق مما إذا كان المستخدم يتابع بالفعل
         if (currentUserFollowing.contains(targetUserId)) {
-          // إلغاء المتابعة
           transaction.update(currentUserRef, {
             'following': FieldValue.arrayRemove([targetUserId])
           });
@@ -88,7 +84,6 @@ class FirebaseProfileRepo implements ProfileRepo {
             'followers': FieldValue.arrayRemove([currentUserId])
           });
         } else {
-          // المتابعة
           transaction.update(currentUserRef, {
             'following': FieldValue.arrayUnion([targetUserId])
           });
