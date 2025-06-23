@@ -59,55 +59,49 @@ class FirebaseProfileRepo implements ProfileRepo {
   @override
   Future<void> toggleFollow(String currentUserId, String targetUserId) async {
     try {
-      final currentUserDoc =
-          await firebaseFirestore.collection('users').doc(currentUserId).get();
+      // استخدام معاملة لضمان اتساق البيانات
+      await firebaseFirestore.runTransaction((transaction) async {
+        final currentUserRef =
+            firebaseFirestore.collection('users').doc(currentUserId);
+        final targetUserRef =
+            firebaseFirestore.collection('users').doc(targetUserId);
 
-      final targetUserDoc =
-          await firebaseFirestore.collection('users').doc(targetUserId).get();
+        // جلب بيانات المستخدمين
+        final currentUserDoc = await transaction.get(currentUserRef);
+        final targetUserDoc = await transaction.get(targetUserRef);
 
-      if (currentUserDoc.exists && targetUserDoc.exists) {
-        final currentUserData = currentUserDoc.data()!;
-        final targetUserData = targetUserDoc.data()!;
-
-
-        if (currentUserData != null && targetUserData != null) {
-          final List<String> currentUserFollowing =
-              List<String>.from(currentUserData['following'] ?? []);
-
-          if (currentUserFollowing.contains(targetUserId)) {
-            await firebaseFirestore
-                .collection('users')
-                .doc(currentUserId)
-                .update({
-              'following': FieldValue.arrayRemove([targetUserId])
-            });
-
-            await firebaseFirestore
-                .collection('users')
-                .doc(currentUserId)
-                .update({
-              'following': FieldValue.arrayRemove([currentUserId])
-            });
-          } else {
-            await firebaseFirestore
-                .collection('users')
-                .doc(currentUserId)
-                .update({
-              'following': FieldValue.arrayUnion([currentUserId])
-            });
-
-            await firebaseFirestore
-                .collection('users')
-                .doc(currentUserId)
-                .update({
-              'following': FieldValue.arrayUnion([targetUserId])
-            });
-          }
+        if (!currentUserDoc.exists || !targetUserDoc.exists) {
+          throw Exception("User not found");
         }
-      }
-    } catch (e) {
-      LogsManager.error("Unexpected error: $e");
-      throw Exception("Unexpected error occurred: $e");
+
+        final currentUserData = currentUserDoc.data()!;
+        final List<String> currentUserFollowing =
+            List<String>.from(currentUserData['following'] ?? []);
+
+        // التحقق مما إذا كان المستخدم يتابع بالفعل
+        if (currentUserFollowing.contains(targetUserId)) {
+          // إلغاء المتابعة
+          transaction.update(currentUserRef, {
+            'following': FieldValue.arrayRemove([targetUserId])
+          });
+          transaction.update(targetUserRef, {
+            'followers': FieldValue.arrayRemove([currentUserId])
+          });
+        } else {
+          // المتابعة
+          transaction.update(currentUserRef, {
+            'following': FieldValue.arrayUnion([targetUserId])
+          });
+          transaction.update(targetUserRef, {
+            'followers': FieldValue.arrayUnion([currentUserId])
+          });
+        }
+      });
+
+      LogsManager.info("Follow toggled successfully for user: $targetUserId");
+    } catch (e, stack) {
+      LogsManager.error("Error toggling follow: $e\n$stack");
+      throw Exception("Failed to toggle follow: $e");
     }
   }
 }

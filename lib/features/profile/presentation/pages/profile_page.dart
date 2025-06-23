@@ -7,6 +7,7 @@ import 'package:forksy/core/theme/app_colors.dart';
 import 'package:forksy/features/auth/domain/entities/app_user.dart';
 import 'package:forksy/features/posts/presentation/cubit/post_cubit.dart';
 import 'package:forksy/features/posts/presentation/widgets/post_tile.dart';
+import 'package:forksy/features/profile/presentation/widgets/follow_button.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../auth/presentation/cubit/auth_cubit.dart';
@@ -39,6 +40,19 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     profileCubit.fetchProfileUser(widget.uid);
   }
+
+  void followButtonPressed() {
+    final state = profileCubit.state;
+
+    if (state is! ProfileLoaded || currentUser == null) return;
+
+    final profileUser = state.user;
+
+    final isFollowing = profileUser.following!.contains(currentUser!.uid);
+
+    profileCubit.toggleFollow(currentUser!.uid, widget.uid);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +132,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           : 'assets/images/user2.png',
                     ),
                     SizedBox(height: 4.h),
+                    if (!canEdit)
+                      FollowButton(
+                        onPressed: followButtonPressed,
+                        isFollowing: profileUser.followers!.contains(currentUser!.uid),
+                      ),
+
                     Text("profile.bioLabel".tr()),
                     BioBox(
                       text: profileUser.bio ?? "profile.noBio".tr(),
