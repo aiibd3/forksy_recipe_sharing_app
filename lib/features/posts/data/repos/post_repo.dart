@@ -171,4 +171,18 @@ class FirebasePostRepo implements PostRepo {
       throw Exception("Post not found");
     }
   }
+
+  @override
+  Future<Post> fetchPostById(String postId) async {
+    try {
+      final doc = await postsCollection.doc(postId).get();
+      if (!doc.exists) {
+        throw Exception("Post not found");
+      }
+      return Post.fromJson(doc.data() as Map<String, dynamic>);
+    } catch (e) {
+      LogsManager.error("Error fetching post by ID: $e");
+      throw Exception("Error fetching post by ID: $e");
+    }
+  }
 }

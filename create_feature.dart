@@ -4,7 +4,7 @@ import 'dart:io';
 String basePath = Directory.current.path;
 
 void main() {
-  var featureName = 'search';
+  var featureName = 'postDetails';
   var featurePath = '$basePath/lib/features/$featureName';
 
   createFolder(featurePath);

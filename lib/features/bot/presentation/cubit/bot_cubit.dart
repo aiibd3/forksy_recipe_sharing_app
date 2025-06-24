@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +36,11 @@ class BotCubit extends Cubit<BotState> {
     emit(BotLoadedSuccess());
   }
 
+  bool isArabic(String input) {
+    final arabicRegex = RegExp(r'[\u0600-\u06FF]');
+    return arabicRegex.hasMatch(input);
+  }
+
   Future<void> sendMessage(String message) async {
     messages.add(
       types.TextMessage(
@@ -52,43 +56,53 @@ class BotCubit extends Cubit<BotState> {
       apiKey: "AIzaSyCwBFnrRnBhpw--wz1hYv7zhkP-bpWfTaE",
     );
 
-    String prompt = "";
-    if (messages.length == 1) {
-      prompt =
-          '''Hi Gemini, you are a cooking assistant bot called "Forksy Bot".
-      You ONLY respond to questions about food, recipes, ingredients, or cooking tips.
-      Please analyze the following user message: "$message"And respond in the following structured format in English only:
-      Title: [Recipe Name or Answer Title]
-      Ingredients: 
-      - [Ingredient 1] 
-      - [Ingredient 2]
-      Steps:
-      1. [Step 1]
-      2. [Step 2]
-      
-      If the message is NOT related to food or cooking, respond with:
-      "I'm a cooking assistant and I can only help with recipes or food-related questions."
-      ''';
+    final bool isAr = isArabic(message);
+
+    String prompt;
+    if (isAr) {
+      prompt = '''
+مرحبًا Gemini، أنت بوت مساعد للطبخ اسمه "Forksy Bot".
+ترد فقط على الأسئلة المتعلقة بالأكل والوصفات والمكونات ونصائح الطهي.
+
+حلل هذه الرسالة: "$message"
+
+ورد على الشكل التالي **باللغة العربية فقط**:
+
+العنوان: [اسم الوصفة أو الموضوع]
+
+المكونات:
+- [مكون 1]
+- [مكون 2]
+
+الخطوات:
+1. [خطوة 1]
+2. [خطوة 2]
+
+لو كانت الرسالة غير متعلقة بالأكل، قل:
+"أنا مساعد طبخ ولا يمكنني الرد إلا على الأسئلة المتعلقة بالوصفات أو الطعام فقط."
+''';
     } else {
       prompt = '''
-      A new cooking-related question was asked: "$message"
-      Use the chat history provided to make your answer smarter.
-      
-      Respond only if it's food-related, and use this format:
-      
-      Title: [Recipe Name or Answer Title]
-      
-      Ingredients: 
-      - [Ingredient 1]
-      - [Ingredient 2]
-      
-      Steps:
-      1. [Step 1]
-      2. [Step 2]
-      
-      If the question is not about cooking or food, say:
-      "I'm a cooking assistant and I can only help with recipes or food-related questions."
-      ''';
+Hi Gemini, you are a cooking assistant bot called "Forksy Bot".
+You ONLY respond to questions about food, recipes, ingredients, or cooking tips.
+
+Analyze this message: "$message"
+
+Respond in this format in English only:
+
+Title: [Recipe Name or Answer Title]
+
+Ingredients: 
+- [Ingredient 1]
+- [Ingredient 2]
+
+Steps:
+1. [Step 1]
+2. [Step 2]
+
+If the message is NOT related to food or cooking, respond with:
+"I'm a cooking assistant and I can only help with recipes or food-related questions."
+''';
     }
 
     var chat = model.startChat(
@@ -96,8 +110,6 @@ class BotCubit extends Cubit<BotState> {
     );
 
     final response = await chat.sendMessage(Content.text(prompt));
-
-    log(response.text ?? "");
 
     messages.add(
       types.TextMessage(

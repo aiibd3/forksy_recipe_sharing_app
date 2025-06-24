@@ -15,4 +15,6 @@ abstract class PostRepo {
   Future<void> addComment(String postId, Comment comment);
 
   Future<void> deleteComment(String postId, String commentId);
+
+  Future<Post> fetchPostById(String postId);
 }
