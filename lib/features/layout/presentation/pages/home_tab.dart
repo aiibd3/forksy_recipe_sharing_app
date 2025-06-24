@@ -1,15 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:forksy/core/extensions/context_extension.dart';
-import 'package:forksy/features/layout/presentation/widgets/my_drawer.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-
-import '../../../../core/routing/routes_name.dart';
-import '../../../../core/theme/app_colors.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../posts/presentation/cubit/post_cubit.dart';
 import '../../../posts/presentation/widgets/post_tile.dart';
+import '../widgets/category/category_page.dart';
+import '../../../../core/extensions/context_extension.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../widgets/my_drawer.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -55,59 +55,95 @@ class _HomeTabState extends State<HomeTab> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is UnAuthenticated) {
-          context.removeAllAndPush(RoutesName.auth);
+          context.removeAllAndPush('/auth');
         }
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text("homeTab.title".tr()),
-          backgroundColor: AppColors.primaryColor,
+          title: Text(
+            "homeTab.title".tr(),
+            style: TextStyle(fontSize: 20.sp),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
         ),
         drawer: const MyDrawer(),
-        body: BlocBuilder<PostCubit, PostState>(
-          builder: (context, state) {
-            if (state is PostLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is PostFailure) {
-              return Center(child: Text(state.error));
-            } else if (state is PostLoaded) {
-              if (state.posts.isEmpty) {
-                return LiquidPullToRefresh(
-                  onRefresh: refreshPosts,
-                  color: AppColors.primaryColor,
-                  showChildOpacityTransition: false,
-                  child: Center(
-                    child: Text(
-                      "homeTab.noPosts".tr(),
-                    ),
-                  ),
-                );
-              }
-
-              return LiquidPullToRefresh(
-                onRefresh: refreshPosts,
-                color: AppColors.primaryColor,
-                showChildOpacityTransition: false,
-                child: ListView.builder(
-                  itemCount: state.posts.length,
-                  itemBuilder: (context, index) {
-                    final post = state.posts[index];
-                    return PostTile(
-                      post: post,
-                      onDeletePressed: () => deletePost(post.id),
-                    );
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue[50]!, Colors.white],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Column(
+            children: [
+              CategoryPage(
+                onShowAll: fetchAllPosts,
+              ),
+              Expanded(
+                child: BlocBuilder<PostCubit, PostState>(
+                  builder: (context, state) {
+                    if (state is PostLoading) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                            color: AppColors.primaryColor),
+                      );
+                    } else if (state is PostFailure) {
+                      return Center(
+                        child: Text(
+                          "${"posts.fetchError".tr()}: ${state.error}",
+                          style: TextStyle(fontSize: 16.sp),
+                        ),
+                      );
+                    } else if (state is PostLoaded) {
+                      if (state.posts.isEmpty) {
+                        return LiquidPullToRefresh(
+                          onRefresh: refreshPosts,
+                          color: AppColors.primaryColor,
+                          showChildOpacityTransition: false,
+                          child: Center(
+                            child: Text(
+                              "homeTab.noPosts".tr(),
+                              style: TextStyle(fontSize: 16.sp),
+                            ),
+                          ),
+                        );
+                      }
+                      return LiquidPullToRefresh(
+                        onRefresh: refreshPosts,
+                        color: AppColors.primaryColor,
+                        showChildOpacityTransition: false,
+                        child: ListView.builder(
+                          itemCount: state.posts.length,
+                          itemBuilder: (context, index) {
+                            final post = state.posts[index];
+                            return PostTile(
+                              post: post,
+                              onDeletePressed: () => deletePost(post.id),
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return LiquidPullToRefresh(
+                        onRefresh: refreshPosts,
+                        color: AppColors.primaryColor,
+                        showChildOpacityTransition: false,
+                        child: Center(
+                          child: Text(
+                            "homeTab.pullToLoad".tr(),
+                            style: TextStyle(fontSize: 16.sp),
+                          ),
+                        ),
+                      );
+                    }
                   },
                 ),
-              );
-            } else {
-              return LiquidPullToRefresh(
-                onRefresh: refreshPosts,
-                color: AppColors.primaryColor,
-                showChildOpacityTransition: false,
-                child: Center(child: Text("homeTab.pullToLoad".tr())),
-              );
-            }
-          },
+              ),
+            ],
+          ),
         ),
       ),
     );

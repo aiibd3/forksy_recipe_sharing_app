@@ -13,7 +13,6 @@ class Post {
   final List<String> likes;
   final List<Comment> comments;
   final bool isLiked;
-  final bool isDisliked;
   final bool isCommented;
   final bool isSaved;
 
@@ -28,7 +27,6 @@ class Post {
     required this.likes,
     required this.comments,
     required this.isLiked,
-    required this.isDisliked,
     required this.isCommented,
     required this.isSaved,
   });
@@ -44,7 +42,6 @@ class Post {
     List<String>? likes,
     List<Comment>? comments,
     bool? isLiked,
-    bool? isDisliked,
     bool? isCommented,
     bool? isSaved,
   }) {
@@ -59,7 +56,6 @@ class Post {
       likes: likes ?? this.likes,
       comments: comments ?? this.comments,
       isLiked: isLiked ?? this.isLiked,
-      isDisliked: isDisliked ?? this.isDisliked,
       isCommented: isCommented ?? this.isCommented,
       isSaved: isSaved ?? this.isSaved,
     );
@@ -77,7 +73,6 @@ class Post {
       'likes': likes,
       'comments': comments.map((comment) => comment.toJson()).toList(),
       'isLiked': isLiked,
-      'isDisliked': isDisliked,
       'isCommented': isCommented,
       'isSaved': isSaved,
     };
@@ -100,7 +95,6 @@ class Post {
       likes: List<String>.from(json['likes'] ?? []),
       comments: comments,
       isLiked: json['isLiked'] ?? false,
-      isDisliked: json['isDisliked'] ?? false,
       isCommented: json['isCommented'] ?? false,
       isSaved: json['isSaved'] ?? false,
     );

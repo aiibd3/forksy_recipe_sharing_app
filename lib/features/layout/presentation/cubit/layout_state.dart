@@ -19,38 +19,32 @@ final class LayoutLoadedFailure extends LayoutState {
 
 class ChangeTabState extends LayoutState {}
 
-
 // ? => profile
 class ChangeProfileState extends LayoutState {}
 
+abstract class CategoryState {
+  List<Object> get props => [];
+}
 
+class CategoryInitial extends CategoryState {}
 
+class CategoryLoading extends CategoryState {}
 
+class CategoryLoaded extends CategoryState {
+  final List<CategoryEntity> categories;
+  final int activeIndex;
 
+  CategoryLoaded(this.categories, {this.activeIndex = 0});
 
-//
-// abstract class CategoryState {}
-//
-// class CategoryInitial extends CategoryState {}
-//
-// class CategoryLoading extends CategoryState {}
-//
-// class CategoryError extends CategoryState {
-//   final String message;
-//
-//   CategoryError(this.message);
-// }
-//
-// class CategoryLoaded extends CategoryState {
-//   final List<CategoryEntity> categories;
-//   final int activeIndex;
-//
-//   CategoryLoaded(this.categories, {this.activeIndex = 0});
-//
-//   CategoryLoaded copyWith({List<CategoryEntity>? categories, int? activeIndex}) {
-//     return CategoryLoaded(
-//       categories ?? this.categories,
-//       activeIndex: activeIndex ?? this.activeIndex,
-//     );
-//   }
-// }
+  @override
+  List<Object> get props => [categories, activeIndex];
+}
+
+class CategoryError extends CategoryState {
+  final String message;
+
+  CategoryError(this.message);
+
+  @override
+  List<Object> get props => [message];
+}

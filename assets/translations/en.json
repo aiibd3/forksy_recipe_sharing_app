@@ -16,10 +16,7 @@
   },
   "bot": {
     "title": "Forksy Bot",
-    "welcome": "Hi, I'm Forksy Bot\nHow can I help you?",
-    "notRelated": "I'm a cooking assistant and I can only help with recipes or food-related questions.",
-    "firstPrompt": "Hi Gemini, you are a cooking assistant bot called 'Forksy Bot'. You ONLY respond to questions about food, recipes, ingredients, or cooking tips. Please analyze the following user message: \"{message}\" And respond in the following structured format in English only:\n\nTitle: [Recipe Name or Answer Title]\nIngredients:\n- [Ingredient 1]\n- [Ingredient 2]\nSteps:\n1. [Step 1]\n2. [Step 2]\n\nIf the message is NOT related to food or cooking, respond with:\n\"{notRelated}\"",
-    "followUpPrompt": "A new cooking-related question was asked: \"{message}\"\nUse the chat history provided to make your answer smarter.\n\nRespond only if it's food-related, and use this format:\n\nTitle: [Recipe Name or Answer Title]\nIngredients:\n- [Ingredient 1]\n- [Ingredient 2]\nSteps:\n1. [Step 1]\n2. [Step 2]\n\nIf the question is not about cooking or food, say:\n\"{notRelated}\""
+    "welcome": "Hi, I'm Forksy Bot\nHow can I help you?"
   },
   "auth": {
     "login": "Login",
@@ -76,7 +73,24 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "noComments": "No comments yet",
-    "refreshPrompt": "Press refresh to load posts"
+    "refreshPrompt": "Press refresh to load posts",
+    "selectCategory": "Please select a category!",
+    "imageSection": "Image",
+    "descriptionSection": "Description",
+    "categorySection": "Category",
+    "submit": "Submit",
+    "invalidCategory": "Invalid category selected.",
+    "unexpectedError": "An unexpected error occurred.",
+    "fetchError": "Failed to fetch posts.",
+    "deleteError": "Failed to delete post.",
+    "likeError": "Failed to update like status.",
+    "commentError": "Failed to update comment.",
+    "eastern": "Eastern",
+    "western": "Western",
+    "italian": "Italian",
+    "desserts": "Desserts",
+    "asian": "Asian",
+    "all": "All"
   },
   "comments": {
     "deleteComment": "Delete Comment?",

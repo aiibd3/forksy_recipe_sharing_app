@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -7,6 +9,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'core/cubit/app_bloc_observer.dart';
 import 'core/services/fcm.dart';
 import 'core/services/hive_storage.dart';
+import 'core/utils/logs_manager.dart';
 import 'features/auth/data/repos/auth_repo.dart';
 import 'features/auth/presentation/cubit/auth_cubit.dart';
 import 'features/posts/data/repos/post_repo.dart';
@@ -31,6 +34,51 @@ Future<void> main() async {
   await EasyLocalization.ensureInitialized();
 
   await Fcm.fcmInit();
+
+  Future<void> initializeCategories() async {
+    try {
+      final categoriesCollection =
+          FirebaseFirestore.instance.collection('categories');
+      const categories = [
+        {
+          'id': 'eastern',
+          'title': 'eastern',
+          'imageUrl': 'https://via.placeholder.com/100?text=Eastern'
+        },
+        {
+          'id': 'western',
+          'title': 'western',
+          'imageUrl': 'https://via.placeholder.com/100?text=Western'
+        },
+        {
+          'id': 'italian',
+          'title': 'italian',
+          'imageUrl': 'https://via.placeholder.com/100?text=Italian'
+        },
+        {
+          'id': 'desserts',
+          'title': 'desserts',
+          'imageUrl': 'https://via.placeholder.com/100?text=Desserts'
+        },
+        {
+          'id': 'asian',
+          'title': 'asian',
+          'imageUrl': 'https://via.placeholder.com/100?text=Asian'
+        },
+      ];
+      for (var category in categories) {
+        await categoriesCollection.doc(category['id']).set(category);
+      }
+      LogsManager.info('Categories initialized successfully');
+    } catch (e) {
+      LogsManager.error('Error initializing categories: $e');
+      rethrow;
+    }
+  }
+
+  if (kDebugMode) {
+    await initializeCategories();
+  }
 
   try {
     await HiveStorage.init();
