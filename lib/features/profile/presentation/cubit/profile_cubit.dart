@@ -83,14 +83,8 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   Future<void> toggleFollow(String currentUid, String targetUid) async {
     try {
-      emit(ProfileLoading());
+      // emit(ProfileLoading());
       await profileRepo.toggleFollow(currentUid, targetUid);
-      final updatedUser = await profileRepo.fetchProfileUser(targetUid);
-      if (updatedUser != null) {
-        emit(ProfileLoaded(user: updatedUser));
-      } else {
-        emit(ProfileFailure("Failed to fetch updated user profile"));
-      }
     } catch (e) {
       LogsManager.error(e.toString());
       emit(ProfileFailure(e.toString()));

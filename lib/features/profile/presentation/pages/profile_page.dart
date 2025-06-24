@@ -17,6 +17,8 @@ import '../widgets/edit_profile_page.dart';
 import '../widgets/profile_avatar.dart';
 import '../cubit/profile_cubit.dart';
 import '../widgets/bio_box.dart';
+import '../widgets/profile_status.dart';
+import 'follower_page.dart';
 
 class ProfilePage extends StatefulWidget {
   final String uid;
@@ -49,6 +51,8 @@ class _ProfilePageState extends State<ProfilePage> {
     final profileUser = state.user;
     final isFollowing = profileUser.followers!.contains(currentUser!.uid);
 
+    profileCubit.toggleFollow(currentUser!.uid, widget.uid);
+
     setState(() {
       if (isFollowing) {
         profileUser.followers!.remove(currentUser!.uid);
@@ -57,15 +61,15 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     });
 
-    profileCubit.toggleFollow(currentUser!.uid, widget.uid).catchError((e) {
-      setState(() {
-        if (isFollowing) {
-          profileUser.followers!.add(currentUser!.uid);
-        } else {
-          profileUser.followers!.remove(currentUser!.uid);
-        }
-      });
-    });
+    // profileCubit.toggleFollow(currentUser!.uid, widget.uid).catchError((e) {
+    //   setState(() {
+    //     if (isFollowing) {
+    //       profileUser.followers!.add(currentUser!.uid);
+    //     } else {
+    //       profileUser.followers!.remove(currentUser!.uid);
+    //     }
+    //   });
+    // });
   }
 
   @override
@@ -150,19 +154,22 @@ class _ProfilePageState extends State<ProfilePage> {
                               .where((post) => post.userId == widget.uid)
                               .length;
                         }
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _buildStatColumn(postsCount, "profile.posts".tr()),
-                            _buildStatColumn(profileUser.followers?.length ?? 0,
-                                "profile.followers".tr()),
-                            _buildStatColumn(profileUser.following?.length ?? 0,
-                                "profile.following".tr()),
-                          ],
+                        return ProfileStatus(
+                          postsCount: postsCount,
+                          followersCount: profileUser.followers!.length,
+                          followingCount: profileUser.following!.length,
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FollowerPage(
+                                followers: profileUser.followers!,
+                                following: profileUser.following!,
+                              ),
+                            ),
+                          ),
                         );
                       },
                     ),
-                    // SizedBox(height: 2.h),
                     if (!canEdit)
                       FollowButton(
                         onPressed: followButtonPressed,
@@ -250,28 +257,6 @@ class _ProfilePageState extends State<ProfilePage> {
           );
         }
       },
-    );
-  }
-
-  Widget _buildStatColumn(int count, String label) {
-    return Column(
-      children: [
-        Text(
-          '$count',
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-            color: AppColors.blackColor,
-          ),
-        ),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: AppColors.grayColor,
-          ),
-        ),
-      ],
     );
   }
 }

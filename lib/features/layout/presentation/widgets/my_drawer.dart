@@ -6,6 +6,7 @@ import 'package:forksy/features/layout/presentation/widgets/my_drawer_tile.dart'
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
+import '../../../search/presentation/pages/search_page.dart';
 import 'language_toggle.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -31,13 +32,11 @@ class MyDrawer extends StatelessWidget {
                 height: 1,
                 color: Colors.black,
               ),
-              // home tile
               MyDrawerTile(
                 title: 'drawer.home'.tr(),
                 icon: Icons.home_outlined,
                 onTap: context.goBack,
               ),
-              // profile tile
               MyDrawerTile(
                 title: 'drawer.profile'.tr(),
                 icon: Icons.person,
@@ -55,23 +54,18 @@ class MyDrawer extends StatelessWidget {
                   );
                 },
               ),
-              // search tile
               MyDrawerTile(
                 title: 'drawer.search'.tr(),
                 icon: Icons.search,
-                onTap: () {},
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SearchPage(),
+                  ),
+                ),
               ),
-              // settings tile
-              MyDrawerTile(
-                title: 'drawer.settings'.tr(),
-                icon: Icons.settings,
-                onTap: () {},
-              ),
-
               const LanguageToggle(),
-
               const Spacer(),
-              // logout tile
               MyDrawerTile(
                 title: 'drawer.logout'.tr(),
                 icon: Icons.logout,

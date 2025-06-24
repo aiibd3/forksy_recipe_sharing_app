@@ -13,6 +13,8 @@ import 'features/posts/data/repos/post_repo.dart';
 import 'features/posts/presentation/cubit/post_cubit.dart';
 import 'features/profile/data/repos/profile_repo.dart';
 import 'features/profile/presentation/cubit/profile_cubit.dart';
+import 'features/search/data/repos/search_repo.dart';
+import 'features/search/presentation/cubit/search_cubit.dart';
 import 'features/storage/data/repos/firebase_storage_repo.dart';
 import 'firebase_options.dart';
 import 'forksy_app.dart';
@@ -60,6 +62,12 @@ Future<void> main() async {
             storageRepo: FirebaseStorageRepo(),
           ),
         ),
+        BlocProvider<SearchCubit>(
+          create: (context) => SearchCubit(
+            searchRepo: FirebaseSearchRepo(),
+          ),
+        ),
+        // Provide SearchCubit
       ],
       child: EasyLocalization(
           supportedLocales: [

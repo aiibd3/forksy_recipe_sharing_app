@@ -50,7 +50,11 @@
     "followers": "Followers",
     "following": "Following",
     "posts": "Posts",
-    "noPosts": "No posts"
+    "noPosts": "No posts",
+    "noFollowers": "No followers yet.",
+    "noFollowing": "Not following anyone yet.",
+    "loading": "Loading...",
+    "error": "Error loading user data."
   },
   "editProfile": {
     "title": "Edit Profile",
