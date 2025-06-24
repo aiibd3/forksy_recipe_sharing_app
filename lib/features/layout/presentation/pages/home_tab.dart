@@ -76,7 +76,11 @@ class _HomeTabState extends State<HomeTab> {
                   onRefresh: refreshPosts,
                   color: AppColors.primaryColor,
                   showChildOpacityTransition: false,
-                  child: Center(child: Text("homeTab.noPosts".tr())),
+                  child: Center(
+                    child: Text(
+                      "homeTab.noPosts".tr(),
+                    ),
+                  ),
                 );
               }
 

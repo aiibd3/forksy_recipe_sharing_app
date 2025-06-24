@@ -16,11 +16,11 @@ class UploadPostPage extends StatefulWidget {
 }
 
 class _UploadPostPageState extends State<UploadPostPage> {
-  // image picker
   PlatformFile? imagePickedFile;
 
-  // text controller => for post caption
   final textController = TextEditingController();
+
+  final categoryController = TextEditingController();
 
   AppUser? currentUser;
 
@@ -73,6 +73,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
       userId: currentUser?.uid ?? "",
       userName: currentUser?.name ?? "Anonymous",
       text: textController.text,
+      categories: categoryController.text,
       imageUrl: "null",
       timestamp: DateTime.now(),
       likes: [],
@@ -123,7 +124,9 @@ class _UploadPostPageState extends State<UploadPostPage> {
   Widget buildUploadPostBody() {
     return Scaffold(
       appBar: AppBar(
-        title: Text("posts.upload".tr()),
+        title: Text(
+          "posts.upload".tr(),
+        ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,

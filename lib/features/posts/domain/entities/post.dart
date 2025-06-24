@@ -7,6 +7,7 @@ class Post {
   final String userId;
   final String userName;
   final String text;
+  final String categories;
   final String imageUrl;
   final DateTime timestamp;
   final List<String> likes;
@@ -22,6 +23,7 @@ class Post {
     required this.userName,
     required this.text,
     required this.imageUrl,
+    required this.categories,
     required this.timestamp,
     required this.likes,
     required this.comments,
@@ -36,6 +38,7 @@ class Post {
     String? userId,
     String? userName,
     String? text,
+    String? categories,
     String? imageUrl,
     DateTime? timestamp,
     List<String>? likes,
@@ -47,6 +50,7 @@ class Post {
   }) {
     return Post(
       id: id ?? this.id,
+      categories: categories ?? this.categories,
       userId: userId ?? this.userId,
       userName: userName ?? this.userName,
       text: text ?? this.text,
@@ -67,6 +71,7 @@ class Post {
       'userId': userId,
       'userName': userName,
       'text': text,
+      'categories': categories,
       'imageUrl': imageUrl,
       'timestamp': Timestamp.fromDate(timestamp),
       'likes': likes,
@@ -88,6 +93,7 @@ class Post {
       id: json['id'] ?? '',
       userId: json['userId'] ?? '',
       userName: json['userName'] ?? '',
+      categories: json['categories'] ?? '',
       text: json['text'] ?? '',
       imageUrl: json['imageUrl'] ?? '',
       timestamp: (json['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now(),

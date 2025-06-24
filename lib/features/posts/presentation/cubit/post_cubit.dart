@@ -34,7 +34,7 @@ class PostCubit extends Cubit<PostState> {
       // Add the image URL to the post
       final newPost = post.copyWith(imageUrl: imageUrl);
 
-      // Save post to Firestore
+      // Save post to FireStore
       await postRepo.createPost(newPost);
 
       // Optionally include the post in the state
