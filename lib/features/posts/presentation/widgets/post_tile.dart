@@ -74,7 +74,7 @@ class _PostTileState extends State<PostTile> {
         widget.post.likes.add(currentUser!.uid);
       }
     });
-    postCubit.toggleLikePost(widget.post.id, currentUser!.uid).catchError((e) {
+    postCubit.toggleLikePost(widget.post.id, currentUser!).catchError((e) {
       debugPrint('⚠️ Error: $e');
       setState(() {
         if (isLiked) {
@@ -119,7 +119,7 @@ class _PostTileState extends State<PostTile> {
                   text: commentText,
                   timesTamp: DateTime.now(),
                 );
-                postCubit.addComment(widget.post.id, newComment);
+                postCubit.addComment(widget.post.id, newComment, currentUser!);
                 Navigator.pop(context);
               }
             },

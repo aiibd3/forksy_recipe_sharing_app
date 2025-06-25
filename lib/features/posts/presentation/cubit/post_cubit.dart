@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:forksy/core/errors/firebase_error_handler.dart';
 import 'package:forksy/core/utils/logs_manager.dart';
+import '../../../../core/services/notification_service.dart';
+import '../../../auth/domain/entities/app_user.dart';
 import '../../../storage/domain/repos/storage_repo.dart';
 import '../../domain/entities/comment.dart';
 import '../../domain/entities/post.dart';
@@ -42,6 +44,11 @@ class PostCubit extends Cubit<PostState> {
       await postRepo.createPost(newPost);
       emit(PostLoaded([newPost]));
       LogsManager.info("Post created: ${newPost.id}");
+
+      await NotificationService.showNotification(
+        title: "📝 منشور جديد",
+        body: "لقد أنشأت منشورًا جديدًا: ${post.text}",
+      );
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error(errorHandler.errorMessage);
@@ -90,10 +97,36 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
-  Future<void> toggleLikePost(String postId, String userId) async {
+  Future<void> toggleLikePost(String postId, AppUser currentUser) async {
     try {
-      await postRepo.toggleLikePost(postId, userId);
+      await postRepo.toggleLikePost(postId, currentUser.uid);
       await fetchAllPosts();
+
+      final post = await postRepo.fetchPostById(postId);
+
+      // إضافة إشعار للمستخدم الحالي
+      final isLiked = post.likes.contains(currentUser.uid);
+      await NotificationService.showNotification(
+        title: "❤️ إعجاب",
+        body: "لقد ${isLiked ? 'أعجبت' : 'ألغيت إعجابك'} بمنشور: ${post.text}",
+      );
+
+      // الإشعار للمستخدم الآخر (إذا كان مختلفًا)
+      if (post.userId != currentUser.uid) {
+        final postOwnerDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(post.userId)
+            .get();
+
+        final fcmToken = postOwnerDoc.data()?['fcmToken'] as String?;
+        if (fcmToken != null && fcmToken.isNotEmpty) {
+          await NotificationService.showNotification(
+            title: "❤️ إعجاب جديد",
+            body: "${currentUser.name} أعجب بمنشورك: ${post.text}",
+          );
+        }
+      }
+
       LogsManager.info("Toggled like for post: $postId");
     } catch (e) {
       emit(PostFailure("${"posts.likeError".tr()}: $e"));
@@ -101,10 +134,36 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
-  Future<void> addComment(String postId, Comment comment) async {
+  Future<void> addComment(
+      String postId, Comment comment, AppUser currentUser) async {
     try {
       await postRepo.addComment(postId, comment);
       await fetchAllPosts();
+
+      final post = await postRepo.fetchPostById(postId);
+
+      // إضافة إشعار للمستخدم الحالي
+      await NotificationService.showNotification(
+        title: "💬 تعليق جديد",
+        body: "لقد أضفت تعليقًا على منشور: ${post.comments.last.text}",
+      );
+
+      // الإشعار للمستخدم الآخر (إذا كان مختلفًا)
+      if (post.userId != currentUser.uid) {
+        final postOwnerDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(post.userId)
+            .get();
+
+        final fcmToken = postOwnerDoc.data()?['fcmToken'] as String?;
+        if (fcmToken != null && fcmToken.isNotEmpty) {
+          await NotificationService.showNotification(
+            title: "💬 تعليق جديد",
+            body: "${currentUser.name} كتب تعليق على منشورك: ${comment.text}",
+          );
+        }
+      }
+
       LogsManager.info("Added comment to post: $postId");
     } catch (e) {
       emit(PostFailure("${"posts.commentError".tr()}: $e"));

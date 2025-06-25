@@ -93,7 +93,8 @@
   },
   "comments": {
     "deleteComment": "حذف التعليق؟",
-    "save": "حفظ"
+    "save": "حفظ",
+    "enterComment": "اكتب تعليق..."
   }
 }
 

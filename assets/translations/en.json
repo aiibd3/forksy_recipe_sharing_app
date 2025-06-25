@@ -94,6 +94,7 @@
   },
   "comments": {
     "deleteComment": "Delete Comment?",
-    "save": "Save"
+    "save": "Save",
+    "enterComment": "Enter your comment..."
   }
 }
