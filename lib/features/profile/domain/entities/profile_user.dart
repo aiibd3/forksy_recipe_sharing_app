@@ -43,7 +43,6 @@ class ProfileUser extends AppUser {
       'profileImage': profileImage ?? '',
       'followers': followers ?? [],
       'following': following ?? [],
-
     };
   }
 
@@ -57,7 +56,6 @@ class ProfileUser extends AppUser {
               json['profileImage'].toString() != 'null')
           ? json['profileImage'].toString()
           : null,
-
       followers: List<String>.from(json['followers'] ?? []),
       following: List<String>.from(json['following'] ?? []),
     );

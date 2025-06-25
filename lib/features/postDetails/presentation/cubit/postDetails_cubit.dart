@@ -11,6 +11,7 @@ import '../../../posts/presentation/cubit/post_cubit.dart';
 import '../../../profile/data/repos/profile_repo.dart';
 import '../../../profile/domain/entities/profile_user.dart';
 import '../../../profile/domain/repos/profile_repo.dart';
+
 part 'postDetails_state.dart';
 
 class PostDetailsCubit extends Cubit<PostDetailsState> {

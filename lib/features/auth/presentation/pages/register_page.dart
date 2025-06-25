@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/core/extensions/context_extension.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../../../core/routing/routes_name.dart';
 import '../../../../core/theme/app_assets.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -23,14 +22,12 @@ class RegisterPage extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
-          // Navigate to home screen on successful registration
           LogsManager.info("Registration successful!");
-          context.goToReplace(RoutesName.auth);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("auth.registerSuccess".tr()),
-          ));
+          context.goToReplace(RoutesName.layout);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("auth.registerSuccess".tr())),
+          );
         } else if (state is AuthError) {
-          // Show error message using SnackBara
           LogsManager.error(state.error);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),
@@ -38,14 +35,17 @@ class RegisterPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return const _RegisterPageBody();
+        return _RegisterPageBody(state: state);
       },
     );
   }
 }
 
 class _RegisterPageBody extends StatelessWidget {
-  const _RegisterPageBody();
+  final AuthState state;
+  final formKey = GlobalKey<FormState>();
+
+  _RegisterPageBody({required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class _RegisterPageBody extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Form(
-          key: cubit.formKey,
+          key: formKey,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -123,8 +123,9 @@ class _RegisterPageBody extends StatelessWidget {
                 const SizedBox(height: 20),
                 CustomLoadingButton(
                   title: "auth.register".tr(),
+                  isLoading: state is AuthLoading,
                   onPressed: () async {
-                    if (cubit.formKey.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       await cubit.register(
                         cubit.nameController.text,
                         cubit.emailController.text,
@@ -139,7 +140,6 @@ class _RegisterPageBody extends StatelessWidget {
                   children: [
                     Text(
                       "auth.alreadyHaveAccount".tr(),
-                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 16.sp,
@@ -147,12 +147,9 @@ class _RegisterPageBody extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     GestureDetector(
-                      onTap: () {
-                        context.goToReplace(RoutesName.auth);
-                      },
+                      onTap: () => context.goToReplace(RoutesName.auth),
                       child: Text(
                         "auth.login".tr(),
-                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 17.sp,
@@ -161,7 +158,7 @@ class _RegisterPageBody extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),

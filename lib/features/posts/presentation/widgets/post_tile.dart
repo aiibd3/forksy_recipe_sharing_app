@@ -29,7 +29,6 @@ class PostTile extends StatefulWidget {
 class _PostTileState extends State<PostTile> {
   late final postCubit = context.read<PostCubit>();
   late final profileCubit = context.read<ProfileCubit>();
-
   bool isOwnerPost = false;
   AppUser? currentUser;
   ProfileUser? postUser;
@@ -42,7 +41,8 @@ class _PostTileState extends State<PostTile> {
       fetchPostUser();
     } else {
       postUser = null;
-      debugPrint('⚠️ Warning: post.userId is empty for post: ${widget.post.id}');
+      debugPrint(
+          '⚠️ Warning: post.userId is empty for post: ${widget.post.id}');
     }
   }
 
@@ -91,12 +91,12 @@ class _PostTileState extends State<PostTile> {
       debugPrint('⚠️ currentUser is null. Cannot add comment.');
       return;
     }
+    final commentController = TextEditingController();
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         content: TextField(
-          controller: TextEditingController(),
-          obscureText: false,
+          controller: commentController,
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
             hintText: "comments.enterComment".tr(),
@@ -109,7 +109,7 @@ class _PostTileState extends State<PostTile> {
           ),
           TextButton(
             onPressed: () {
-              final commentText = TextEditingController().text;
+              final commentText = commentController.text;
               if (commentText.isNotEmpty) {
                 final newComment = Comment(
                   id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -172,26 +172,28 @@ class _PostTileState extends State<PostTile> {
                 children: [
                   postUser?.profileImage != null
                       ? CachedNetworkImage(
-                    imageUrl: postUser!.profileImage ?? "",
-                    height: 60,
-                    width: 60,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                    imageBuilder: (context, imageProvider) => Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: imageProvider,
+                          imageUrl: postUser!.profileImage ?? "",
+                          height: 60,
+                          width: 60,
                           fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  )
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                          imageBuilder: (context, imageProvider) => Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        )
                       : const CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/user2.png'),
-                  ),
+                          backgroundImage:
+                              AssetImage('assets/images/user2.png'),
+                        ),
                   SizedBox(width: 2.w),
                   Text(
                     widget.post.userName,
@@ -204,7 +206,8 @@ class _PostTileState extends State<PostTile> {
                   if (isOwnerPost)
                     GestureDetector(
                       onTap: showOptions,
-                      child: const Icon(Icons.delete, color: AppColors.grayColor),
+                      child:
+                          const Icon(Icons.delete, color: AppColors.grayColor),
                     ),
                 ],
               ),
@@ -290,11 +293,10 @@ class _PostTileState extends State<PostTile> {
           BlocBuilder<PostCubit, PostState>(
             builder: (context, state) {
               if (state is PostLoaded) {
-                final post = state.posts.firstWhere((post) => post.id == widget.post.id);
+                final post =
+                    state.posts.firstWhere((post) => post.id == widget.post.id);
                 if (post.comments.isEmpty) {
-                  return Center(
-                    child: Text("posts.noComments".tr()),
-                  );
+                  return Center(child: Text("posts.noComments".tr()));
                 }
                 return ListView.builder(
                   itemCount: post.comments.length,

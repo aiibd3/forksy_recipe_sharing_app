@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/core/extensions/context_extension.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../../../core/routing/routes_name.dart';
 import '../../../../core/theme/app_assets.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -25,10 +24,7 @@ class LoginPage extends StatelessWidget {
         if (state is Authenticated) {
           context.goToReplace(RoutesName.layout);
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text(
-              "auth.loginSuccess".tr(),
-            )),
+            SnackBar(content: Text("auth.loginSuccess".tr())),
           );
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -37,14 +33,17 @@ class LoginPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return const _LoginPageBody();
+        return _LoginPageBody(state: state);
       },
     );
   }
 }
 
 class _LoginPageBody extends StatelessWidget {
-  const _LoginPageBody();
+  final AuthState state;
+  final formKey = GlobalKey<FormState>();
+
+  _LoginPageBody({required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +65,7 @@ class _LoginPageBody extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Form(
-          key: cubit.formKey,
+          key: formKey,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -108,8 +107,9 @@ class _LoginPageBody extends StatelessWidget {
                 const SizedBox(height: 20),
                 CustomLoadingButton(
                   title: "auth.login".tr(),
+                  isLoading: state is AuthLoading,
                   onPressed: () async {
-                    if (cubit.formKey.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       await cubit.login(
                         cubit.emailController.text,
                         cubit.passwordController.text,
@@ -123,7 +123,6 @@ class _LoginPageBody extends StatelessWidget {
                   children: [
                     Text(
                       "auth.dontHaveAccount".tr(),
-                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 17.sp,
@@ -131,12 +130,9 @@ class _LoginPageBody extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     GestureDetector(
-                      onTap: () {
-                        context.goToReplace(RoutesName.register);
-                      },
+                      onTap: () => context.goToReplace(RoutesName.register),
                       child: Text(
                         "auth.registerNow".tr(),
-                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 17.sp,
@@ -145,7 +141,7 @@ class _LoginPageBody extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),

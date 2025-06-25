@@ -110,6 +110,9 @@ dependencies:
   # ✅ Refresh Widgets
   liquid_pull_to_refresh:
 
+  # ✅ Utils
+  firebase_app_check: ^0.3.0
+
 
 dev_dependencies:
   flutter_test:

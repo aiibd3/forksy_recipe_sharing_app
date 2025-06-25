@@ -123,9 +123,8 @@ Future<void> main() async {
             Locale('en'),
           ],
           path: 'assets/translations',
-          fallbackLocale: Locale('ar'),
+          fallbackLocale: Locale('en'),
           saveLocale: true,
-          startLocale: Locale('ar'),
           child: const ForksyApp()),
     ),
   );

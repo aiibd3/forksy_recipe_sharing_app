@@ -5,6 +5,5 @@ abstract class ProfileRepo {
 
   Future<ProfileUser?> updateProfileUser(ProfileUser updatedUser);
 
-  Future<void> toggleFollow(String currentUserId , String targetUserId);
-
+  Future<void> toggleFollow(String currentUserId, String targetUserId);
 }
