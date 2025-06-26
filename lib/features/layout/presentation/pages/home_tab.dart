@@ -64,6 +64,7 @@ class _HomeTabState extends State<HomeTab> {
             "homeTab.title".tr(),
             style: TextStyle(fontSize: 20.sp),
           ),
+
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,

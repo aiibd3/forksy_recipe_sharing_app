@@ -26,23 +26,21 @@ class CategoryItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         gradient: isActive
             ? LinearGradient(
-          colors: [
-            AppColors.primaryColor,
-            AppColors.primaryColor.withOpacity(0.4)
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        )
+                colors: [
+                  AppColors.primaryColor,
+                  AppColors.blueColor,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )
             : LinearGradient(
-          colors: [Colors.grey[100]!, Colors.grey[200]!],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+                colors: [Colors.grey[100]!, Colors.grey[200]!],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
         boxShadow: [
           BoxShadow(
-            color: isActive
-                ? AppColors.primaryColor.withOpacity(0.4)
-                : Colors.grey.withOpacity(0.2),
+            color: Colors.grey.withOpacity(0.2),
             blurRadius: 2,
             spreadRadius: 1,
             offset: const Offset(0, 2),
@@ -55,39 +53,25 @@ class CategoryItem extends StatelessWidget {
           AnimatedScale(
             scale: isActive ? 1 : 1.0,
             duration: const Duration(milliseconds: 200),
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 24.sp,
-              child: ClipOval(
-                child: Image.network(
-                  category.imageUrl,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) =>
-                      AnimatedRotation(
-                        turns: isActive ? 2 : 0,
-                        duration: const Duration(milliseconds: 500),
-                        child: Icon(
-                          category.id == 'all'
-                              ? Icons.apps
-                              : category.id == 'eastern'
-                              ? Icons.local_dining
-                              : category.id == 'western'
-                              ? Icons.fastfood
-                              : category.id == 'italian'
-                              ? Icons.local_pizza
-                              : category.id == 'desserts'
-                              ? Icons.cake
-                              : category.id == 'asian'
-                              ? Icons.rice_bowl
-                              : category.id == 'seafood'
-                              ? Icons.set_meal
-                              : Icons.fastfood,
-                          size: 30.sp,
-                          color: AppColors.primaryColor,
-                        ),
+            child: ClipOval(
+              child: category.id == 'all'
+                  ? Icon(
+                      Icons.apps,
+                      size: 30.sp,
+                      color: AppColors.whiteColor,
+                    )
+                  : AnimatedRotation(
+                      turns: isActive ? 2 : 0,
+                      duration: const Duration(milliseconds: 500),
+                      child: Image.asset(
+                        category.imageUrl,
+                        fit: BoxFit.cover,
+                        width: 35.sp,
+                        height: 35.sp,
+                        errorBuilder: (context, error, stackTrace) =>
+                            const SizedBox.shrink(),
                       ),
-                ),
-              ),
+                    ),
             ),
           ),
           SizedBox(height: 1.h),

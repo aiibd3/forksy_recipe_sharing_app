@@ -1,16 +1,21 @@
 part of 'search_cubit.dart';
 
-@immutable
 sealed class SearchState {}
 
 final class SearchInitial extends SearchState {}
 
 final class SearchLoading extends SearchState {}
 
-final class SearchLoaded extends SearchState {
+final class SearchUsersLoaded extends SearchState {
   final List<ProfileUser?> users;
 
-  SearchLoaded(this.users);
+  SearchUsersLoaded(this.users);
+}
+
+final class SearchPostsLoaded extends SearchState {
+  final List<Post?> posts;
+
+  SearchPostsLoaded(this.posts);
 }
 
 final class SearchError extends SearchState {

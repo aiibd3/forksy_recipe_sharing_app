@@ -170,14 +170,15 @@ class _PostTileState extends State<PostTile> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  postUser?.profileImage != null
+                  postUser?.profileImage != null &&
+                          postUser!.profileImage!.isNotEmpty
                       ? CachedNetworkImage(
-                          imageUrl: postUser!.profileImage ?? "",
+                          imageUrl: postUser!.profileImage!,
                           height: 60,
                           width: 60,
                           fit: BoxFit.cover,
                           errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
+                              const Icon(Icons.person, size: 40),
                           imageBuilder: (context, imageProvider) => Container(
                             width: 40,
                             height: 40,
@@ -191,8 +192,9 @@ class _PostTileState extends State<PostTile> {
                           ),
                         )
                       : const CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/images/user2.png'),
+                          backgroundColor: AppColors.whiteColor,
+                          backgroundImage: AssetImage('assets/images/user.png'),
+                          radius: 20,
                         ),
                   SizedBox(width: 2.w),
                   Text(
@@ -220,14 +222,30 @@ class _PostTileState extends State<PostTile> {
                 builder: (context) => PostDetailsPage(postId: widget.post.id),
               ),
             ),
-            child: CachedNetworkImage(
-              imageUrl: widget.post.imageUrl,
-              height: 430,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => const SizedBox(height: 430),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
+            child: widget.post.imageUrl.isNotEmpty
+                ? CachedNetworkImage(
+                    imageUrl: widget.post.imageUrl,
+                    height: 430,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => const SizedBox(
+                      height: 430,
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) => const SizedBox(
+                      height: 430,
+                      child: Center(child: Icon(Icons.broken_image, size: 50)),
+                    ),
+                  )
+                : const SizedBox(
+                    height: 430,
+                    child: Center(
+                      child: Icon(
+                        Icons.image_not_supported,
+                        size: 50,
+                      ),
+                    ),
+                  ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -308,11 +326,19 @@ class _PostTileState extends State<PostTile> {
                   },
                 );
               } else if (state is PostLoading) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               } else if (state is PostFailure) {
-                return Center(child: Text(state.error));
+                return Center(
+                  child: Text(state.error),
+                );
               } else {
-                return Center(child: Text("posts.refreshPrompt".tr()));
+                return Center(
+                  child: Text(
+                    "posts.refreshPrompt".tr(),
+                  ),
+                );
               }
             },
           ),

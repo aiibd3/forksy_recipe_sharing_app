@@ -145,7 +145,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       // name: profileUser.name,
                       imageUrl: profileUser.profileImage?.isNotEmpty == true
                           ? profileUser.profileImage!
-                          : 'assets/images/user2.png',
+                          : 'assets/images/user.png',
                     ),
                     BlocBuilder<PostCubit, PostState>(
                       builder: (context, postState) {

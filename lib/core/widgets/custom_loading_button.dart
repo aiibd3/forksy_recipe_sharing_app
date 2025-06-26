@@ -1,6 +1,7 @@
 import 'package:easy_loading_button/easy_loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
 import '../theme/app_colors.dart';
 
 class CustomLoadingButton extends StatefulWidget {
@@ -13,8 +14,7 @@ class CustomLoadingButton extends StatefulWidget {
     super.key,
     required this.title,
     required this.onPressed,
-    this.width = 80,
-    this.isLoading = false,
+    this.width = 80, required this.isLoading,
   });
 
   @override
@@ -35,7 +35,9 @@ class _CustomLoadingButtonState extends State<CustomLoadingButton> {
       ),
       loadingStateWidget: const CircularProgressIndicator(
         strokeWidth: 3.0,
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        valueColor: AlwaysStoppedAnimation<Color>(
+          Colors.white,
+        ),
       ),
       useWidthAnimation: true,
       useEqualLoadingStateWidgetDimension: true,
@@ -44,11 +46,11 @@ class _CustomLoadingButtonState extends State<CustomLoadingButton> {
       height: 5.h,
       contentGap: 6.0,
       buttonColor: AppColors.primaryColor,
-      onPressed: widget.isLoading ? null : onButtonPressed,
+      onPressed: onButtonPressed,
     );
   }
 
-  Future<void> onButtonPressed() async {
+  onButtonPressed() async {
     await widget.onPressed();
   }
 }

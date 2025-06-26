@@ -33,13 +33,10 @@ class CategoryPage extends StatelessWidget {
                 ),
               ),
             );
-          }
-          else if (state is CategoryLoaded) {
+          } else if (state is CategoryLoaded) {
             final allCategories = [
               CategoryEntity(
-                  id: 'all',
-                  title: 'all',
-                  imageUrl: 'https://via.placeholder.com/100?text=All'),
+                  id: 'all', title: 'all', imageUrl: 'assets/images/all.png'),
               ...state.categories,
             ];
             return Container(

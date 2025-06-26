@@ -53,7 +53,7 @@ class _BotPageBody extends StatelessWidget {
                         Hero(
                           tag: "bot Froksy",
                           child: Lottie.asset(
-                            'assets/lottie/plants_loading.json',
+                            'assets/lottie/bot2.json',
                             height: 20.h,
                             repeat: !cubit.isPlaying,
                           ),

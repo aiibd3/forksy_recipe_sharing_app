@@ -27,6 +27,11 @@ class RegisterPage extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("auth.registerSuccess".tr())),
           );
+        } else if (state is AuthLoading) {
+          LogsManager.info("Registration loading...");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("auth.registerLoading".tr())),
+          );
         } else if (state is AuthError) {
           LogsManager.error(state.error);
           ScaffoldMessenger.of(context).showSnackBar(

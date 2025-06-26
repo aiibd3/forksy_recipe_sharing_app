@@ -82,12 +82,12 @@ dependencies:
 
   # ✅ UI Components & Navigation
   dropdown_button2:
+  easy_loading_button:
   carousel_slider:
   sliver_tools:
   custom_navigation_bar:
   panara_dialogs:
   gap:
-  easy_loading_button:
   google_fonts:
   enefty_icons:
   flutter_chat_ui:
