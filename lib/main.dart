@@ -35,7 +35,7 @@ Future<void> main() async {
   // Future<void> initializeCategories() async {
   //   try {
   //     final categoriesCollection =
-  //         FirebaseFirestore.instance.collection('categories');
+  //     FirebaseFirestore.instance.collection('categories');
   //     const categories = [
   //       {
   //         'id': 'eastern',
@@ -62,6 +62,11 @@ Future<void> main() async {
   //         'title': 'asian',
   //         'imageUrl': 'https://via.placeholder.com/100?text=Asian'
   //       },
+  //       {
+  //         'id': 'seafood',
+  //         'title': 'seafood',
+  //         'imageUrl': 'https://via.placeholder.com/100?text=Seafood'
+  //       },
   //     ];
   //     for (var category in categories) {
   //       await categoriesCollection.doc(category['id']).set(category);
@@ -72,10 +77,10 @@ Future<void> main() async {
   //     rethrow;
   //   }
   // }
-  //
   // if (kDebugMode) {
   //   await initializeCategories();
   // }
+  //
 
   try {
     await HiveStorage.init();

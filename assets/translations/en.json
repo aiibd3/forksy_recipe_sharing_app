@@ -90,11 +90,13 @@
     "italian": "Italian",
     "desserts": "Desserts",
     "asian": "Asian",
-    "all": "All"
+    "all": "All",
+    "seafood": "Seafood"
   },
   "comments": {
     "deleteComment": "Delete Comment?",
     "save": "Save",
     "enterComment": "Enter your comment..."
+
   }
 }

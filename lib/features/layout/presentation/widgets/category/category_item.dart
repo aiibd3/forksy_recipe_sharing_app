@@ -26,18 +26,18 @@ class CategoryItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         gradient: isActive
             ? LinearGradient(
-                colors: [
-                  AppColors.primaryColor,
-                  AppColors.primaryColor.withOpacity(0.4)
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              )
+          colors: [
+            AppColors.primaryColor,
+            AppColors.primaryColor.withOpacity(0.4)
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        )
             : LinearGradient(
-                colors: [Colors.grey[100]!, Colors.grey[200]!],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+          colors: [Colors.grey[100]!, Colors.grey[200]!],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         boxShadow: [
           BoxShadow(
             color: isActive
@@ -64,24 +64,28 @@ class CategoryItem extends StatelessWidget {
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) =>
                       AnimatedRotation(
-                    turns: isActive ? 2 : 0,
-                    duration: const Duration(milliseconds: 500),
-                    child: Icon(
-                      category.id == 'all'
-                          ? Icons.apps
-                          : category.id == 'eastern'
+                        turns: isActive ? 2 : 0,
+                        duration: const Duration(milliseconds: 500),
+                        child: Icon(
+                          category.id == 'all'
+                              ? Icons.apps
+                              : category.id == 'eastern'
                               ? Icons.local_dining
                               : category.id == 'western'
-                                  ? Icons.fastfood
-                                  : category.id == 'italian'
-                                      ? Icons.local_pizza
-                                      : category.id == 'desserts'
-                                          ? Icons.cake
-                                          : Icons.rice_bowl,
-                      size: 30.sp,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
+                              ? Icons.fastfood
+                              : category.id == 'italian'
+                              ? Icons.local_pizza
+                              : category.id == 'desserts'
+                              ? Icons.cake
+                              : category.id == 'asian'
+                              ? Icons.rice_bowl
+                              : category.id == 'seafood'
+                              ? Icons.set_meal
+                              : Icons.fastfood,
+                          size: 30.sp,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
                 ),
               ),
             ),
