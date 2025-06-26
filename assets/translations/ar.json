@@ -96,6 +96,12 @@
     "deleteComment": "حذف التعليق؟",
     "save": "حفظ",
     "enterComment": "اكتب تعليق..."
+  },
+  "search": {
+    "search": "بحث",
+    "users": "المستخدمين",
+    "posts": "المنشورات",
+    "noResults": "لا توجد نتايج"
   }
 }
 

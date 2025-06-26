@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/features/profile/presentation/widgets/user_tile.dart';
+import '../../../posts/presentation/widgets/post_tile.dart';
 import '../cubit/search_cubit.dart';
 
 class SearchPage extends StatefulWidget {
@@ -37,7 +38,6 @@ class _SearchPageState extends State<SearchPage>
   @override
   void dispose() {
     searchController.dispose();
-    _tabController.dispose();
     super.dispose();
   }
 
@@ -48,15 +48,15 @@ class _SearchPageState extends State<SearchPage>
         title: TextField(
           controller: searchController,
           decoration: InputDecoration(
-            hintText: "search".tr(),
+            hintText: "search.search".tr(),
             border: InputBorder.none,
           ),
         ),
         bottom: TabBar(
           controller: _tabController,
           tabs: [
-            Tab(text: "users".tr()),
-            Tab(text: "posts".tr()),
+            Tab(text: "search.users".tr()),
+            Tab(text: "search.posts".tr()),
           ],
           onTap: (index) {
             // Trigger search when switching tabs if query exists
@@ -92,27 +92,27 @@ class _SearchPageState extends State<SearchPage>
             },
           ),
           // Posts Tab
-          // BlocBuilder<SearchCubit, SearchState>(
-          //   builder: (context, state) {
-          //     if (state is SearchLoading) {
-          //       return const Center(child: CircularProgressIndicator());
-          //     } else if (state is SearchPostsLoaded) {
-          //       if (state.posts.isEmpty) {
-          //         return Center(child: Text("search.noResults".tr()));
-          //       }
-          //       return ListView.builder(
-          //         itemCount: state.posts.length,
-          //         itemBuilder: (context, index) {
-          //           final post = state.posts[index];
-          //           return PostTile(post: post!);
-          //         },
-          //       );
-          //     } else if (state is SearchError) {
-          //       return Center(child: Text(state.error));
-          //     }
-          //     return Container();
-          //   },
-          // ),
+          BlocBuilder<SearchCubit, SearchState>(
+            builder: (context, state) {
+              if (state is SearchLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is SearchPostsLoaded) {
+                if (state.posts.isEmpty) {
+                  return Center(child: Text("search.noResults".tr()));
+                }
+                return ListView.builder(
+                  itemCount: state.posts.length,
+                  itemBuilder: (context, index) {
+                    final post = state.posts[index];
+                    return PostTile(post: post!);
+                  },
+                );
+              } else if (state is SearchError) {
+                return Center(child: Text(state.error));
+              }
+              return Container();
+            },
+          ),
         ],
       ),
     );

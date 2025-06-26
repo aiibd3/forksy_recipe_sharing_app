@@ -97,6 +97,11 @@
     "deleteComment": "Delete Comment?",
     "save": "Save",
     "enterComment": "Enter your comment..."
-
+  },
+  "search": {
+    "search": "Search",
+    "users": "Users",
+    "posts": "Posts",
+    "noResults": "No results found"
   }
 }
