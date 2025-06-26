@@ -10,11 +10,6 @@ class RoutesName {
   static const String settings = '/settings';
   static const profileFullPath = '/edit_profile';
 
-
-
-
 // ? ===================full routes===================
-
-  // static const String profileFullPath = '$layout$profile';
   static const String settingsFullPath = '$profileFullPath$settings';
 }

@@ -110,7 +110,6 @@ class _SearchPageState extends State<SearchPage>
               } else if (state is SearchError) {
                 return Center(child: Text(state.error));
               }
-
               return Container();
             },
           ),
