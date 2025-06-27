@@ -96,7 +96,8 @@
   "comments": {
     "deleteComment": "Delete Comment?",
     "save": "Save",
-    "enterComment": "Enter your comment..."
+    "enterComment": "Enter your comment...",
+    "addComment": "Add Comment"
   },
   "search": {
     "search": "Search",

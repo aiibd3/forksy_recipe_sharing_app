@@ -93,41 +93,65 @@ class _PostTileState extends State<PostTile> {
     }
     final commentController = TextEditingController();
     showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: TextField(
-          controller: commentController,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            hintText: "comments.enterComment".tr(),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text("posts.cancel".tr()),
-          ),
-          TextButton(
-            onPressed: () {
-              final commentText = commentController.text;
-              if (commentText.isNotEmpty) {
-                final newComment = Comment(
-                  id: DateTime.now().millisecondsSinceEpoch.toString(),
-                  postId: widget.post.id,
-                  userId: currentUser!.uid,
-                  userName: currentUser!.name,
-                  text: commentText,
-                  timesTamp: DateTime.now(),
-                );
-                postCubit.addComment(widget.post.id, newComment, currentUser!);
-                Navigator.pop(context);
-              }
-            },
-            child: Text("comments.save".tr()),
-          ),
-        ],
-      ),
-    );
+        context: context,
+        builder: (context) => AlertDialog(
+                title: Text("comments.addComment".tr()),
+                backgroundColor: AppColors.whiteColor,
+                content: TextField(
+                  controller: commentController,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    hintText: "comments.enterComment".tr(),
+                  ),
+                ),
+                actions: [
+                  Row(
+                    children: [
+                      Spacer(),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          foregroundColor: AppColors.grayColor,
+                          backgroundColor: AppColors.whiteColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                        child: Text("posts.cancel".tr()),
+                      ),
+                      Spacer(),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          foregroundColor: AppColors.whiteColor,
+                          backgroundColor: AppColors.primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          final commentText = commentController.text;
+                          if (commentText.isNotEmpty) {
+                            final newComment = Comment(
+                              id: DateTime.now()
+                                  .millisecondsSinceEpoch
+                                  .toString(),
+                              postId: widget.post.id,
+                              userId: currentUser!.uid,
+                              userName: currentUser!.name,
+                              text: commentText,
+                              timesTamp: DateTime.now(),
+                            );
+                            postCubit.addComment(
+                                widget.post.id, newComment, currentUser!);
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: Text("comments.save".tr()),
+                      ),
+                      Spacer(),
+                    ],
+                  ),
+                ]));
   }
 
   void showOptions() {

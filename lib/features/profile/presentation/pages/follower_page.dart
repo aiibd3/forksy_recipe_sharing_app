@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -22,7 +23,9 @@ class FollowerPage extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: AppColors.whiteColor,
         appBar: AppBar(
+          backgroundColor: AppColors.whiteColor,
           title: Text(
             "profile.followers".tr(),
           ),
@@ -51,9 +54,18 @@ class FollowerPage extends StatelessWidget {
       List<String> uids, String emptyMessage, BuildContext context) {
     return uids.isEmpty
         ? Center(
-            child: Text(
-              emptyMessage.tr(),
-              style: TextStyle(fontSize: 16.sp),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset(
+                  'assets/lottie/emtpy.json',
+                  height: 20.h,
+                ),
+                Text(
+                  emptyMessage.tr(),
+                  style: TextStyle(fontSize: 16.sp),
+                ),
+              ],
             ),
           )
         : ListView.builder(

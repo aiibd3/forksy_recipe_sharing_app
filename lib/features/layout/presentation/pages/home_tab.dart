@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../posts/presentation/cubit/post_cubit.dart';
@@ -64,8 +65,7 @@ class _HomeTabState extends State<HomeTab> {
             "homeTab.title".tr(),
             style: TextStyle(fontSize: 20.sp),
           ),
-
-          backgroundColor: Colors.transparent,
+          backgroundColor: AppColors.whiteColor,
           elevation: 0,
           centerTitle: true,
         ),
@@ -105,9 +105,18 @@ class _HomeTabState extends State<HomeTab> {
                           color: AppColors.primaryColor,
                           showChildOpacityTransition: false,
                           child: Center(
-                            child: Text(
-                              "homeTab.noPosts".tr(),
-                              style: TextStyle(fontSize: 16.sp),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Lottie.asset(
+                                  'assets/lottie/emtpy.json',
+                                  height: 20.h,
+                                ),
+                                Text(
+                                  "homeTab.noPosts".tr(),
+                                  style: TextStyle(fontSize: 16.sp),
+                                ),
+                              ],
                             ),
                           ),
                         );

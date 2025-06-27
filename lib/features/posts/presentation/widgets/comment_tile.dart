@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/features/auth/domain/entities/app_user.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_styles.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
@@ -36,24 +35,36 @@ class _CommentTileState extends State<CommentTile> {
 
   void showOptions() {
     showDialog(
+      barrierColor: Colors.transparent,
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: AppColors.whiteColor,
         title: Text("comments.deleteComment".tr()),
         actions: [
           TextButton(
+            style: TextButton.styleFrom(
+                foregroundColor: AppColors.grayColor,
+                backgroundColor: AppColors.whiteColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10))),
             onPressed: () {
               Navigator.pop(context);
             },
             child: Text("posts.cancel".tr()),
           ),
           TextButton(
+            style: TextButton.styleFrom(
+                foregroundColor: AppColors.whiteColor,
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10))),
             onPressed: () {
               context
                   .read<PostCubit>()
                   .deleteComment(widget.comment.postId, widget.comment.id);
               Navigator.pop(context);
             },
-            child: Text("comments.delete".tr()),
+            child: Text("comments.deleteComment".tr()),
           ),
         ],
       ),
@@ -65,6 +76,7 @@ class _CommentTileState extends State<CommentTile> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             widget.comment.userName,

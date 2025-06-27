@@ -10,6 +10,7 @@ import 'package:forksy/features/posts/presentation/widgets/post_tile.dart';
 import 'package:forksy/features/profile/presentation/widgets/follow_button.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../../core/theme/app_font_styles.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../posts/domain/entities/post.dart';
@@ -60,16 +61,6 @@ class _ProfilePageState extends State<ProfilePage> {
         profileUser.followers!.add(currentUser!.uid);
       }
     });
-
-    // profileCubit.toggleFollow(currentUser!.uid, widget.uid).catchError((e) {
-    //   setState(() {
-    //     if (isFollowing) {
-    //       profileUser.followers!.add(currentUser!.uid);
-    //     } else {
-    //       profileUser.followers!.remove(currentUser!.uid);
-    //     }
-    //   });
-    // });
   }
 
   @override
@@ -195,6 +186,23 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(height: 2.h),
                   ],
                 ).setPageHorizontalPadding(),
+                SizedBox(height: 2.h),
+                Divider(
+                  height: 1,
+                  thickness: 1,
+                  endIndent: 20,
+                  indent: 20,
+                  color: AppColors.grayColor,
+                ),
+                SizedBox(height: 2.h),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    "profile.posts".tr(),
+                    style: AppFontStyles.poppins600_18
+                        .copyWith(color: AppColors.blackColor),
+                  ),
+                ),
                 BlocBuilder<PostCubit, PostState>(
                   builder: (context, state) {
                     if (state is PostLoaded) {

@@ -49,19 +49,26 @@ class LanguageToggle extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.secondaryColor : AppColors.whiteColor,
+            gradient: LinearGradient(
+              colors: isSelected
+                  ? [
+                      AppColors.primaryColor,
+                      AppColors.blueColor,
+                    ]
+                  : [
+                      Colors.grey[100]!,
+                      Colors.grey[200]!,
+                    ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-                color:
-                    isSelected ? Colors.transparent : AppColors.secondaryColor),
           ),
           child: Center(
             child: Text(
               text,
               style: TextStyle(
-                color: isSelected
-                    ? AppColors.primaryColor
-                    : AppColors.secondaryColor,
+                color: isSelected ? AppColors.whiteColor : AppColors.grayColor,
                 fontSize: 16,
               ),
             ),

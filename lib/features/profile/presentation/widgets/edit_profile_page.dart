@@ -12,6 +12,7 @@ import 'package:forksy/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font_styles.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -88,6 +89,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       builder: (context, state) {
         if (state is ProfileLoading) {
           return Scaffold(
+            backgroundColor: AppColors.whiteColor,
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -115,6 +117,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Widget buildEditPage() {
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
         title: Text(
           "editProfile.title".tr(),
@@ -123,6 +126,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         leading: IconButton(
+          style: IconButton.styleFrom(
+            backgroundColor: AppColors.whiteColor,
+            shape: const CircleBorder(),
+            elevation: 0,
+            padding: const EdgeInsets.all(10),
+            alignment: Alignment.centerLeft,
+            iconSize: 20.sp,
+            foregroundColor: AppColors.grayColor,
+          ),
           icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
             color: AppColors.grayColor,
@@ -203,6 +215,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
               controller: bioController,
               enabled: isOwner,
               decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(12),
+                filled: true,
+                fillColor: AppColors.whiteColor,
+                enabledBorder: OutlineInputBorder(
+
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: AppColors.whiteColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: AppColors.primaryColor),
+                ),
                 border: const OutlineInputBorder(),
                 labelText: "editProfile.enterBio".tr(),
               ),
@@ -210,8 +234,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
             SizedBox(height: 2.h),
             if (isOwner)
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 onPressed: updateProfile,
-                child: Text("editProfile.saveChanges".tr()),
+                child: Text("editProfile.saveChanges".tr(),
+                    style: AppFontStyles.poppins400_14
+                        .copyWith(color: AppColors.whiteColor),
+                    textAlign: TextAlign.center),
               ),
           ],
         ),

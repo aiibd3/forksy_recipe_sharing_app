@@ -92,6 +92,7 @@ dependencies:
   enefty_icons:
   flutter_chat_ui:
   flutter_chat_types:
+  readmore:
 
   # ✅ Responsiveness
   responsive_sizer:

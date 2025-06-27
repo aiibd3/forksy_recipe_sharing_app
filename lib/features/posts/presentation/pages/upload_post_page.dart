@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:forksy/features/auth/domain/entities/app_user.dart';
 
+import '../../../../core/theme/app_colors.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../domain/entities/post.dart';
 import '../cubit/post_cubit.dart';
@@ -136,10 +137,13 @@ class _UploadPostPageState extends State<UploadPostPage> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue[50]!, Colors.white],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+            colors: [
+              AppColors.primaryColor,
+              AppColors.blueColor,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
         ),
         child: SingleChildScrollView(
           child: Padding(

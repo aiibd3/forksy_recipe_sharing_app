@@ -58,7 +58,8 @@ class CategoryItem extends StatelessWidget {
                   ? Icon(
                       Icons.apps,
                       size: 30.sp,
-                      color: AppColors.whiteColor,
+                      color:
+                          isActive ? AppColors.whiteColor : AppColors.grayColor,
                     )
                   : AnimatedRotation(
                       turns: isActive ? 2 : 0,
@@ -78,7 +79,7 @@ class CategoryItem extends StatelessWidget {
           Text(
             "posts.${category.title}".tr(),
             style: AppFontStyles.poppins500_16.copyWith(
-              color: isActive ? Colors.white : AppColors.grayColor,
+              color: isActive ? AppColors.whiteColor : AppColors.grayColor,
               fontSize: 14.sp,
             ),
             textAlign: TextAlign.center,

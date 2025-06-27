@@ -2,6 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forksy/features/profile/presentation/widgets/user_tile.dart';
+import 'package:lottie/lottie.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../posts/presentation/widgets/post_tile.dart';
 import '../cubit/search_cubit.dart';
 
@@ -44,8 +47,17 @@ class _SearchPageState extends State<SearchPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: TextField(
+          style: const TextStyle(color: AppColors.blackColor),
+          cursorColor: AppColors.primaryColor,
+          autofocus: true,
+          onChanged: (value) => _onSearchChanged(),
+          onSubmitted: (value) => _onSearchChanged(),
+          textInputAction: TextInputAction.search,
+
           controller: searchController,
           decoration: InputDecoration(
             hintText: "search.search".tr(),
@@ -53,13 +65,17 @@ class _SearchPageState extends State<SearchPage>
           ),
         ),
         bottom: TabBar(
+          indicatorColor: AppColors.primaryColor,
+          dividerColor: AppColors.secondaryColor,
+          labelColor: AppColors.secondaryColor,
+          unselectedLabelColor: AppColors.grayColor,
+          indicatorSize: TabBarIndicatorSize.tab,
           controller: _tabController,
           tabs: [
             Tab(text: "search.users".tr()),
             Tab(text: "search.posts".tr()),
           ],
           onTap: (index) {
-            // Trigger search when switching tabs if query exists
             if (searchController.text.isNotEmpty) {
               _onSearchChanged();
             }
@@ -76,7 +92,17 @@ class _SearchPageState extends State<SearchPage>
                 return const Center(child: CircularProgressIndicator());
               } else if (state is SearchUsersLoaded) {
                 if (state.users.isEmpty) {
-                  return Center(child: Text("search.noResults".tr()));
+                  return Center(child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset(
+                        'assets/lottie/emtpy.json',
+                        height: 20.h,
+                      ),
+                      Text("search.noResults".tr()),
+
+                    ],
+                  ),);
                 }
                 return ListView.builder(
                   itemCount: state.users.length,
@@ -98,7 +124,18 @@ class _SearchPageState extends State<SearchPage>
                 return const Center(child: CircularProgressIndicator());
               } else if (state is SearchPostsLoaded) {
                 if (state.posts.isEmpty) {
-                  return Center(child: Text("search.noResults".tr()));
+                  //
+                  return Center(child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset(
+                        'assets/lottie/emtpy.json',
+                        height: 20.h,
+                      ),
+                      Text("search.noResults".tr()),
+
+                    ],
+                  ),);
                 }
                 return ListView.builder(
                   itemCount: state.posts.length,
