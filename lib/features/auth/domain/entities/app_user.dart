@@ -10,7 +10,6 @@ class AppUser {
   });
 
 // * convert app user -> json
-
   Map<String, dynamic> toJson() {
     return {
       'uid': uid,

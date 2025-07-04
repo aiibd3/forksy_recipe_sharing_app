@@ -65,6 +65,7 @@ class _LayoutPageBody extends StatelessWidget {
                       ),
                     );
                   },
+
                   child: Icon(
                     EneftyIcons.add_outline,
                     color: AppColors.whiteColor,

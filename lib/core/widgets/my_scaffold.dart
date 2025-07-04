@@ -13,14 +13,8 @@ class MyScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.white,
-            AppColors.bgColor,
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
+      color: AppColors.whiteColor,
+
       ),
       child: Scaffold(
         resizeToAvoidBottomInset: false,

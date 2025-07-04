@@ -22,7 +22,7 @@ class ForksyApp extends StatelessWidget {
           scaffoldMessengerKey: scaffoldMessengerKey,
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
-          title: 'Forksy App',
+          title: 'BiteCraft App',
           initialRoute: RoutesName.splash,
           onGenerateRoute: generateRoute,
         );

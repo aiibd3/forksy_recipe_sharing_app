@@ -12,6 +12,7 @@ import '../../../../core/extensions/context_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../widgets/my_drawer.dart';
 
+/// A widget that displays the home tab with a list of posts and category filters.
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
 
@@ -29,6 +30,7 @@ class _HomeTabState extends State<HomeTab> {
     _initialize();
   }
 
+  /// Initializes the cubits and fetches posts.
   Future<void> _initialize() async {
     if (authCubit.currentUser == null) {
       await authCubit.getCurrentUser();
@@ -36,15 +38,18 @@ class _HomeTabState extends State<HomeTab> {
     fetchAllPosts();
   }
 
+  /// Fetches all posts from the PostCubit.
   void fetchAllPosts() {
     postCubit.fetchAllPosts();
   }
 
+  /// Refreshes the list of posts.
   Future<void> refreshPosts() async {
     await Future.delayed(const Duration(milliseconds: 300));
     postCubit.fetchAllPosts();
   }
 
+  /// Deletes a post and refreshes the list.
   void deletePost(String postId) {
     postCubit.deletePost(postId);
     refreshPosts();
@@ -62,7 +67,7 @@ class _HomeTabState extends State<HomeTab> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            "homeTab.title".tr(),
+            'homeTab.title'.tr(),
             style: TextStyle(fontSize: 20.sp),
           ),
           backgroundColor: AppColors.whiteColor,
@@ -73,7 +78,7 @@ class _HomeTabState extends State<HomeTab> {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.blue[50]!, Colors.white],
+              colors: [AppColors.primaryColor, Colors.blue],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -89,12 +94,13 @@ class _HomeTabState extends State<HomeTab> {
                     if (state is PostLoading) {
                       return Center(
                         child: CircularProgressIndicator(
-                            color: AppColors.primaryColor),
+                          color: AppColors.primaryColor,
+                        ),
                       );
                     } else if (state is PostFailure) {
                       return Center(
                         child: Text(
-                          "${"posts.fetchError".tr()}: ${state.error}",
+                          "${'posts.fetchError'.tr()}: ${state.error}",
                           style: TextStyle(fontSize: 16.sp),
                         ),
                       );
@@ -113,7 +119,7 @@ class _HomeTabState extends State<HomeTab> {
                                   height: 20.h,
                                 ),
                                 Text(
-                                  "homeTab.noPosts".tr(),
+                                  'homeTab.noPosts'.tr(),
                                   style: TextStyle(fontSize: 16.sp),
                                 ),
                               ],
@@ -143,7 +149,7 @@ class _HomeTabState extends State<HomeTab> {
                         showChildOpacityTransition: false,
                         child: Center(
                           child: Text(
-                            "homeTab.pullToLoad".tr(),
+                            'homeTab.pullToLoad'.tr(),
                             style: TextStyle(fontSize: 16.sp),
                           ),
                         ),

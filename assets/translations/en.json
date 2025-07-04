@@ -97,7 +97,9 @@
     "deleteComment": "Delete Comment?",
     "save": "Save",
     "enterComment": "Enter your comment...",
-    "addComment": "Add Comment"
+    "addComment": "Add Comment",
+    "readLess"  : "Read Less",
+    "readMore"  : "Read More"
   },
   "search": {
     "search": "Search",

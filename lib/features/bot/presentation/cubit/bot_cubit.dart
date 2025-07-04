@@ -12,7 +12,7 @@ class BotCubit extends Cubit<BotState> {
   final player = AudioPlayer();
   final botUser = const types.User(
     id: 'bot',
-    firstName: 'Froksy Bot',
+    firstName: 'BiteCraft Bot',
   );
   final user = const types.User(
     id: 'user',
@@ -24,11 +24,11 @@ class BotCubit extends Cubit<BotState> {
 
   void load() async {
     await Future.wait([
-      player.setSourceAsset("audio/froksy Bot.wav"),
+      player.setSourceAsset("audio/BiteCraft.wav"),
       Future.delayed(const Duration(seconds: 1))
     ]);
 
-    if (messages.isEmpty) player.play(AssetSource("audio/froksy Bot.wav"));
+    if (messages.isEmpty) player.play(AssetSource("audio/BiteCraft.wav"));
 
     isPlaying = true;
 

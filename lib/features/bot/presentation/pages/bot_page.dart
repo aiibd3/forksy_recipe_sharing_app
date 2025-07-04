@@ -51,7 +51,7 @@ class _BotPageBody extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Hero(
-                          tag: "bot Froksy",
+                          tag: "bot BiteCraft",
                           child: Lottie.asset(
                             'assets/lottie/bot2.json',
                             height: 20.h,

@@ -96,7 +96,9 @@
     "deleteComment": "حذف التعليق؟",
     "save": "حفظ",
     "enterComment": "اكتب تعليق...",
-    "addComment": "اضافة تعليق"
+    "addComment": "اضافة تعليق",
+    "readLess": "اظهار اقل",
+    "readMore": "اظهار المزيد"
   },
   "search": {
     "search": "بحث",
