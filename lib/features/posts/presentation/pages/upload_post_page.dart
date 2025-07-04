@@ -28,6 +28,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
     'western',
     'italian',
     'desserts',
+    'seafood',
     'asian',
   ];
 

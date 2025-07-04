@@ -27,6 +27,7 @@ class PostCubit extends Cubit<PostState> {
       'western',
       'italian',
       'desserts',
+      'seafood',
       'asian'
     ];
     if (!validCategories.contains(post.categories)) {

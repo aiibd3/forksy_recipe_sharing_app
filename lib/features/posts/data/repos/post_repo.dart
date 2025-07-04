@@ -18,6 +18,7 @@ class FirebasePostRepo implements PostRepo {
         'western',
         'italian',
         'desserts',
+        'seafood',
         'asian'
       ];
       if (!validCategories.contains(post.categories)) {

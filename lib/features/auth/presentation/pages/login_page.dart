@@ -59,7 +59,7 @@ class _LoginPageBody extends StatelessWidget {
           style: GoogleFonts.aBeeZee().copyWith(
             fontSize: 20.sp,
             fontWeight: FontWeight.w500,
-            color: Colors.white,
+            color: AppColors.whiteColor,
           ),
         ),
       ),

@@ -77,6 +77,8 @@ class BotCubit extends Cubit<BotState> {
 1. [خطوة 1]
 2. [خطوة 2]
 
+السعرات الحرارية: [عدد السعرات]
+
 لو كانت الرسالة غير متعلقة بالأكل، قل:
 "أنا مساعد طبخ ولا يمكنني الرد إلا على الأسئلة المتعلقة بالوصفات أو الطعام فقط."
 ''';
@@ -98,6 +100,8 @@ Ingredients:
 Steps:
 1. [Step 1]
 2. [Step 2]
+
+Calories: [Number of calories]
 
 If the message is NOT related to food or cooking, respond with:
 "I'm a cooking assistant and I can only help with recipes or food-related questions."
