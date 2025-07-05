@@ -122,9 +122,12 @@ class PostDetailsPage extends StatelessWidget {
                                                   'assets/images/user2.png'),
                                             ),
                                       SizedBox(width: 2.w),
-                                      Text(
-                                        post.userName,
-                                        style: AppFontStyles.poppins500_16,
+                                      Expanded(
+                                        child: Text(
+                                          post.userName,
+                                          style: AppFontStyles.poppins500_16,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -135,10 +138,15 @@ class PostDetailsPage extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      post.text,
-                                      style: AppFontStyles.poppins500_20,
+                                    Expanded(
+                                      child: Text(
+                                        post.text,
+                                        style: AppFontStyles.poppins500_20,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
                                     ),
+                                    SizedBox(width: 2.w),
                                     Text(
                                       DateFormat('yyyy-MM-dd')
                                           .format(post.timestamp),

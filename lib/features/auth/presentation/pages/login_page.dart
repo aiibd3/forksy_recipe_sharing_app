@@ -26,6 +26,26 @@ class LoginPage extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("auth.loginSuccess".tr())),
           );
+        } else if (state is AuthInvalidEmail) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("auth.invalidEmail".tr())),
+          );
+        } else if (state is AuthInvalidCredentials) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("auth.invalidCredentials".tr())),
+          );
+        } else if (state is AuthTooManyRequests) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("auth.tooManyRequests".tr())),
+          );
+        } else if (state is AuthNetworkError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("auth.networkError".tr())),
+          );
+        } else if (state is AuthOperationNotAllowed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("auth.operationNotAllowed".tr())),
+          );
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),
@@ -111,8 +131,8 @@ class _LoginPageBody extends StatelessWidget {
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
                       await cubit.login(
-                        cubit.emailController.text,
-                        cubit.passwordController.text,
+                        cubit.emailController.text.trim(),
+                        cubit.passwordController.text.trim(),
                       );
                     }
                   },

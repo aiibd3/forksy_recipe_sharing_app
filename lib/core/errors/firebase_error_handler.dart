@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class FirebaseErrorHandler {
   final String errorMessage;
@@ -7,40 +8,51 @@ class FirebaseErrorHandler {
   FirebaseErrorHandler._(this.errorMessage, this.errorCode);
 
   factory FirebaseErrorHandler.handleError(FirebaseException firebaseError) {
-    String errorMessage;
-    String? errorCode = firebaseError.code;
-
-    errorMessage = _getErrorMessage(firebaseError.code);
-
-    return FirebaseErrorHandler._(errorMessage, errorCode);
+    String errorMessage = _getErrorMessage(firebaseError.code);
+    return FirebaseErrorHandler._(errorMessage, firebaseError.code);
   }
 
   static String _getErrorMessage(String errorCode) {
     switch (errorCode) {
+      case 'email-already-in-use':
+        return 'auth.emailAlreadyInUse'.tr();
+      case 'invalid-email':
+        return 'auth.invalidEmail'.tr();
+      case 'weak-password':
+        return 'auth.weakPassword'.tr();
+      case 'user-not-found':
+      case 'wrong-password':
+        return 'auth.invalidCredentials'.tr();
+      case 'too-many-requests':
+        return 'auth.tooManyRequests'.tr();
+      case 'network-request-failed':
+        return 'auth.networkError'.tr();
+      case 'operation-not-allowed':
+        return 'auth.operationNotAllowed'.tr();
       case 'permission-denied':
-        return 'You do not have permission to access this resource.';
+        return 'auth.permissionDenied'.tr();
       case 'unavailable':
-        return 'The service is currently unavailable. Please try again later.';
+        return 'auth.serviceUnavailable'.tr();
       case 'not-found':
-        return 'The requested resource could not be found.';
+        return 'auth.resourceNotFound'.tr();
       case 'already-exists':
-        return 'The resource already exists.';
+        return 'auth.resourceAlreadyExists'.tr();
       case 'cancelled':
-        return 'The request was cancelled.';
+        return 'auth.requestCancelled'.tr();
       case 'deadline-exceeded':
-        return 'The request timed out. Please try again later.';
+        return 'auth.requestTimedOut'.tr();
       case 'invalid-argument':
-        return 'Invalid input provided. Please check your data.';
+        return 'auth.invalidInput'.tr();
       case 'resource-exhausted':
-        return 'Resource limit exceeded. Please try again later.';
+        return 'auth.resourceLimitExceeded'.tr();
       case 'unauthenticated':
-        return 'You must be authenticated to access this resource.';
+        return 'auth.unauthenticated'.tr();
       case 'internal':
-        return 'An internal error occurred. Please try again later.';
+        return 'auth.internalError'.tr();
       case 'unknown':
-        return 'An unknown error occurred. Please try again later.';
+        return 'auth.unknownError'.tr();
       default:
-        return 'An unexpected error occurred.';
+        return 'auth.unexpectedError'.tr();
     }
   }
 }

@@ -5,31 +5,34 @@ import '../../domain/repos/search_repo.dart';
 
 class FirebaseSearchRepo implements SearchRepo {
   @override
-  Future<List<ProfileUser?>> searchUsers(String query) async {
+  Future<List<ProfileUser>> searchUsers(String query) async {
     try {
-      final result = await FirebaseFirestore.instance
-          .collection("users")
-          .where("name", isGreaterThanOrEqualTo: query)
-          .where("name", isLessThan: "$query\uf8ff")
-          .get();
+      final result = await FirebaseFirestore.instance.collection("users").get();
 
-      return result.docs
+      final filtered = result.docs
           .map((doc) => ProfileUser.fromJson(doc.data()))
+          .where(
+              (user) => user.name.toLowerCase().contains(query.toLowerCase()))
           .toList();
+
+      return filtered;
     } catch (e) {
       throw Exception("Error searching users: $e");
     }
   }
 
-  Future<List<Post?>> searchPosts(String query) async {
+  @override
+  Future<List<Post>> searchPosts(String query) async {
     try {
-      final result = await FirebaseFirestore.instance
-          .collection("posts")
-          .where("text", isGreaterThanOrEqualTo: query)
-          .where("text", isLessThan: "$query\uf8ff")
-          .get();
+      final result = await FirebaseFirestore.instance.collection("posts").get();
 
-      return result.docs.map((doc) => Post.fromJson(doc.data())).toList();
+      final filtered = result.docs
+          .map((doc) => Post.fromJson(doc.data()))
+          .where(
+              (post) => post.text.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+
+      return filtered;
     } catch (e) {
       throw Exception("Error searching posts: $e");
     }

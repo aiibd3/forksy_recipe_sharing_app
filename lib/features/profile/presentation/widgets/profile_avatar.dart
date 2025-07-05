@@ -7,7 +7,6 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_styles.dart';
 
 class ProfileAvatar extends StatelessWidget {
-  // final String? name;
   final String? role;
   final String imageUrl;
   final VoidCallback? onTap;
@@ -15,43 +14,47 @@ class ProfileAvatar extends StatelessWidget {
   const ProfileAvatar({
     super.key,
     this.onTap,
-    // this.name,
     this.role,
     required this.imageUrl,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Stack(
-          alignment: Alignment.bottomRight,
-          children: [
-            CircleAvatar(
-              radius: 33.sp,
-              backgroundImage: _getImageProvider(imageUrl),
-              backgroundColor: AppColors.grayColor.withOpacity(0.2),
-              child: imageUrl.isEmpty
-                  ? Icon(
-                      Icons.person,
-                      size: 55.sp,
-                      color: AppColors.primaryColor,
-                    )
-                  : null,
+    return SizedBox(
+      height: 40, // Default height to ensure it fits in most contexts
+      child: Column(
+        mainAxisSize: MainAxisSize.min, // Use minimum space needed
+        children: [
+          Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              CircleAvatar(
+                radius: 16.sp, // Reduced radius for smaller size, adjust as needed
+                backgroundImage: _getImageProvider(imageUrl),
+                backgroundColor: AppColors.grayColor.withOpacity(0.2),
+                child: imageUrl.isEmpty
+                    ? Icon(
+                  Icons.person,
+                  size: 20.sp, // Reduced icon size
+                  color: AppColors.primaryColor,
+                )
+                    : null,
+              ),
+            ],
+          ),
+          if (role != null && role!.isNotEmpty)
+            Padding(
+              padding: EdgeInsets.only(top: 1.h),
+              child: Text(
+                role!,
+                style: AppFontStyles.poppins400_14.copyWith(color: AppColors.grayColor),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis, // Prevent text overflow
+                maxLines: 1,
+              ),
             ),
-          ],
-        ),
-        SizedBox(height: 2.h),
-        // Text(
-        //   name ?? '',
-        //   style: AppFontStyles.poppins600_18,
-        // ),
-        Text(
-          role ?? '',
-          style:
-              AppFontStyles.poppins400_14.copyWith(color: AppColors.grayColor),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

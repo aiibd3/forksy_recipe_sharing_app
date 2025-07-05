@@ -15,7 +15,7 @@
     "arabic": "A R A B I C"
   },
   "bot": {
-    "title": "Forksy Bot",
+    "title": "BiteCraft Bot",
     "welcome": "Hi, I'm Forksy Bot\nHow can I help you?"
   },
   "auth": {
@@ -32,7 +32,15 @@
     "registerSuccess": "Registration successful!",
     "requiredField": "This field is required",
     "invalidEmail": "Please enter a valid email address",
-    "shortPassword": "Password must be at least 6 characters"
+    "shortPassword": "Password must be at least 6 characters",
+    "registerLoading": "Registering...",
+    "invalidCredentials": "Invalid email or password",
+    "emailAlreadyInUse": "This email is already registered",
+    "weakPassword": "Password is too weak",
+    "tooManyRequests": "Too many attempts, please try again later",
+    "logoutFailed": "Failed to log out",
+    "checkUserFailed": "Failed to check user status",
+    "unexpectedError": "An unexpected error occurred"
   },
   "profile": {
     "edit": "Edit Profile",
@@ -98,8 +106,8 @@
     "save": "Save",
     "enterComment": "Enter your comment...",
     "addComment": "Add Comment",
-    "readLess"  : "Read Less",
-    "readMore"  : "Read More"
+    "readLess": "Read Less",
+    "readMore": "Read More"
   },
   "search": {
     "search": "Search",

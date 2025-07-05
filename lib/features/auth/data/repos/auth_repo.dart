@@ -20,7 +20,8 @@ class FirebaseAuthRepo implements AuthRepo {
           .get();
 
       if (!userDoc.exists) {
-        LogsManager.error("User document not found for uid: ${userCredential.user!.uid}");
+        LogsManager.error(
+            "User document not found for uid: ${userCredential.user!.uid}");
         return null;
       }
 
@@ -34,13 +35,14 @@ class FirebaseAuthRepo implements AuthRepo {
       return user;
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
-      LogsManager.error("Login error: ${errorHandler.errorMessage}");
-      throw Exception(errorHandler.errorMessage);
+      LogsManager.error("Registration error: ${errorHandler.errorMessage}");
+      rethrow;
     }
   }
 
   @override
-  Future<AppUser?> registerWithEmailPassword(String name, String email, String password) async {
+  Future<AppUser?> registerWithEmailPassword(
+      String name, String email, String password) async {
     try {
       UserCredential userCredential = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -62,7 +64,7 @@ class FirebaseAuthRepo implements AuthRepo {
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
       LogsManager.error("Registration error: ${errorHandler.errorMessage}");
-      throw Exception(errorHandler.errorMessage);
+      rethrow;
     }
   }
 
@@ -73,8 +75,8 @@ class FirebaseAuthRepo implements AuthRepo {
       LogsManager.info("User logged out");
     } on FirebaseException catch (e) {
       final errorHandler = FirebaseErrorHandler.handleError(e);
-      LogsManager.error("Logout error: ${errorHandler.errorMessage}");
-      throw Exception(errorHandler.errorMessage);
+      LogsManager.error("Registration error: ${errorHandler.errorMessage}");
+      rethrow;
     }
   }
 
@@ -88,7 +90,7 @@ class FirebaseAuthRepo implements AuthRepo {
     }
 
     DocumentSnapshot userDoc =
-    await firebaseFirestore.collection("users").doc(firebaseUser.uid).get();
+        await firebaseFirestore.collection("users").doc(firebaseUser.uid).get();
 
     if (!userDoc.exists) {
       LogsManager.error("User document not found for uid: ${firebaseUser.uid}");

@@ -20,3 +20,17 @@ final class AuthError extends AuthState {
 
   AuthError(this.error);
 }
+
+final class AuthInvalidEmail extends AuthState {}
+
+final class AuthInvalidCredentials extends AuthState {}
+
+final class AuthEmailAlreadyInUse extends AuthState {}
+
+final class AuthWeakPassword extends AuthState {}
+
+final class AuthTooManyRequests extends AuthState {}
+
+final class AuthNetworkError extends AuthState {}
+
+final class AuthOperationNotAllowed extends AuthState {}

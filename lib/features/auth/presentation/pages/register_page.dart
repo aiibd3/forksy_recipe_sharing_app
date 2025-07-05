@@ -27,10 +27,25 @@ class RegisterPage extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("auth.registerSuccess".tr())),
           );
-        } else if (state is AuthLoading) {
-          LogsManager.info("Registration loading...");
+        } else if (state is AuthEmailAlreadyInUse) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("auth.registerLoading".tr())),
+            SnackBar(content: Text("auth.emailAlreadyInUse".tr())),
+          );
+        } else if (state is AuthInvalidEmail) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("auth.invalidEmail".tr())),
+          );
+        } else if (state is AuthWeakPassword) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("auth.weakPassword".tr())),
+          );
+        } else if (state is AuthNetworkError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("auth.networkError".tr())),
+          );
+        } else if (state is AuthOperationNotAllowed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("auth.operationNotAllowed".tr())),
           );
         } else if (state is AuthError) {
           LogsManager.error(state.error);
@@ -132,9 +147,9 @@ class _RegisterPageBody extends StatelessWidget {
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
                       await cubit.register(
-                        cubit.nameController.text,
-                        cubit.emailController.text,
-                        cubit.passwordController.text,
+                        cubit.nameController.text.trim(),
+                        cubit.emailController.text.trim(),
+                        cubit.passwordController.text.trim(),
                       );
                     }
                   },
